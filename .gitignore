@@ -1,0 +1,21 @@
+# Entorno
+.env
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+*.log
+
+# Artefactos locales de pruebas
+ffprofile/
+*.png.tmp

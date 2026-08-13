@@ -1,0 +1,568 @@
+{
+  "clientes": [
+    {
+      "cliente": {
+        "dni": "45789123",
+        "id_cliente": "CLI-0084213",
+        "es_nuevo": false,
+        "nombre": "Luis Ramírez Ccahuana",
+        "distrito": "Lima",
+        "antiguedad_meses": 76,
+        "arpu": 79,
+        "productos": "Móvil ×3",
+        "riesgo_baja": "medio",
+        "prob_churn": 0.34,
+        "pct_consumo_datos": 94,
+        "lineas_domicilio": 3,
+        "cobertura_fibra": true
+      },
+      "recomendaciones": [
+        {
+          "oferta": "Movistar Total · Fibra 300 + plan actual",
+          "probabilidad": 78,
+          "margen": 0,
+          "confianza": "alta",
+          "origen": "historial",
+          "ahorro": 41,
+          "instalacion": 0,
+          "explicacion": [
+            "Consumo al 94% de su plan",
+            "Cobertura de fibra confirmada",
+            "Sin reclamos en 12 meses"
+          ],
+          "canal_sugerido": "call_out",
+          "franja_sugerida": "Mar a vie, 6–8 p. m.",
+          "angulos": [
+            { "titulo": "Ahorro", "texto": "Junto paga S/ 41 menos al mes que separado." },
+            { "titulo": "Consumo", "texto": "Se quedó sin datos 9 de los últimos 10 meses." },
+            { "titulo": "Hogar", "texto": "Tiene 3 líneas en el mismo domicilio, un solo recibo." }
+          ],
+          "rebates": [
+            {
+              "objecion": "precio",
+              "cita": "Está caro",
+              "texto": "Compárelo con lo que gasta en recargas: S/ 25 extra al mes. Los 3 primeros meses van con descuento."
+            },
+            {
+              "objecion": "permanencia",
+              "cita": "No quiero amarrarme",
+              "texto": "La permanencia aplica solo al equipo de fibra. Su línea móvil queda libre."
+            },
+            {
+              "objecion": "pide_tiempo",
+              "cita": "Lo voy a pensar",
+              "texto": "Ofrezca dejar la instalación agendada sin costo, cancelable hasta 24 h antes."
+            }
+          ]
+        },
+        {
+          "oferta": "Upgrade plan móvil 45 GB",
+          "probabilidad": 51,
+          "margen": 0,
+          "confianza": "alta",
+          "origen": "historial"
+        },
+        {
+          "oferta": "Renovación de equipo",
+          "probabilidad": 34,
+          "margen": 0,
+          "confianza": "alta",
+          "origen": "historial"
+        },
+        {
+          "oferta": "Línea adicional",
+          "probabilidad": 19,
+          "margen": 0,
+          "confianza": "alta",
+          "origen": "historial"
+        }
+      ],
+      "guion": [
+        {
+          "cliente": "Llamo porque se me acaban los datos siempre a mitad de mes.",
+          "asesor": "Claro, permítame revisar su cuenta un momento.",
+          "probabilidad": 78,
+          "temperatura": 64,
+          "estado": "Receptivo",
+          "etiqueta": "Apertura",
+          "sugerencia": {
+            "tipo": "info",
+            "titulo": "Apertura",
+            "texto": "Confirmó el dolor de datos. Entre por el ángulo de consumo, no por el precio."
+          }
+        },
+        {
+          "cliente": "¿Y cuánto me costaría eso al mes?",
+          "asesor": "Le explico el precio, pero primero mire lo que se ahorra.",
+          "probabilidad": 74,
+          "temperatura": 52,
+          "estado": "Evaluando",
+          "etiqueta": "Pregunta precio",
+          "sugerencia": {
+            "tipo": "warn",
+            "titulo": "Precio anticipado",
+            "texto": "Pide el monto antes del beneficio. Dígalo pegado al ahorro de S/ 41."
+          }
+        },
+        {
+          "cliente": "Uy, está un poco caro la verdad.",
+          "asesor": "Entiendo. Comparémoslo con lo que ya paga hoy.",
+          "probabilidad": 61,
+          "temperatura": 33,
+          "estado": "Resistente",
+          "etiqueta": "Objeción precio",
+          "objecion": "precio",
+          "paso_funnel": 3,
+          "sugerencia": {
+            "tipo": "risk",
+            "titulo": "Objeción detectada",
+            "texto": "Precio. Use el rebate resaltado: compare contra las recargas mensuales."
+          }
+        },
+        {
+          "cliente": "¿Y me tengo que amarrar por mucho tiempo?",
+          "asesor": "Solo el equipo de fibra. Su línea móvil queda libre.",
+          "probabilidad": 69,
+          "temperatura": 58,
+          "estado": "Evaluando",
+          "etiqueta": "Objeción plazo",
+          "objecion": "permanencia",
+          "sugerencia": {
+            "tipo": "warn",
+            "titulo": "Objeción detectada",
+            "texto": "Permanencia. Aclarar que no toca la línea móvil es lo que más desbloquea aquí."
+          }
+        },
+        {
+          "cliente": "Ya, suena bien. ¿Cómo hago para contratarlo?",
+          "asesor": "Perfecto, confirmo su dirección y agendamos la instalación.",
+          "probabilidad": 89,
+          "temperatura": 88,
+          "estado": "Cierre",
+          "etiqueta": "Señal de cierre",
+          "paso_funnel": 4,
+          "sugerencia": {
+            "tipo": "good",
+            "titulo": "Cierre",
+            "texto": "Deje de argumentar. Confirme dirección y registre el resultado."
+          }
+        }
+      ],
+      "desenlace": {
+        "resultado": "vendido",
+        "motivo_real": null,
+        "prob_final": 89,
+        "calificacion_sugerida": { "facilidad_venta": 4, "oferta_fue_pertinente": true }
+      }
+    },
+
+    {
+      "cliente": {
+        "dni": "70112384",
+        "id_cliente": "CLI-0219944",
+        "es_nuevo": true,
+        "nombre": "Andrea Salazar Pinto",
+        "distrito": "San Juan de Lurigancho",
+        "antiguedad_meses": 0,
+        "arpu": null,
+        "productos": "—",
+        "riesgo_baja": null,
+        "prob_churn": null,
+        "pct_consumo_datos": null,
+        "lineas_domicilio": 0,
+        "cobertura_fibra": false
+      },
+      "recomendaciones": [
+        {
+          "oferta": "Plan móvil 25 GB · portabilidad",
+          "probabilidad": 42,
+          "margen": 12,
+          "confianza": "baja",
+          "origen": "lookalike",
+          "ahorro": 18,
+          "instalacion": 0,
+          "explicacion": [
+            "Sin historial: estimado sobre clientes similares de su distrito",
+            "Perfil de entrada más contratado en este canal",
+            "Sin cobertura de fibra confirmada en la dirección"
+          ],
+          "canal_sugerido": "digital",
+          "franja_sugerida": "Fin de semana, mañana",
+          "angulos": [
+            {
+              "titulo": "Portabilidad",
+              "texto": "Conserva su número y el primer mes va sin costo."
+            },
+            {
+              "titulo": "Sin ataduras",
+              "texto": "Plan sin permanencia, puede cambiar cuando quiera."
+            }
+          ],
+          "rebates": [
+            {
+              "objecion": "ya_tiene_proveedor",
+              "cita": "Ya tengo otra operadora",
+              "texto": "Pregunte cuánto paga hoy y qué le falta. Anote la respuesta: alimenta la próxima oferta."
+            },
+            {
+              "objecion": "pide_tiempo",
+              "cita": "Lo voy a pensar",
+              "texto": "Ofrezca enviarle la comparación por WhatsApp y agendar recontacto en 48 horas."
+            }
+          ]
+        },
+        {
+          "oferta": "Dúo móvil + fijo básico",
+          "probabilidad": 27,
+          "margen": 14,
+          "confianza": "baja",
+          "origen": "lookalike"
+        },
+        {
+          "oferta": "Movistar Total · Fibra 300",
+          "probabilidad": 9,
+          "margen": 8,
+          "confianza": "baja",
+          "origen": "lookalike",
+          "descartada": "Sin cobertura de fibra en la dirección"
+        }
+      ],
+      "guion": [
+        {
+          "cliente": "Vi una promoción y quería preguntar nomás.",
+          "asesor": "Con gusto. ¿Actualmente con qué operadora está?",
+          "probabilidad": 42,
+          "temperatura": 50,
+          "estado": "Explorando",
+          "etiqueta": "Apertura",
+          "sugerencia": {
+            "tipo": "info",
+            "titulo": "Sin historial",
+            "texto": "Cliente nuevo: la probabilidad es un estimado por segmento. Levante datos antes de ofrecer."
+          }
+        },
+        {
+          "cliente": "Estoy con otra operadora, pago 39 soles.",
+          "asesor": "Entiendo. ¿Y le alcanzan los datos con ese plan?",
+          "probabilidad": 38,
+          "temperatura": 44,
+          "estado": "Comparando",
+          "etiqueta": "Compara precio",
+          "objecion": "ya_tiene_proveedor",
+          "paso_funnel": 3,
+          "sugerencia": {
+            "tipo": "warn",
+            "titulo": "Objeción detectada",
+            "texto": "Ya tiene proveedor. No compita solo por precio: pregunte qué le falta hoy."
+          }
+        },
+        {
+          "cliente": "Sí me alcanza, la verdad estoy conforme.",
+          "asesor": "Perfecto. ¿Le envío la comparación por si más adelante le sirve?",
+          "probabilidad": 24,
+          "temperatura": 26,
+          "estado": "Sin interés",
+          "etiqueta": "Cierra puerta",
+          "sugerencia": {
+            "tipo": "risk",
+            "titulo": "Baja probabilidad",
+            "texto": "No insista. Cierre pidiendo permiso para recontacto y registre el motivo real."
+          }
+        }
+      ],
+      "desenlace": {
+        "resultado": "rechazado",
+        "motivo_real": "ya_tiene_proveedor",
+        "prob_final": 24,
+        "calificacion_sugerida": { "facilidad_venta": 2, "oferta_fue_pertinente": false }
+      }
+    },
+
+    {
+      "cliente": {
+        "dni": "08954412",
+        "id_cliente": "CLI-0037710",
+        "es_nuevo": false,
+        "nombre": "Rosa Quispe Mamani",
+        "distrito": "Comas",
+        "antiguedad_meses": 148,
+        "arpu": 42,
+        "productos": "Móvil ×1",
+        "riesgo_baja": "alto",
+        "prob_churn": 0.71,
+        "pct_consumo_datos": 38,
+        "lineas_domicilio": 1,
+        "cobertura_fibra": false
+      },
+      "recomendaciones": [
+        {
+          "oferta": "Renovación de equipo con descuento por permanencia",
+          "probabilidad": 66,
+          "margen": 0,
+          "confianza": "alta",
+          "origen": "historial",
+          "ahorro": 0,
+          "instalacion": 0,
+          "explicacion": [
+            "Riesgo de baja alto: 0.71",
+            "Equipo con 4 años de antigüedad",
+            "Consumo bajo: subir de plan tiene poca probabilidad"
+          ],
+          "canal_sugerido": "call_out",
+          "franja_sugerida": "Lun a mié, 10 a. m.–12 p. m.",
+          "angulos": [
+            {
+              "titulo": "Antigüedad",
+              "texto": "12 años como clienta. El descuento por permanencia es exclusivo de su perfil."
+            },
+            {
+              "titulo": "Equipo",
+              "texto": "Su equipo tiene 4 años. Es el motivo más común de baja en este segmento."
+            }
+          ],
+          "rebates": [
+            {
+              "objecion": "precio",
+              "cita": "No tengo para pagar más",
+              "texto": "La cuota del equipo reemplaza lo que ya paga; su recibo mensual sube S/ 9, no se duplica."
+            },
+            {
+              "objecion": "no_entiende_beneficio",
+              "cita": "¿Y eso para qué me sirve?",
+              "texto": "Explique en concreto: batería que dura el día y cámara. Evite hablar de gigas, su consumo es bajo."
+            }
+          ]
+        },
+        {
+          "oferta": "Migración a plan 15 GB",
+          "probabilidad": 31,
+          "margen": 0,
+          "confianza": "alta",
+          "origen": "historial"
+        },
+        {
+          "oferta": "Movistar Total · Fibra 300",
+          "probabilidad": 12,
+          "margen": 0,
+          "confianza": "alta",
+          "origen": "historial",
+          "descartada": "Sin cobertura de fibra en la dirección"
+        }
+      ],
+      "guion": [
+        {
+          "cliente": "Llamo porque mi celular ya casi no me dura la batería.",
+          "asesor": "La entiendo. Veo que su equipo tiene cuatro años, déjeme revisar qué le corresponde.",
+          "probabilidad": 66,
+          "temperatura": 62,
+          "estado": "Receptivo",
+          "etiqueta": "Apertura",
+          "sugerencia": {
+            "tipo": "risk",
+            "titulo": "Cliente en riesgo",
+            "texto": "Probabilidad de baja 0.71. La prioridad es retener, no subir el plan."
+          }
+        },
+        {
+          "cliente": "¿Y eso me va a salir más caro? No tengo para pagar más.",
+          "asesor": "Su recibo sube nueve soles, no se duplica. La cuota reemplaza lo que ya paga.",
+          "probabilidad": 54,
+          "temperatura": 40,
+          "estado": "Resistente",
+          "etiqueta": "Objeción precio",
+          "objecion": "precio",
+          "paso_funnel": 3,
+          "sugerencia": {
+            "tipo": "warn",
+            "titulo": "Objeción detectada",
+            "texto": "Precio. Dé la cifra exacta del incremento, no un porcentaje."
+          }
+        },
+        {
+          "cliente": "Ah, ¿solo nueve soles? ¿Y qué equipo sería?",
+          "asesor": "Le muestro las dos opciones que entran en su descuento por permanencia.",
+          "probabilidad": 79,
+          "temperatura": 76,
+          "estado": "Interesada",
+          "etiqueta": "Rebate aplicado",
+          "sugerencia": {
+            "tipo": "good",
+            "titulo": "Rebate efectivo",
+            "texto": "La objeción se resolvió. Pase al detalle del equipo, no vuelva sobre el precio."
+          }
+        },
+        {
+          "cliente": "Ya, el segundo me gusta. ¿Cómo hacemos?",
+          "asesor": "Perfecto, confirmo sus datos y le agendo el recojo en tienda.",
+          "probabilidad": 91,
+          "temperatura": 90,
+          "estado": "Cierre",
+          "etiqueta": "Señal de cierre",
+          "paso_funnel": 4,
+          "sugerencia": {
+            "tipo": "good",
+            "titulo": "Cierre",
+            "texto": "Confirme tienda y registre el resultado."
+          }
+        }
+      ],
+      "desenlace": {
+        "resultado": "vendido",
+        "motivo_real": null,
+        "prob_final": 91,
+        "calificacion_sugerida": { "facilidad_venta": 5, "oferta_fue_pertinente": true }
+      }
+    },
+
+    {
+      "cliente": {
+        "dni": "76340219",
+        "id_cliente": "CLI-0224187",
+        "es_nuevo": true,
+        "nombre": "Kevin Huamán Ríos",
+        "distrito": "Ate",
+        "antiguedad_meses": 0,
+        "arpu": null,
+        "productos": "—",
+        "riesgo_baja": null,
+        "prob_churn": null,
+        "pct_consumo_datos": null,
+        "lineas_domicilio": 0,
+        "cobertura_fibra": true
+      },
+      "recomendaciones": [
+        {
+          "oferta": "Plan 45 GB · portabilidad + equipo en cuotas",
+          "probabilidad": 48,
+          "margen": 14,
+          "confianza": "baja",
+          "origen": "lookalike",
+          "ahorro": 22,
+          "instalacion": 0,
+          "explicacion": [
+            "Sin historial: estimado sobre clientes similares del canal digital",
+            "Entró por la web, perfil digital",
+            "Portabilidad es la puerta de entrada más frecuente en este segmento"
+          ],
+          "canal_sugerido": "digital",
+          "franja_sugerida": "Cualquier día, 8–11 p. m.",
+          "angulos": [
+            {
+              "titulo": "Portabilidad",
+              "texto": "Conserva su número y el primer mes va sin costo."
+            },
+            {
+              "titulo": "Equipo",
+              "texto": "Cuotas sin interés, sin inicial y sin verificación adicional."
+            },
+            {
+              "titulo": "Datos",
+              "texto": "45 GB más redes sociales libres, si confirma que consume mucho video."
+            }
+          ],
+          "rebates": [
+            {
+              "objecion": "pide_tiempo",
+              "cita": "Lo voy a pensar",
+              "texto": "Ofrezca reservar el precio por 72 horas sin compromiso. Pida el correo para enviarle el detalle."
+            },
+            {
+              "objecion": "no_entiende_beneficio",
+              "cita": "¿Y qué gano cambiándome?",
+              "texto": "Traduzca los gigas a lo que él usa: horas de video al día, no cifras técnicas."
+            },
+            {
+              "objecion": "precio",
+              "cita": "¿Y cuánto pago por pasarme?",
+              "texto": "La portabilidad no cuesta. Diga el número exacto de la cuota mensual, no el total."
+            }
+          ]
+        },
+        {
+          "oferta": "Plan 25 GB solo línea",
+          "probabilidad": 33,
+          "margen": 12,
+          "confianza": "baja",
+          "origen": "lookalike"
+        },
+        {
+          "oferta": "Movistar Total · Fibra 300",
+          "probabilidad": 21,
+          "margen": 11,
+          "confianza": "baja",
+          "origen": "lookalike",
+          "nota": "Reofrecer a los 3 meses, cuando haya historial de pago"
+        }
+      ],
+      "guion": [
+        {
+          "cliente": "Quiero pasarme de operadora pero no sé si me conviene.",
+          "asesor": "Con gusto lo ayudo. ¿Para qué usa más el celular?",
+          "probabilidad": 48,
+          "margen": 14,
+          "temperatura": 55,
+          "estado": "Explorando",
+          "etiqueta": "Apertura",
+          "sugerencia": {
+            "tipo": "info",
+            "titulo": "Sin historial",
+            "texto": "Estimado por segmento. Cada dato que levante afina la recomendación: pregunte por uso antes de ofrecer."
+          }
+        },
+        {
+          "cliente": "Veo bastante video, YouTube y TikTok. Se me acaban los datos siempre.",
+          "asesor": "Entonces le sirve el plan de 45 giga con redes libres.",
+          "probabilidad": 59,
+          "margen": 9,
+          "temperatura": 68,
+          "estado": "Interesado",
+          "etiqueta": "Dato capturado",
+          "datos_capturados": { "pct_consumo_datos": 91 },
+          "sugerencia": {
+            "tipo": "good",
+            "titulo": "Estimación afinada",
+            "texto": "Consumo alto confirmado. El margen bajó de ±14 a ±9. Use el ángulo de datos."
+          }
+        },
+        {
+          "cliente": "¿Y me cobran algo por pasarme? Porque plata no tengo ahorita.",
+          "asesor": "La portabilidad no cuesta nada. El equipo va en cuotas, sin inicial.",
+          "probabilidad": 71,
+          "margen": 6,
+          "temperatura": 74,
+          "estado": "Evaluando",
+          "etiqueta": "Objeción precio",
+          "objecion": "precio",
+          "paso_funnel": 3,
+          "datos_capturados": { "arpu": 35 },
+          "sugerencia": {
+            "tipo": "warn",
+            "titulo": "Objeción detectada",
+            "texto": "Precio de entrada. Diga la cuota mensual exacta, nunca el total del equipo."
+          }
+        },
+        {
+          "cliente": "Ya, así sí. ¿Cómo hago la portabilidad?",
+          "asesor": "Le mando el enlace ahora, se hace desde su celular en cinco minutos.",
+          "probabilidad": 86,
+          "margen": 3,
+          "temperatura": 89,
+          "estado": "Cierre",
+          "etiqueta": "Señal de cierre",
+          "paso_funnel": 4,
+          "sugerencia": {
+            "tipo": "good",
+            "titulo": "Cierre digital",
+            "texto": "Envíe el enlace mientras sigue en línea y confirme que lo recibió antes de colgar."
+          }
+        }
+      ],
+      "desenlace": {
+        "resultado": "vendido",
+        "motivo_real": null,
+        "prob_final": 86,
+        "calificacion_sugerida": { "facilidad_venta": 4, "oferta_fue_pertinente": true }
+      }
+    }
+  ]
+}

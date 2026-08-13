@@ -1,0 +1,66 @@
+/* Identidad visual NBO Movistar.
+   Superficies blancas, filetes de 1px, radios de 6px.
+   Sin sombras difusas y sin gradientes: el color solo aparece cuando significa algo. */
+
+:root {
+  /* Marca */
+  --marca-azul: #0066ff; /* azul del símbolo, solo para el logotipo */
+  --movistar-azul: #019df4;
+  --movistar-noche: #0b2739;
+  --movistar-cielo: #e5f5fe;
+  --gris-canvas: #eef1f4;
+  --linea: #dce3e8;
+  --ambar: #b4530e;
+  --alarma: #a32118;
+  --verde: #256b47;
+
+  /* Superficies y texto */
+  --superficie: #ffffff;
+  --superficie-tenue: #f7f9fb;
+  --tinta: #14232e;
+  --tinta-media: #4a5c68;
+  --tinta-suave: #7d8c97;
+  --tinta-inversa: #ffffff;
+
+  /* Tipografia */
+  --fuente-cuerpo: 'Telefonica Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fuente-micro: 'Barlow Semi Condensed', 'Telefonica Sans Condensed', 'Arial Narrow', sans-serif;
+  --fuente-cifra: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+
+  /* Escala. El argumentario se lee de un vistazo a un metro de distancia:
+     el cuerpo sube respecto a una tabla de datos al uso. */
+  --t-micro: 10.5px;
+  --t-xs: 12px;
+  --t-sm: 13px;
+  --t-base: 14.5px;
+  --t-md: 16px;
+  --t-lg: 21px;
+  --t-xl: 30px;
+  --t-xxl: 40px;
+
+  /* Ritmo */
+  --r: 6px;
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 22px;
+
+  /* Rejilla de la consola. La izquierda manda: es lo que el asesor lee. */
+  --col-izq: 384px;
+  --col-der: 288px;
+  --rail-alto: 52px;
+}
+
+/* Semantica de estado: un color, un significado. */
+:root {
+  --estado-info: var(--movistar-azul);
+  --estado-warn: var(--ambar);
+  --estado-risk: var(--alarma);
+  --estado-good: var(--verde);
+
+  --info-fondo: var(--movistar-cielo);
+  --warn-fondo: #fdf3e8;
+  --risk-fondo: #fdeeed;
+  --good-fondo: #eaf4ef;
+}

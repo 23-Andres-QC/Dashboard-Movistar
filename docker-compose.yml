@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:16
+    container_name: nbo-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-nbo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nbo}
+      POSTGRES_DB: ${POSTGRES_DB:-nbo}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nbo} -d ${POSTGRES_DB:-nbo}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+
+  api:
+    build: ./api
+    container_name: nbo-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://nbo:nbo@db:5432/nbo}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+
+  web:
+    build: ./web
+    container_name: nbo-web
+    depends_on:
+      api:
+        condition: service_started
+    environment:
+      VITE_API_PROXY: ${VITE_API_PROXY:-http://api:8000}
+    ports:
+      - "${WEB_PORT:-5173}:5173"
+    volumes:
+      # Código en vivo; node_modules se queda el de la imagen.
+      - ./web:/srv
+      - /srv/node_modules
+    restart: unless-stopped
+
+volumes:
+  db_data:
