@@ -7,7 +7,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nbo}
       POSTGRES_DB: ${POSTGRES_DB:-nbo}
     ports:
-      - "${DB_PORT:-5432}:5432"
+      # Solo al host: en un servidor público no se expone la base a internet.
+      # Para abrirla a propósito: DB_BIND=0.0.0.0
+      - "${DB_BIND:-127.0.0.1}:${DB_PORT:-5432}:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
@@ -77,6 +79,8 @@ services:
         condition: service_started
     environment:
       VITE_API_PROXY: ${VITE_API_PROXY:-http://api:8000}
+      # Host público desde el que se sirve el dashboard (IP o dominio).
+      VITE_ALLOWED_HOSTS: ${VITE_ALLOWED_HOSTS:-}
     ports:
       - "${WEB_PORT:-5173}:5173"
     volumes:
