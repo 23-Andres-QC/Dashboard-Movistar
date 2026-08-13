@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "name": "Playbook sintético de demostración",
+    "version": "demo-playbook-0.1",
+    "demo_only": true,
+    "approved": false,
+    "notice": "Contenido ficticio para probar el AI Engine. No representa un playbook oficial de Movistar."
+  },
+  "tactics": [
+    {
+      "tactic_id": "demo-price-reframe",
+      "objection_category": "precio",
+      "allowed_states": ["objection_handling"],
+      "strategy": "REFRAME_VALUE",
+      "target_state": "rebate",
+      "response_type": "rebate",
+      "required_fact_kinds": ["offer_name", "monthly_price"],
+      "summary": "Reconocer la preocupación y aclarar el valor sin ofrecer descuentos.",
+      "response_template": "Entiendo que el precio es importante. {offer_name} tiene un precio mensual de {monthly_price}. Revisemos si sus características responden a lo que necesita.",
+      "follow_up_template": "¿Su principal preocupación es el monto mensual o no tener claro el valor de la oferta?"
+    },
+    {
+      "tactic_id": "demo-follow-up-later",
+      "objection_category": "mal_momento",
+      "allowed_states": ["objection_handling"],
+      "strategy": "PROPOSE_FOLLOW_UP",
+      "target_state": "follow_up",
+      "response_type": "schedule_followup",
+      "required_fact_kinds": [],
+      "summary": "Respetar el momento del cliente y proponer seguimiento sin presión.",
+      "response_template": "Entiendo, no es necesario decidirlo ahora. Podemos retomar la conversación en un momento más conveniente para usted.",
+      "follow_up_template": "¿Prefiere que lo conversemos en otro momento?"
+    }
+  ]
+}
+

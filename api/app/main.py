@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import get_settings
-from .routers import demo, gestiones, metricas
+from .routers import copiloto, demo, gestiones, metricas
 
 settings = get_settings()
 
@@ -26,6 +26,7 @@ app.add_middleware(
 
 app.include_router(demo.router)
 app.include_router(gestiones.router)
+app.include_router(copiloto.router)
 app.include_router(metricas.router)
 
 

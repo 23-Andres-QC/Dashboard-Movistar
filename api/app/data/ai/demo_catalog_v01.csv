@@ -1,0 +1,12 @@
+oferta_id,nombre_oferta,precio_mensual
+OF004,Plan Movil Ilimitado,99.90
+EQ-001,Renovación de equipo con descuento por permanencia,51.00
+EQ-002,Renovación de equipo,45.00
+MT-001,Movistar Total · Fibra 300,119.00
+MT-003,Movistar Total · Fibra 300 + plan actual,129.00
+PH-002,Dúo móvil + fijo básico,79.00
+PM-001,Línea adicional,39.00
+PM-002,Plan 25 GB solo línea,49.00
+PM-004,Plan 45 GB · portabilidad + equipo en cuotas,89.00
+UPG-001,Migración a plan 15 GB,55.00
+UPG-004,Upgrade plan móvil 45 GB,89.00

@@ -18,17 +18,49 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  # Motor de IA generativa: speech inicial y asistencia por turno.
+  # Modo determinista por defecto, sin API key ni LLM externo.
+  ai:
+    build: ./movistar-ai-main
+    container_name: nbo-ai
+    environment:
+      AI_ENGINE_HOST: 0.0.0.0
+      AI_ENGINE_PORT: 8000
+      AI_ENGINE_CORS_ORIGINS: ${AI_ENGINE_CORS_ORIGINS:-*}
+      AI_ENGINE_GENERATOR: ${AI_ENGINE_GENERATOR:-deterministic}
+    ports:
+      - "${AI_PORT:-8100}:8000"
+    volumes:
+      # Conocimiento autorizado derivado de demo.json. Sin esto el motor se
+      # abstiene: solo redacta sobre ofertas y tácticas que tiene aprobadas.
+      - ./api/app/data/ai/demo_catalog_v01.csv:/srv/fixtures/demo_catalog_v01.csv:ro
+      - ./api/app/data/ai/demo_playbook_v01.json:/srv/fixtures/demo_playbook_v01.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+
   api:
     build: ./api
     container_name: nbo-api
     depends_on:
       db:
         condition: service_healthy
+      ai:
+        condition: service_started
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://nbo:nbo@db:5432/nbo}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      AI_ENGINE_URL: ${AI_ENGINE_URL:-http://ai:8000}
     ports:
       - "${API_PORT:-8000}:8000"
+    volumes:
+      # Código en vivo; las dependencias siguen siendo las de la imagen.
+      - ./api/app:/srv/app
+      - ./api/alembic:/srv/alembic
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)\""]
       interval: 10s

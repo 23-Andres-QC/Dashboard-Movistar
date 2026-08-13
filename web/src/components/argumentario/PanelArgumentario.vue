@@ -2,25 +2,44 @@
 import ListaAlternativas from './ListaAlternativas.vue'
 import ListaAngulos from './ListaAngulos.vue'
 import ListaRebates from './ListaRebates.vue'
+import SelectorCanal from './SelectorCanal.vue'
 import TarjetaOferta from './TarjetaOferta.vue'
 import TituloPanel from '@/components/ui/TituloPanel.vue'
-import type { Motivo, Recomendacion } from '@/api/tipos'
+import type { Canal, Motivo, Recomendacion } from '@/api/tipos'
 
 defineProps<{
   oferta: Recomendacion | null
   alternativas: Recomendacion[]
   descartadas: Recomendacion[]
   objecionActiva: Motivo | null
-  /** Hay gestión abierta: lo que se recomienda cambia turno a turno. */
+  probabilidad: number
+  canalSeleccionado: Canal | null
+  mejorCanal: Canal | null
+  /** Con la gestión abierta el canal ya no se cambia. */
+  hayGestion: boolean
+  /** Hay gestión abierta y viva: lo que se recomienda cambia turno a turno. */
   enCurso: boolean
 }>()
+
+defineEmits<{ seleccionarCanal: [canal: Canal] }>()
 </script>
 
 <template>
   <aside class="panel columna" aria-label="Argumentario">
     <TituloPanel texto="Qué decirle ahora" acento="azul" :vivo="enCurso" />
     <template v-if="oferta">
-      <TarjetaOferta :oferta="oferta" />
+      <TarjetaOferta
+        :oferta="oferta"
+        :probabilidad="probabilidad"
+        :canal-activo="canalSeleccionado"
+      />
+      <SelectorCanal
+        :prob-por-canal="oferta.prob_por_canal"
+        :mejor-canal="mejorCanal"
+        :seleccionado="canalSeleccionado"
+        :bloqueado="hayGestion"
+        @seleccionar="$emit('seleccionarCanal', $event)"
+      />
       <ListaAlternativas :alternativas="alternativas" :descartadas="descartadas" />
       <ListaAngulos :angulos="oferta.angulos" />
       <ListaRebates :rebates="oferta.rebates" :objecion-activa="objecionActiva" />

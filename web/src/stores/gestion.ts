@@ -8,11 +8,22 @@ import type {
   CierreEnvio,
   Cliente,
   Desenlace,
+  GuiaCopiloto,
+  Intercambio,
   Motivo,
   Recomendacion,
   Sugerencia,
   TurnoGuion,
 } from '@/api/tipos'
+
+const MOTIVOS_VALIDOS: Motivo[] = [
+  'precio',
+  'no_necesita',
+  'ya_tiene_similar',
+  'mal_momento',
+  'no_confia',
+  'otro',
+]
 
 export const ID_ASESOR = 'ASE-001'
 export const NOMBRE_ASESOR = 'M. Delgado'
@@ -40,10 +51,20 @@ export const useGestionStore = defineStore('gestion', () => {
   const idGestion = ref<string | null>(null)
   const inicioLlamada = ref<number | null>(null)
 
+  /** Canal por el que se atiende. Arranca en el que recomienda el motor, pero
+   *  el asesor puede mirar los otros: el mejor nunca se oculta. */
+  const canalSeleccionado = ref<Canal | null>(null)
+
   const objecionActiva = ref<Motivo | null>(null)
   const objecionesDetectadas = ref<Motivo[]>([])
   const sugerencias = ref<Sugerencia[]>([])
   const pasoFunnel = ref(0)
+
+  // --- Copiloto conversacional (AI Engine) -----------------------------
+  const conversationId = ref<string | null>(null)
+  const speechInicial = ref<GuiaCopiloto | null>(null)
+  const intercambios = ref<Intercambio[]>([])
+  const copilotoPensando = ref(false)
 
   /** Datos que el cliente reveló durante la llamada, por campo de ficha. */
   const datosCapturados = ref<Record<string, number>>({})
@@ -79,7 +100,18 @@ export const useGestionStore = defineStore('gestion', () => {
     cliente.value ? { ...cliente.value, ...datosCapturados.value } : null,
   )
 
-  const probInicial = computed(() => ofertaPrincipal.value?.probabilidad ?? 0)
+  const mejorCanal = computed(() => ofertaPrincipal.value?.canal_sugerido ?? null)
+
+  /** Probabilidad de la oferta por el canal que se está mirando. */
+  const probInicial = computed(() => {
+    const oferta = ofertaPrincipal.value
+    if (!oferta) return 0
+    const canal = canalSeleccionado.value
+    if (canal && oferta.prob_por_canal[canal] !== undefined) {
+      return oferta.prob_por_canal[canal]!
+    }
+    return oferta.probabilidad
+  })
 
   /** Solo se usa para registrar `prob_final` al cerrar: no se muestra en pantalla. */
   const probActual = computed(() =>
@@ -104,6 +136,11 @@ export const useGestionStore = defineStore('gestion', () => {
     indiceTurno.value = -1
     idGestion.value = null
     inicioLlamada.value = null
+    canalSeleccionado.value = null
+    conversationId.value = null
+    speechInicial.value = null
+    intercambios.value = []
+    copilotoPensando.value = false
     objecionActiva.value = null
     objecionesDetectadas.value = []
     sugerencias.value = []
@@ -135,14 +172,15 @@ export const useGestionStore = defineStore('gestion', () => {
       avanzarFunnel(1) // clasificado
 
       const [recos, turnos] = await Promise.all([
-        api.recomendaciones(ficha.id_cliente),
-        api.guion(ficha.id_cliente),
+        api.recomendaciones(ficha.cliente_id),
+        api.guion(ficha.cliente_id),
       ])
       recomendaciones.value = recos
       guion.value = turnos
+      canalSeleccionado.value = recos[0]?.canal_sugerido ?? null
 
       // El desenlace es opcional: si falta, la demo sigue funcionando.
-      desenlace.value = await api.desenlace(ficha.id_cliente).catch(() => null)
+      desenlace.value = await api.desenlace(ficha.cliente_id).catch(() => null)
     } catch (e) {
       error.value =
         e instanceof ErrorApi
@@ -164,15 +202,29 @@ export const useGestionStore = defineStore('gestion', () => {
     abriendoGestion.value = true
     try {
       const gestion = await api.abrirGestion({
-        id_cliente: cliente.value.id_cliente,
+        id_cliente: cliente.value.cliente_id,
+        oferta_id: oferta.oferta_id,
         oferta_recomendada: oferta.oferta,
-        canal: (oferta.canal_sugerido ?? 'call_out') as Canal,
+        oferta_es_mt: oferta.es_movistar_total,
+        segmento_objetivo: oferta.segmento_objetivo,
+        // Se registra el canal por el que se atiende de verdad, no el sugerido.
+        canal: (canalSeleccionado.value ?? oferta.canal_sugerido ?? 'call_out') as Canal,
         id_asesor: ID_ASESOR,
-        prob_inicial: oferta.probabilidad,
+        prob_inicial: probInicial.value,
       })
       idGestion.value = gestion.id_gestion
       inicioLlamada.value = Date.now()
       avanzarFunnel(2) // contactado
+
+      // El copiloto abre la conversación y entrega el speech inicial.
+      try {
+        const guia = await api.iniciarCopiloto(gestion.id_gestion, canalSeleccionado.value)
+        conversationId.value = guia.conversation_id
+        speechInicial.value = guia
+      } catch (e) {
+        aviso.value =
+          e instanceof ErrorApi ? `Copiloto: ${e.message}` : 'El copiloto no respondió'
+      }
     } catch (e) {
       error.value = e instanceof ErrorApi ? e.message : 'No se pudo abrir la gestión'
     } finally {
@@ -180,6 +232,56 @@ export const useGestionStore = defineStore('gestion', () => {
     }
   }
 
+  /** Manda al copiloto lo que dijo el cliente y guarda qué responderle. */
+  async function decirCliente(texto: string, etiqueta = 'Turno', respaldo: string | null = null) {
+    const limpio = texto.trim()
+    if (!limpio || !idGestion.value || !conversationId.value || cerrada.value) return
+
+    const intercambio: Intercambio = {
+      dijo: limpio,
+      etiqueta,
+      guia: null,
+      respaldo,
+      pendiente: true,
+      error: null,
+    }
+    intercambios.value.push(intercambio)
+    copilotoPensando.value = true
+    avanzarFunnel(3) // oferta presentada
+
+    try {
+      const guia = await api.turnoCopiloto(idGestion.value, conversationId.value, limpio)
+      intercambio.guia = guia
+      await registrarObjecion(guia.objecion_categoria)
+    } catch (e) {
+      intercambio.error = e instanceof ErrorApi ? e.message : 'El copiloto no respondió'
+    } finally {
+      intercambio.pendiente = false
+      copilotoPensando.value = false
+    }
+  }
+
+  /** La objeción la clasifica el copiloto; aquí solo se registra. */
+  async function registrarObjecion(categoria: string | null) {
+    if (!categoria || categoria === 'otro') return
+    const motivo = MOTIVOS_VALIDOS.find((m) => m === categoria)
+    if (!motivo) return
+
+    objecionActiva.value = motivo
+    avanzarFunnel(4) // objeción y rebate
+    if (objecionesDetectadas.value.includes(motivo) || !idGestion.value) return
+
+    objecionesDetectadas.value.push(motivo)
+    try {
+      await api.marcarObjecion(idGestion.value, motivo)
+    } catch {
+      aviso.value = 'No se pudo registrar la objeción'
+    }
+  }
+
+  /** Avanza el guion de demo: toma lo que dice el cliente y se lo pasa al
+   *  copiloto, que es quien decide la respuesta. El guion aporta el contexto
+   *  de ML (probabilidad, temperatura, datos revelados), no el texto a decir. */
   async function siguienteTurno() {
     if (!hayGestion.value || !quedanTurnos.value || cerrada.value) return
     indiceTurno.value += 1
@@ -187,8 +289,6 @@ export const useGestionStore = defineStore('gestion', () => {
     if (!turno) return
 
     if (turno.sugerencia) sugerencias.value.unshift(turno.sugerencia)
-
-    avanzarFunnel(3) // oferta presentada
     if (turno.paso_funnel) avanzarFunnel(turno.paso_funnel)
 
     // Cada dato revelado llena un campo vacío de la ficha y estrecha el margen.
@@ -199,20 +299,7 @@ export const useGestionStore = defineStore('gestion', () => {
       ultimaCaptura.value = []
     }
 
-    if (turno.objecion) {
-      objecionActiva.value = turno.objecion
-      avanzarFunnel(4) // objeción y rebate
-      if (!objecionesDetectadas.value.includes(turno.objecion)) {
-        objecionesDetectadas.value.push(turno.objecion)
-        if (idGestion.value) {
-          try {
-            await api.marcarObjecion(idGestion.value, turno.objecion)
-          } catch {
-            aviso.value = 'No se pudo registrar la objeción'
-          }
-        }
-      }
-    }
+    await decirCliente(turno.cliente, turno.etiqueta, turno.asesor)
   }
 
   async function cerrarGestion(datos: CierreEnvio) {
@@ -245,6 +332,12 @@ export const useGestionStore = defineStore('gestion', () => {
     aviso.value = `Calificación registrada en ${idGestion.value}`
   }
 
+  function seleccionarCanal(canal: Canal) {
+    // Una vez abierta la gestión el canal ya quedó registrado: no se cambia.
+    if (hayGestion.value) return
+    canalSeleccionado.value = canal
+  }
+
   function limpiarAviso() {
     aviso.value = null
   }
@@ -258,6 +351,11 @@ export const useGestionStore = defineStore('gestion', () => {
     indiceTurno,
     idGestion,
     inicioLlamada,
+    canalSeleccionado,
+    conversationId,
+    speechInicial,
+    intercambios,
+    copilotoPensando,
     objecionActiva,
     objecionesDetectadas,
     sugerencias,
@@ -280,6 +378,7 @@ export const useGestionStore = defineStore('gestion', () => {
     turnoActual,
     quedanTurnos,
     esNuevo,
+    mejorCanal,
     probInicial,
     probActual,
     temperatura,
@@ -288,7 +387,9 @@ export const useGestionStore = defineStore('gestion', () => {
     rumboRechazo,
 
     buscar,
+    seleccionarCanal,
     iniciarGestion,
+    decirCliente,
     siguienteTurno,
     cerrarGestion,
     calificar,

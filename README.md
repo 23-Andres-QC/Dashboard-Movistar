@@ -16,13 +16,15 @@ cp .env.example .env
 docker compose up --build
 ```
 
-Eso deja los tres servicios listos, sin pasos manuales. Las migraciones de Alembic se aplican
-solas al arrancar la API.
+Eso deja los cuatro servicios listos, sin pasos manuales. Las migraciones de Alembic se aplican
+solas al arrancar la API, y el copiloto arranca en modo determinista: **no necesita API key ni
+conexión a un LLM externo**.
 
 | Servicio | URL | Qué es |
 |---|---|---|
 | **Dashboard** | <http://localhost:5173> | La consola del asesor |
 | API + documentación | <http://localhost:8000/docs> | OpenAPI interactivo |
+| AI Engine | <http://localhost:8100/docs> | Copiloto conversacional |
 | PostgreSQL | `localhost:5432` | usuario `nbo`, base `nbo` |
 
 Entrada directa a un caso: <http://localhost:5173/asesor/45789123>
@@ -79,22 +81,31 @@ solo cambia la implementación interna. El frontend no se toca.
 
 ### Simulado (JSON estático, `api/app/data/demo.json`)
 
-Todo lo que en producción vendría de un modelo:
+Lo que en producción vendría del modelo de ML:
 
-- Fichas de cliente, probabilidades y su margen de incertidumbre.
-- Ranking de ofertas, ángulos de convencimiento, rebates y explicaciones.
-- Guion de conversación, objeciones detectadas y sugerencias.
+- Fichas de cliente, probabilidades por canal y su margen de incertidumbre.
+- Ranking de ofertas, ángulos de convencimiento y explicaciones.
+- Guion de conversación: **lo que dice el cliente**, no lo que se le responde.
 
-**No hay** modelos de ML, entrenamiento, SHAP, detección de objeciones por texto ni
-reconocimiento de voz. Eso es fase 2.
+**No hay** modelos de ML, entrenamiento ni SHAP. Eso es fase 2.
+
+### Real, pero no persistido (AI Engine)
+
+El **copiloto conversacional** sí funciona de verdad: clasifica la objeción a partir del texto
+libre del cliente, elige una táctica autorizada del playbook y redacta la respuesta fundamentada
+en el catálogo. Es el componente del equipo de IA (`movistar-ai-main/`), integrado como servicio.
+
+Sus sesiones viven en memoria: reiniciar el contenedor las borra. Lo persistente sigue siendo la
+gestión, con la objeción que el copiloto detectó.
 
 ### Real (PostgreSQL, con migraciones)
 
 Lo que produce el asesor durante la gestión, que es lo que permitirá medir la calidad del
 servicio y realimentar el modelo:
 
-- **`gestiones`** — el ofrecimiento: canal, asesor, probabilidad inicial y final, resultado,
-  motivo real, medio probatorio y las objeciones marcadas (`JSONB`).
+- **`gestiones`** — el ofrecimiento: oferta y si era MT, segmento, canal, asesor, probabilidad
+  inicial y final, resultado, motivo real, contactabilidad, si hubo rebate, medio probatorio y
+  las objeciones detectadas (`JSONB`).
 - **`calificaciones`** — la calidad del servicio: facilidad de venta (1–5), si la oferta fue
   pertinente, NPS declarado y comentario.
 
@@ -135,8 +146,15 @@ PATCH /api/gestiones/{id}/objecion       marca una objeción detectada
 POST  /api/gestiones/{id}/cerrar         resultado, motivo_real, prob_final, medio probatorio
 POST  /api/gestiones/{id}/calificacion   facilidad_venta, pertinencia, NPS, comentario
 GET   /api/gestiones/{id}                consulta una gestión
-GET   /api/metricas/resumen              conteos, conversión, promedios, motivos
+GET   /api/metricas/resumen              conteos, conversión, participación MT, motivos
 GET   /health
+```
+
+Copiloto conversacional (delega en el AI Engine, no persiste):
+
+```
+POST  /api/gestiones/{id}/copiloto/iniciar   abre la conversación, devuelve el speech inicial
+POST  /api/gestiones/{id}/copiloto/turno     manda lo que dijo el cliente, devuelve qué decirle
 ```
 
 `/api/clientes/{id}/desenlace` es andamiaje de demo: solo prellena el panel de cierre para que
@@ -148,7 +166,7 @@ el asesor no teclee durante la presentación. Desaparece en la fase 2 sin afecta
 
 ```
 .
-├── docker-compose.yml        db · api · web
+├── docker-compose.yml        db · ai · api · web
 ├── .env.example
 ├── api/
 │   ├── alembic/versions/     migración inicial con CHECK constraints
@@ -158,7 +176,10 @@ el asesor no teclee durante la presentación. Desaparece en la fase 2 sin afecta
 │       ├── schemas.py        el contrato con el frontend
 │       ├── demo_data.py      carga el JSON; en fase 2 se cambia solo esto
 │       ├── data/demo.json    los cuatro casos
-│       └── routers/          demo · gestiones · metricas
+│       ├── data/ai/           catálogo y playbook del copiloto (generados)
+│       ├── ai_client.py       traduce la consola al contrato ML 0.1
+│       └── routers/          demo · gestiones · copiloto · metricas
+├── movistar-ai-main/         AI Engine (Sales Copilot) del equipo de IA
 └── web/src/
     ├── stores/gestion.ts     toda la lógica de la llamada
     ├── api/                  client.ts · tipos.ts · etiquetas.ts

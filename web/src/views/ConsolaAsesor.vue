@@ -25,12 +25,16 @@ const {
   ofertaPrincipal,
   alternativas,
   descartadas,
-  turnosVisibles,
   desenlace,
-  sugerencias,
+  speechInicial,
+  intercambios,
+  copilotoPensando,
   objecionActiva,
   ultimaCaptura,
   pasoFunnel,
+  canalSeleccionado,
+  mejorCanal,
+  probInicial,
   probActual,
   temperatura,
   estadoCliente,
@@ -109,20 +113,28 @@ watch(dniRuta, (nuevo, anterior) => {
             :alternativas="alternativas"
             :descartadas="descartadas"
           :objecion-activa="objecionActiva"
+          :probabilidad="probInicial"
+          :canal-seleccionado="canalSeleccionado"
+          :mejor-canal="mejorCanal"
+          :hay-gestion="hayGestion"
           :en-curso="hayGestion && !cerrada"
+          @seleccionar-canal="store.seleccionarCanal($event)"
         />
 
         <PanelConversacion
-          :turnos="turnosVisibles"
+          :oferta="ofertaPrincipal"
+          :speech-inicial="speechInicial"
+          :intercambios="intercambios"
+          :copiloto-pensando="copilotoPensando"
           :temperatura="temperatura"
           :estado="estadoCliente"
-          :sugerencias="sugerencias"
           :quedan-turnos="quedanTurnos"
           :cerrada="cerrada"
           :hay-gestion="hayGestion"
           :cargando="abriendoGestion"
           @iniciar="store.iniciarGestion()"
           @siguiente="store.siguienteTurno()"
+          @decir="store.decirCliente($event)"
         />
 
         <PanelSeguimiento

@@ -2,8 +2,8 @@
 import { computed, ref } from 'vue'
 
 import TituloPanel from '@/components/ui/TituloPanel.vue'
-import { ETIQUETA_MOTIVO, ETIQUETA_RESULTADO, MOTIVOS } from '@/api/etiquetas'
-import type { CierreEnvio, Motivo, Resultado } from '@/api/tipos'
+import { ETIQUETA_MEDIO, ETIQUETA_MOTIVO, ETIQUETA_RESULTADO, MEDIOS, MOTIVOS } from '@/api/etiquetas'
+import type { CierreEnvio, MedioProbatorio, Motivo, Resultado } from '@/api/tipos'
 
 const props = defineProps<{
   cerrada: boolean
@@ -22,7 +22,7 @@ const RESULTADOS: Exclude<Resultado, 'en_curso'>[] = ['vendido', 'rechazado', 's
 
 const seleccion = ref<Exclude<Resultado, 'en_curso'> | null>(null)
 const motivo = ref<Motivo | ''>('')
-const medio = ref('')
+const medio = ref<MedioProbatorio | ''>('')
 
 /** Una venta no necesita motivo de rechazo; el resto sí lo pide. */
 const requiereMotivo = computed(() => seleccion.value !== null && seleccion.value !== 'vendido')
@@ -46,7 +46,10 @@ function confirmar() {
     resultado: seleccion.value,
     motivo_real: motivo.value === '' ? null : motivo.value,
     prob_final: props.probActual,
-    medio_probatorio: medio.value.trim() || null,
+    // Sin contacto no hubo contactabilidad real: es el `pendiente` del dataset.
+    contactabilidad: seleccion.value === 'sin_contacto' ? 'no_contactado' : 'contactado',
+    es_rebate: props.objecionActiva !== null,
+    medio_probatorio: medio.value === '' ? null : medio.value,
   })
 }
 </script>
@@ -91,13 +94,10 @@ function confirmar() {
 
       <label class="campo">
         <span class="micro">Medio probatorio</span>
-        <input
-          v-model="medio"
-          class="cifra"
-          type="text"
-          placeholder="Grabación, SMS, ticket…"
-          :disabled="!seleccion"
-        />
+        <select v-model="medio" :disabled="!seleccion">
+          <option value="">Sin registrar</option>
+          <option v-for="m in MEDIOS" :key="m" :value="m">{{ ETIQUETA_MEDIO[m] }}</option>
+        </select>
       </label>
 
       <button class="confirmar" type="button" :disabled="!puedeCerrar" @click="confirmar">

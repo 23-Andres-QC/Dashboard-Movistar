@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "movistar-ai-sales-copilot"
+version = "0.4.0"
+description = "Núcleo conversacional del AI Engine con generación determinista y LLM opcional"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.30,<1",
+]
+
+[project.scripts]
+ai-engine-api = "ai_engine.api:main"
+
+[project.optional-dependencies]
+openai = ["openai>=2.0.0,<3.0.0"]
+test = ["httpx2>=2,<3"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.unittest]
+start-directory = "tests"
+
+[tool.fastapi]
+entrypoint = "ai_engine.api:app"

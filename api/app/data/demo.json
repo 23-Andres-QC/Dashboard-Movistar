@@ -1,41 +1,79 @@
 {
+  "_nota": "Campos alineados al diccionario de datos del desafío. dni y nombre son solo de demo: el dataset real es anónimo y su PK es cliente_id.",
   "clientes": [
     {
       "cliente": {
+        "cliente_id": "CLI-0084213",
         "dni": "45789123",
-        "id_cliente": "CLI-0084213",
-        "es_nuevo": false,
         "nombre": "Luis Ramírez Ccahuana",
-        "distrito": "Lima",
+        "tipo_cliente": "postpago",
         "antiguedad_meses": 76,
-        "arpu": 79,
-        "productos": "Móvil ×3",
-        "riesgo_baja": "medio",
-        "prob_churn": 0.34,
+        "tiene_movil": true,
+        "tiene_hogar": true,
+        "tiene_internet_hogar": true,
+        "es_movistar_total": false,
+        "elegible_mt": true,
+        "plan_actual": "Plan Móvil 30 GB",
+        "monto_facturado_prom": 79,
+        "edad_rango": "36-45",
+        "ubicacion_departamento": "Lima",
+        "es_usuario_app": true,
+        "consumo_datos_gb_prom": 28.2,
+        "consumo_voz_min_prom": 240,
+        "dias_mora_prom": 0,
+        "meses_moroso": 0,
+        "n_reclamos": 0,
+        "n_actividad_canal": 14,
+        "canal_mas_usado": "call_out",
+        "es_nuevo": false,
         "pct_consumo_datos": 94,
-        "lineas_domicilio": 3,
-        "cobertura_fibra": true
+        "prob_churn": 0.34,
+        "riesgo_baja": "medio"
       },
       "recomendaciones": [
         {
+          "oferta_id": "MT-003",
           "oferta": "Movistar Total · Fibra 300 + plan actual",
+          "tipo_oferta": "movistar_total",
+          "segmento_objetivo": "ambos",
+          "es_movistar_total": true,
+          "precio_mensual": 129,
+          "ahorro_pct": 24,
+          "gb_incluidos": 9999,
           "probabilidad": 78,
           "margen": 0,
           "confianza": "alta",
           "origen": "historial",
+          "riesgo_principal": "precio",
           "ahorro": 41,
           "instalacion": 0,
+          "speech": "Señor Ramírez, revisando su cuenta veo que se queda sin datos casi todos los meses, y que ya tiene internet en casa con nosotros. Le propongo juntarlos en Movistar Total: mantiene su plan y su línea, suma la fibra de 300 megas y termina pagando S/ 41 menos al mes que teniéndolos por separado. Un solo recibo, mismo número.",
           "explicacion": [
-            "Consumo al 94% de su plan",
-            "Cobertura de fibra confirmada",
-            "Sin reclamos en 12 meses"
+            "Elegible MT: móvil postpago + internet hogar, y aún no lo tiene",
+            "Consumo al 94% de su plan (28.2 GB de 30)",
+            "Sin reclamos ni mora en los últimos 6 meses"
           ],
+          "prob_por_canal": {
+            "tienda": 62,
+            "call_in": 71,
+            "call_out": 78,
+            "digital": 44
+          },
           "canal_sugerido": "call_out",
           "franja_sugerida": "Mar a vie, 6–8 p. m.",
           "angulos": [
-            { "titulo": "Ahorro", "texto": "Junto paga S/ 41 menos al mes que separado." },
-            { "titulo": "Consumo", "texto": "Se quedó sin datos 9 de los últimos 10 meses." },
-            { "titulo": "Hogar", "texto": "Tiene 3 líneas en el mismo domicilio, un solo recibo." }
+            {
+              "titulo": "Ahorro",
+              "texto": "Junto paga S/ 41 menos al mes que separado."
+            },
+            {
+              "titulo": "Consumo",
+              "texto": "Se quedó sin datos 9 de los últimos 10 meses."
+            },
+            {
+              "titulo": "Hogar",
+              "texto": "Ya tiene internet en casa: solo falta unirlo al móvil."
+            }
           ],
           "rebates": [
             {
@@ -44,37 +82,57 @@
               "texto": "Compárelo con lo que gasta en recargas: S/ 25 extra al mes. Los 3 primeros meses van con descuento."
             },
             {
-              "objecion": "permanencia",
+              "objecion": "no_confia",
               "cita": "No quiero amarrarme",
               "texto": "La permanencia aplica solo al equipo de fibra. Su línea móvil queda libre."
             },
             {
-              "objecion": "pide_tiempo",
+              "objecion": "mal_momento",
               "cita": "Lo voy a pensar",
               "texto": "Ofrezca dejar la instalación agendada sin costo, cancelable hasta 24 h antes."
             }
           ]
         },
         {
+          "oferta_id": "UPG-004",
           "oferta": "Upgrade plan móvil 45 GB",
+          "tipo_oferta": "upgrade",
+          "segmento_objetivo": "movil",
+          "es_movistar_total": false,
+          "precio_mensual": 89,
+          "gb_incluidos": 45,
           "probabilidad": 51,
           "margen": 0,
           "confianza": "alta",
-          "origen": "historial"
+          "origen": "historial",
+          "speech": "Si prefiere no tocar el internet de casa, subimos solo su plan a 45 giga por S/ 10 más al mes. Resuelve el problema de datos, aunque sin el ahorro de juntarlo."
         },
         {
+          "oferta_id": "EQ-002",
           "oferta": "Renovación de equipo",
+          "tipo_oferta": "equipo",
+          "segmento_objetivo": "movil",
+          "es_movistar_total": false,
+          "precio_mensual": 45,
           "probabilidad": 34,
           "margen": 0,
           "confianza": "alta",
-          "origen": "historial"
+          "origen": "historial",
+          "speech": "También le corresponde renovar equipo con descuento. Sirve si el suyo ya le está fallando, pero no resuelve lo de los datos."
         },
         {
+          "oferta_id": "PM-001",
           "oferta": "Línea adicional",
+          "tipo_oferta": "plan_movil",
+          "segmento_objetivo": "movil",
+          "es_movistar_total": false,
+          "precio_mensual": 39,
+          "gb_incluidos": 15,
           "probabilidad": 19,
           "margen": 0,
           "confianza": "alta",
-          "origen": "historial"
+          "origen": "historial",
+          "speech": "Si alguien más en casa necesita línea, la adicional entra con descuento sobre su plan actual."
         }
       ],
       "guion": [
@@ -125,12 +183,12 @@
           "probabilidad": 69,
           "temperatura": 58,
           "estado": "Evaluando",
-          "etiqueta": "Objeción plazo",
-          "objecion": "permanencia",
+          "etiqueta": "Duda permanencia",
+          "objecion": "no_confia",
           "sugerencia": {
             "tipo": "warn",
             "titulo": "Objeción detectada",
-            "texto": "Permanencia. Aclarar que no toca la línea móvil es lo que más desbloquea aquí."
+            "texto": "No confía en el compromiso. Aclarar que no toca la línea móvil es lo que más desbloquea aquí."
           }
         },
         {
@@ -152,40 +210,72 @@
         "resultado": "vendido",
         "motivo_real": null,
         "prob_final": 89,
-        "calificacion_sugerida": { "facilidad_venta": 4, "oferta_fue_pertinente": true }
+        "contactabilidad": "contactado",
+        "es_rebate": true,
+        "medio_probatorio": "audio_llamada",
+        "calificacion_sugerida": {
+          "facilidad_venta": 4,
+          "oferta_fue_pertinente": true
+        }
       }
     },
-
     {
       "cliente": {
+        "cliente_id": "CLI-0219944",
         "dni": "70112384",
-        "id_cliente": "CLI-0219944",
-        "es_nuevo": true,
         "nombre": "Andrea Salazar Pinto",
-        "distrito": "San Juan de Lurigancho",
+        "tipo_cliente": null,
         "antiguedad_meses": 0,
-        "arpu": null,
-        "productos": "—",
-        "riesgo_baja": null,
-        "prob_churn": null,
+        "tiene_movil": false,
+        "tiene_hogar": false,
+        "tiene_internet_hogar": false,
+        "es_movistar_total": false,
+        "elegible_mt": false,
+        "plan_actual": null,
+        "monto_facturado_prom": null,
+        "edad_rango": "26-35",
+        "ubicacion_departamento": "Lima",
+        "es_usuario_app": false,
+        "consumo_datos_gb_prom": null,
+        "consumo_voz_min_prom": null,
+        "dias_mora_prom": null,
+        "meses_moroso": null,
+        "n_reclamos": null,
+        "n_actividad_canal": null,
+        "canal_mas_usado": null,
+        "es_nuevo": true,
         "pct_consumo_datos": null,
-        "lineas_domicilio": 0,
-        "cobertura_fibra": false
+        "prob_churn": null,
+        "riesgo_baja": null
       },
       "recomendaciones": [
         {
+          "oferta_id": "PM-002",
           "oferta": "Plan móvil 25 GB · portabilidad",
+          "tipo_oferta": "plan_movil",
+          "segmento_objetivo": "movil",
+          "es_movistar_total": false,
+          "precio_mensual": 49,
+          "gb_incluidos": 25,
           "probabilidad": 42,
           "margen": 12,
           "confianza": "baja",
           "origen": "lookalike",
+          "riesgo_principal": "ya_tiene_similar",
           "ahorro": 18,
           "instalacion": 0,
+          "speech": "Hola Andrea, gracias por escribirnos. Como viene de otra operadora le cuento lo importante: la portabilidad es gratuita, conserva su mismo número y el primer mes no paga nada. El plan de 25 giga cuesta S/ 49 y no tiene permanencia, puede cambiarse cuando quiera. Antes de seguir, ¿cuánto paga hoy y qué le falta?",
           "explicacion": [
-            "Sin historial: estimado sobre clientes similares de su distrito",
+            "Sin historial: estimado sobre clientes similares de su departamento",
             "Perfil de entrada más contratado en este canal",
-            "Sin cobertura de fibra confirmada en la dirección"
+            "No elegible MT: sin línea móvil ni internet hogar todavía"
           ],
+          "prob_por_canal": {
+            "tienda": 31,
+            "call_in": 36,
+            "call_out": 28,
+            "digital": 42
+          },
           "canal_sugerido": "digital",
           "franja_sugerida": "Fin de semana, mañana",
           "angulos": [
@@ -200,31 +290,44 @@
           ],
           "rebates": [
             {
-              "objecion": "ya_tiene_proveedor",
+              "objecion": "ya_tiene_similar",
               "cita": "Ya tengo otra operadora",
               "texto": "Pregunte cuánto paga hoy y qué le falta. Anote la respuesta: alimenta la próxima oferta."
             },
             {
-              "objecion": "pide_tiempo",
+              "objecion": "mal_momento",
               "cita": "Lo voy a pensar",
               "texto": "Ofrezca enviarle la comparación por WhatsApp y agendar recontacto en 48 horas."
             }
           ]
         },
         {
+          "oferta_id": "PH-002",
           "oferta": "Dúo móvil + fijo básico",
+          "tipo_oferta": "plan_hogar",
+          "segmento_objetivo": "hogar",
+          "es_movistar_total": false,
+          "precio_mensual": 79,
           "probabilidad": 27,
           "margen": 14,
           "confianza": "baja",
-          "origen": "lookalike"
+          "origen": "lookalike",
+          "speech": "Si en casa también necesita fijo, el dúo le sale más a cuenta que contratar los dos por separado."
         },
         {
+          "oferta_id": "MT-001",
           "oferta": "Movistar Total · Fibra 300",
+          "tipo_oferta": "movistar_total",
+          "segmento_objetivo": "ambos",
+          "es_movistar_total": true,
+          "precio_mensual": 119,
+          "ahorro_pct": 22,
           "probabilidad": 9,
           "margen": 8,
           "confianza": "baja",
           "origen": "lookalike",
-          "descartada": "Sin cobertura de fibra en la dirección"
+          "speech": "Movistar Total requiere línea móvil postpago e internet en casa. Hoy no aplica, pero si más adelante contrata internet se lo podemos armar.",
+          "descartada": "No elegible: requiere móvil postpago e internet hogar"
         }
       ],
       "guion": [
@@ -248,12 +351,12 @@
           "temperatura": 44,
           "estado": "Comparando",
           "etiqueta": "Compara precio",
-          "objecion": "ya_tiene_proveedor",
+          "objecion": "ya_tiene_similar",
           "paso_funnel": 3,
           "sugerencia": {
             "tipo": "warn",
             "titulo": "Objeción detectada",
-            "texto": "Ya tiene proveedor. No compita solo por precio: pregunte qué le falta hoy."
+            "texto": "Ya tiene algo similar. No compita solo por precio: pregunte qué le falta hoy."
           }
         },
         {
@@ -272,42 +375,73 @@
       ],
       "desenlace": {
         "resultado": "rechazado",
-        "motivo_real": "ya_tiene_proveedor",
+        "motivo_real": "ya_tiene_similar",
         "prob_final": 24,
-        "calificacion_sugerida": { "facilidad_venta": 2, "oferta_fue_pertinente": false }
+        "contactabilidad": "contactado",
+        "es_rebate": true,
+        "medio_probatorio": "chat_log",
+        "calificacion_sugerida": {
+          "facilidad_venta": 2,
+          "oferta_fue_pertinente": false
+        }
       }
     },
-
     {
       "cliente": {
+        "cliente_id": "CLI-0037710",
         "dni": "08954412",
-        "id_cliente": "CLI-0037710",
-        "es_nuevo": false,
         "nombre": "Rosa Quispe Mamani",
-        "distrito": "Comas",
+        "tipo_cliente": "postpago",
         "antiguedad_meses": 148,
-        "arpu": 42,
-        "productos": "Móvil ×1",
-        "riesgo_baja": "alto",
-        "prob_churn": 0.71,
+        "tiene_movil": true,
+        "tiene_hogar": false,
+        "tiene_internet_hogar": false,
+        "es_movistar_total": false,
+        "elegible_mt": false,
+        "plan_actual": "Plan Móvil 12 GB",
+        "monto_facturado_prom": 42,
+        "edad_rango": "56-65",
+        "ubicacion_departamento": "Lima",
+        "es_usuario_app": false,
+        "consumo_datos_gb_prom": 4.6,
+        "consumo_voz_min_prom": 610,
+        "dias_mora_prom": 6.2,
+        "meses_moroso": 2,
+        "n_reclamos": 3,
+        "n_actividad_canal": 9,
+        "canal_mas_usado": "call_out",
+        "es_nuevo": false,
         "pct_consumo_datos": 38,
-        "lineas_domicilio": 1,
-        "cobertura_fibra": false
+        "prob_churn": 0.71,
+        "riesgo_baja": "alto"
       },
       "recomendaciones": [
         {
+          "oferta_id": "EQ-001",
           "oferta": "Renovación de equipo con descuento por permanencia",
+          "tipo_oferta": "equipo",
+          "segmento_objetivo": "movil",
+          "es_movistar_total": false,
+          "precio_mensual": 51,
           "probabilidad": 66,
           "margen": 0,
           "confianza": "alta",
           "origen": "historial",
+          "riesgo_principal": "precio",
           "ahorro": 0,
           "instalacion": 0,
+          "speech": "Señora Quispe, con doce años como clienta usted tiene un descuento por permanencia que no todos tienen. Su equipo ya tiene cuatro años y por eso le dura tan poco la batería. Le cambio el equipo y su recibo sube solo nueve soles al mes, porque la cuota reemplaza lo que ya viene pagando. No le estoy subiendo el plan.",
           "explicacion": [
-            "Riesgo de baja alto: 0.71",
+            "Riesgo de baja alto: 0.71, con 3 reclamos y 2 meses de mora",
             "Equipo con 4 años de antigüedad",
-            "Consumo bajo: subir de plan tiene poca probabilidad"
+            "Consumo bajo (4.6 GB): subir de plan tiene poca probabilidad"
           ],
+          "prob_por_canal": {
+            "tienda": 58,
+            "call_in": 61,
+            "call_out": 66,
+            "digital": 19
+          },
           "canal_sugerido": "call_out",
           "franja_sugerida": "Lun a mié, 10 a. m.–12 p. m.",
           "angulos": [
@@ -327,26 +461,40 @@
               "texto": "La cuota del equipo reemplaza lo que ya paga; su recibo mensual sube S/ 9, no se duplica."
             },
             {
-              "objecion": "no_entiende_beneficio",
+              "objecion": "no_necesita",
               "cita": "¿Y eso para qué me sirve?",
               "texto": "Explique en concreto: batería que dura el día y cámara. Evite hablar de gigas, su consumo es bajo."
             }
           ]
         },
         {
+          "oferta_id": "UPG-001",
           "oferta": "Migración a plan 15 GB",
+          "tipo_oferta": "upgrade",
+          "segmento_objetivo": "movil",
+          "es_movistar_total": false,
+          "precio_mensual": 55,
+          "gb_incluidos": 15,
           "probabilidad": 31,
           "margen": 0,
           "confianza": "alta",
-          "origen": "historial"
+          "origen": "historial",
+          "speech": "Podríamos subirla a 15 giga, pero con el consumo que tiene hoy no le sacaría provecho. Se lo menciono solo si ella lo pide."
         },
         {
+          "oferta_id": "MT-001",
           "oferta": "Movistar Total · Fibra 300",
+          "tipo_oferta": "movistar_total",
+          "segmento_objetivo": "ambos",
+          "es_movistar_total": true,
+          "precio_mensual": 119,
+          "ahorro_pct": 22,
           "probabilidad": 12,
           "margen": 0,
           "confianza": "alta",
           "origen": "historial",
-          "descartada": "Sin cobertura de fibra en la dirección"
+          "speech": "Movistar Total requiere línea móvil postpago e internet en casa. Hoy no aplica, pero si más adelante contrata internet se lo podemos armar.",
+          "descartada": "No elegible: no tiene internet hogar contratado"
         }
       ],
       "guion": [
@@ -410,40 +558,72 @@
         "resultado": "vendido",
         "motivo_real": null,
         "prob_final": 91,
-        "calificacion_sugerida": { "facilidad_venta": 5, "oferta_fue_pertinente": true }
+        "contactabilidad": "contactado",
+        "es_rebate": true,
+        "medio_probatorio": "audio_llamada",
+        "calificacion_sugerida": {
+          "facilidad_venta": 5,
+          "oferta_fue_pertinente": true
+        }
       }
     },
-
     {
       "cliente": {
+        "cliente_id": "CLI-0224187",
         "dni": "76340219",
-        "id_cliente": "CLI-0224187",
-        "es_nuevo": true,
         "nombre": "Kevin Huamán Ríos",
-        "distrito": "Ate",
+        "tipo_cliente": null,
         "antiguedad_meses": 0,
-        "arpu": null,
-        "productos": "—",
-        "riesgo_baja": null,
-        "prob_churn": null,
+        "tiene_movil": false,
+        "tiene_hogar": false,
+        "tiene_internet_hogar": false,
+        "es_movistar_total": false,
+        "elegible_mt": false,
+        "plan_actual": null,
+        "monto_facturado_prom": null,
+        "edad_rango": "18-25",
+        "ubicacion_departamento": "Lima",
+        "es_usuario_app": true,
+        "consumo_datos_gb_prom": null,
+        "consumo_voz_min_prom": null,
+        "dias_mora_prom": null,
+        "meses_moroso": null,
+        "n_reclamos": null,
+        "n_actividad_canal": null,
+        "canal_mas_usado": "digital",
+        "es_nuevo": true,
         "pct_consumo_datos": null,
-        "lineas_domicilio": 0,
-        "cobertura_fibra": true
+        "prob_churn": null,
+        "riesgo_baja": null
       },
       "recomendaciones": [
         {
+          "oferta_id": "PM-004",
           "oferta": "Plan 45 GB · portabilidad + equipo en cuotas",
+          "tipo_oferta": "plan_movil",
+          "segmento_objetivo": "movil",
+          "es_movistar_total": false,
+          "precio_mensual": 89,
+          "gb_incluidos": 45,
           "probabilidad": 48,
           "margen": 14,
           "confianza": "baja",
           "origen": "lookalike",
+          "riesgo_principal": "precio",
           "ahorro": 22,
           "instalacion": 0,
+          "speech": "Kevin, antes de darte un precio quiero entender cómo usas el celular. Si ves harto video, el plan de 45 giga con redes libres es el que te conviene. Pasarte no cuesta nada, conservas tu número y el primer mes va gratis; el equipo lo llevas en cuotas sin inicial. Todo lo haces desde tu celular en cinco minutos.",
           "explicacion": [
             "Sin historial: estimado sobre clientes similares del canal digital",
-            "Entró por la web, perfil digital",
+            "Entró por la web y usa la app: perfil digital",
             "Portabilidad es la puerta de entrada más frecuente en este segmento"
           ],
+          "prob_por_canal": {
+            "tienda": 29,
+            "call_in": 37,
+            "call_out": 33,
+            "digital": 48
+          },
           "canal_sugerido": "digital",
           "franja_sugerida": "Cualquier día, 8–11 p. m.",
           "angulos": [
@@ -462,12 +642,12 @@
           ],
           "rebates": [
             {
-              "objecion": "pide_tiempo",
+              "objecion": "mal_momento",
               "cita": "Lo voy a pensar",
               "texto": "Ofrezca reservar el precio por 72 horas sin compromiso. Pida el correo para enviarle el detalle."
             },
             {
-              "objecion": "no_entiende_beneficio",
+              "objecion": "no_necesita",
               "cita": "¿Y qué gano cambiándome?",
               "texto": "Traduzca los gigas a lo que él usa: horas de video al día, no cifras técnicas."
             },
@@ -479,19 +659,33 @@
           ]
         },
         {
+          "oferta_id": "PM-002",
           "oferta": "Plan 25 GB solo línea",
+          "tipo_oferta": "plan_movil",
+          "segmento_objetivo": "movil",
+          "es_movistar_total": false,
+          "precio_mensual": 49,
+          "gb_incluidos": 25,
           "probabilidad": 33,
           "margen": 12,
           "confianza": "baja",
-          "origen": "lookalike"
+          "origen": "lookalike",
+          "speech": "Hola Andrea, gracias por escribirnos. Como viene de otra operadora le cuento lo importante: la portabilidad es gratuita, conserva su mismo número y el primer mes no paga nada. El plan de 25 giga cuesta S/ 49 y no tiene permanencia, puede cambiarse cuando quiera. Antes de seguir, ¿cuánto paga hoy y qué le falta?"
         },
         {
+          "oferta_id": "MT-001",
           "oferta": "Movistar Total · Fibra 300",
+          "tipo_oferta": "movistar_total",
+          "segmento_objetivo": "ambos",
+          "es_movistar_total": true,
+          "precio_mensual": 119,
+          "ahorro_pct": 22,
           "probabilidad": 21,
           "margen": 11,
           "confianza": "baja",
           "origen": "lookalike",
-          "nota": "Reofrecer a los 3 meses, cuando haya historial de pago"
+          "speech": "Movistar Total requiere línea móvil postpago e internet en casa. Hoy no aplica, pero si más adelante contrata internet se lo podemos armar.",
+          "nota": "Será elegible al contratar la línea: reofrecer a los 3 meses, con historial de pago"
         }
       ],
       "guion": [
@@ -517,7 +711,10 @@
           "temperatura": 68,
           "estado": "Interesado",
           "etiqueta": "Dato capturado",
-          "datos_capturados": { "pct_consumo_datos": 91 },
+          "datos_capturados": {
+            "consumo_datos_gb_prom": 41.5,
+            "pct_consumo_datos": 91
+          },
           "sugerencia": {
             "tipo": "good",
             "titulo": "Estimación afinada",
@@ -534,7 +731,9 @@
           "etiqueta": "Objeción precio",
           "objecion": "precio",
           "paso_funnel": 3,
-          "datos_capturados": { "arpu": 35 },
+          "datos_capturados": {
+            "monto_facturado_prom": 35
+          },
           "sugerencia": {
             "tipo": "warn",
             "titulo": "Objeción detectada",
@@ -561,7 +760,13 @@
         "resultado": "vendido",
         "motivo_real": null,
         "prob_final": 86,
-        "calificacion_sugerida": { "facilidad_venta": 4, "oferta_fue_pertinente": true }
+        "contactabilidad": "contactado",
+        "es_rebate": true,
+        "medio_probatorio": "registro_plataforma",
+        "calificacion_sugerida": {
+          "facilidad_venta": 4,
+          "oferta_fue_pertinente": true
+        }
       }
     }
   ]

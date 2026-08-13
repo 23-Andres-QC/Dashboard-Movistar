@@ -8,6 +8,7 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+psycopg://nbo:nbo@localhost:5432/nbo"
     cors_origins: str = "http://localhost:5173"
+    ai_engine_url: str = "http://localhost:8100"
 
     @property
     def cors_origins_list(self) -> list[str]:

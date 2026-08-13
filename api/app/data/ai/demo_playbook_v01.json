@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "name": "Playbook de demostración · consola NBO",
+    "version": "nbo-demo-playbook-0.2",
+    "demo_only": true,
+    "approved": false,
+    "notice": "Contenido de demostración para la fase 1. No representa un playbook oficial de Movistar y no está aprobado por negocio."
+  },
+  "tactics": [
+    {
+      "tactic_id": "nbo-price-reframe",
+      "objection_category": "precio",
+      "allowed_states": [
+        "objection_handling",
+        "rebate",
+        "clarification",
+        "follow_up"
+      ],
+      "strategy": "REFRAME_VALUE",
+      "target_state": "rebate",
+      "response_type": "rebate",
+      "required_fact_kinds": [
+        "offer_name",
+        "monthly_price"
+      ],
+      "summary": "Reconocer la preocupación y aclarar el valor sin ofrecer descuentos.",
+      "response_template": "Entiendo que el precio pese. {offer_name} cuesta {monthly_price} al mes. Comparémoslo con lo que ya paga hoy antes de decidir.",
+      "follow_up_template": "¿Le preocupa el monto mensual o no le queda claro qué incluye?"
+    },
+    {
+      "tactic_id": "nbo-follow-up-later",
+      "objection_category": "mal_momento",
+      "allowed_states": [
+        "objection_handling",
+        "rebate",
+        "clarification",
+        "follow_up"
+      ],
+      "strategy": "PROPOSE_FOLLOW_UP",
+      "target_state": "follow_up",
+      "response_type": "schedule_followup",
+      "required_fact_kinds": [],
+      "summary": "Respetar el momento del cliente y proponer seguimiento sin presión.",
+      "response_template": "Entiendo, no hace falta decidirlo ahora. Le puedo dejar la propuesta reservada y lo retomamos cuando le acomode.",
+      "follow_up_template": "¿Qué día de esta semana le viene mejor que lo llame?"
+    },
+    {
+      "tactic_id": "nbo-clarify-need",
+      "objection_category": "no_necesita",
+      "allowed_states": [
+        "objection_handling",
+        "rebate",
+        "clarification",
+        "follow_up"
+      ],
+      "strategy": "ASK_DISCOVERY_QUESTION",
+      "target_state": "clarification",
+      "response_type": "objection_response",
+      "required_fact_kinds": [
+        "offer_name"
+      ],
+      "summary": "No insistir: entender el uso real antes de volver a ofrecer.",
+      "response_template": "Puede que tenga razón y {offer_name} no sea para usted. Cuénteme cómo usa hoy el servicio y lo revisamos juntos.",
+      "follow_up_template": "¿Qué es lo que más le falta hoy con lo que tiene?"
+    },
+    {
+      "tactic_id": "nbo-compare-existing",
+      "objection_category": "ya_tiene_similar",
+      "allowed_states": [
+        "objection_handling",
+        "rebate",
+        "clarification",
+        "follow_up"
+      ],
+      "strategy": "ASK_DISCOVERY_QUESTION",
+      "target_state": "clarification",
+      "response_type": "objection_response",
+      "required_fact_kinds": [
+        "offer_name"
+      ],
+      "summary": "No competir a ciegas por precio: levantar qué tiene y qué le falta.",
+      "response_template": "Me parece bien que ya tenga algo contratado. Para no hacerle perder el tiempo con {offer_name}, dígame qué incluye lo suyo hoy.",
+      "follow_up_template": "¿Hay algo de su servicio actual que le gustaría mejorar?"
+    },
+    {
+      "tactic_id": "nbo-build-trust",
+      "objection_category": "no_confia",
+      "allowed_states": [
+        "objection_handling",
+        "rebate",
+        "clarification",
+        "follow_up"
+      ],
+      "strategy": "REFRAME_VALUE",
+      "target_state": "rebate",
+      "response_type": "objection_response",
+      "required_fact_kinds": [
+        "offer_name"
+      ],
+      "summary": "Bajar el riesgo percibido con condiciones concretas, sin prometer de más.",
+      "response_template": "Es razonable querer estar seguro antes de comprometerse. Le detallo exactamente qué condiciones tiene {offer_name} y qué puede cancelar.",
+      "follow_up_template": "¿Qué parte le genera más dudas: el plazo o lo que incluye?"
+    }
+  ]
+}

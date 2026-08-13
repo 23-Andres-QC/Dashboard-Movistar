@@ -24,14 +24,18 @@ from .db import Base
 
 CANALES = ("tienda", "call_in", "call_out", "digital")
 RESULTADOS = ("en_curso", "vendido", "rechazado", "sin_contacto")
+# Taxonomía del diccionario de datos del desafío.
 MOTIVOS = (
     "precio",
-    "permanencia",
-    "no_entiende_beneficio",
-    "ya_tiene_proveedor",
-    "pide_tiempo",
-    "sin_interes",
+    "no_necesita",
+    "ya_tiene_similar",
+    "mal_momento",
+    "no_confia",
+    "otro",
 )
+MEDIOS_PROBATORIOS = ("registro_plataforma", "audio_llamada", "chat_log")
+CONTACTABILIDAD = ("contactado", "no_contactado")
+SEGMENTOS = ("movil", "hogar", "ambos")
 
 
 def _en(columna: str, valores: tuple[str, ...]) -> str:
@@ -54,11 +58,28 @@ class Gestion(Base):
             "prob_final IS NULL OR (prob_final >= 0 AND prob_final <= 100)",
             name="ck_gestiones_prob_final",
         ),
+        CheckConstraint(
+            f"medio_probatorio IS NULL OR {_en('medio_probatorio', MEDIOS_PROBATORIOS)}",
+            name="ck_gestiones_medio_probatorio",
+        ),
+        CheckConstraint(
+            f"contactabilidad IS NULL OR {_en('contactabilidad', CONTACTABILIDAD)}",
+            name="ck_gestiones_contactabilidad",
+        ),
+        CheckConstraint(_en("segmento_objetivo", SEGMENTOS), name="ck_gestiones_segmento"),
     )
 
     id_gestion: Mapped[str] = mapped_column(String, primary_key=True)
     id_cliente: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    oferta_id: Mapped[str | None] = mapped_column(String)
     oferta_recomendada: Mapped[str] = mapped_column(String, nullable=False)
+    # Sin estas dos columnas no se puede medir el objetivo del reto.
+    oferta_es_mt: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default="false", index=True
+    )
+    segmento_objetivo: Mapped[str] = mapped_column(
+        String, nullable=False, default="ambos", server_default="ambos"
+    )
     canal: Mapped[str] = mapped_column(String, nullable=False)
     id_asesor: Mapped[str] = mapped_column(String, nullable=False, index=True)
 
@@ -74,6 +95,10 @@ class Gestion(Base):
         String, nullable=False, default="en_curso", index=True
     )
     motivo_real: Mapped[str | None] = mapped_column(String)
+    contactabilidad: Mapped[str | None] = mapped_column(String)
+    es_rebate: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default="false"
+    )
     medio_probatorio: Mapped[str | None] = mapped_column(String)
 
     objeciones_detectadas: Mapped[list] = mapped_column(

@@ -1,12 +1,20 @@
-import type { Canal, Motivo, Resultado } from './tipos'
+import type {
+  Canal,
+  Contactabilidad,
+  MedioProbatorio,
+  Motivo,
+  Resultado,
+  TipoOferta,
+} from './tipos'
 
+/** Taxonomía del diccionario de datos, con su lectura en español de asesor. */
 export const ETIQUETA_MOTIVO: Record<Motivo, string> = {
   precio: 'Precio',
-  permanencia: 'Permanencia',
-  no_entiende_beneficio: 'No entiende el beneficio',
-  ya_tiene_proveedor: 'Ya tiene proveedor',
-  pide_tiempo: 'Pide tiempo',
-  sin_interes: 'Sin interés',
+  no_necesita: 'No lo necesita',
+  ya_tiene_similar: 'Ya tiene algo similar',
+  mal_momento: 'Mal momento',
+  no_confia: 'No confía',
+  otro: 'Otro',
 }
 
 export const ETIQUETA_CANAL: Record<Canal, string> = {
@@ -23,11 +31,35 @@ export const ETIQUETA_RESULTADO: Record<Resultado, string> = {
   sin_contacto: 'Sin contacto',
 }
 
+export const ETIQUETA_MEDIO: Record<MedioProbatorio, string> = {
+  registro_plataforma: 'Registro de plataforma',
+  audio_llamada: 'Audio de la llamada',
+  chat_log: 'Log de chat',
+}
+
+export const ETIQUETA_CONTACTABILIDAD: Record<Contactabilidad, string> = {
+  contactado: 'Contactado',
+  no_contactado: 'No contactado',
+}
+
+export const ETIQUETA_TIPO_OFERTA: Record<TipoOferta, string> = {
+  plan_movil: 'Plan móvil',
+  plan_hogar: 'Plan hogar',
+  upgrade: 'Upgrade',
+  equipo: 'Equipo',
+  paquete_adicional: 'Paquete adicional',
+  movistar_total: 'Movistar Total',
+}
+
 export const MOTIVOS: Motivo[] = [
   'precio',
-  'permanencia',
-  'no_entiende_beneficio',
-  'ya_tiene_proveedor',
-  'pide_tiempo',
-  'sin_interes',
+  'no_necesita',
+  'ya_tiene_similar',
+  'mal_momento',
+  'no_confia',
+  'otro',
 ]
+
+export const CANALES: Canal[] = ['tienda', 'call_in', 'call_out', 'digital']
+
+export const MEDIOS: MedioProbatorio[] = ['registro_plataforma', 'audio_llamada', 'chat_log']

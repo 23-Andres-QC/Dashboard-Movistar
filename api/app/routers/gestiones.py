@@ -41,7 +41,10 @@ def crear_gestion(payload: GestionCrear, db: Session = Depends(get_db)) -> Gesti
     gestion = Gestion(
         id_gestion=_nuevo_id(db),
         id_cliente=payload.id_cliente,
+        oferta_id=payload.oferta_id,
         oferta_recomendada=payload.oferta_recomendada,
+        oferta_es_mt=payload.oferta_es_mt,
+        segmento_objetivo=payload.segmento_objetivo,
         canal=payload.canal,
         id_asesor=payload.id_asesor,
         inicio=datetime.now(timezone.utc),
@@ -83,6 +86,9 @@ def cerrar_gestion(
     gestion.resultado = payload.resultado
     gestion.motivo_real = payload.motivo_real
     gestion.prob_final = payload.prob_final
+    gestion.contactabilidad = payload.contactabilidad
+    # Hubo rebate si se marcó alguna objeción durante la llamada.
+    gestion.es_rebate = payload.es_rebate or bool(gestion.objeciones_detectadas)
     gestion.medio_probatorio = payload.medio_probatorio
     gestion.fin = datetime.now(timezone.utc)
     db.commit()

@@ -1,0 +1,9 @@
+{
+  "contract_version": "0.1",
+  "request_id": "req-turn-demo-001",
+  "conversation_id": "conv-rec-demo-001",
+  "turn_id": "turn-demo-001",
+  "speaker": "customer",
+  "text": "Me parece demasiado caro",
+  "timestamp": "2026-08-12T15:30:00Z"
+}

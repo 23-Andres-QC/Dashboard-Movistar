@@ -5,6 +5,7 @@ import type {
   Cliente,
   Desenlace,
   Gestion,
+  GuiaCopiloto,
   Motivo,
   Recomendacion,
   TurnoGuion,
@@ -55,7 +56,10 @@ export const api = {
 
   abrirGestion: (cuerpo: {
     id_cliente: string
+    oferta_id: string
     oferta_recomendada: string
+    oferta_es_mt: boolean
+    segmento_objetivo: string
     canal: Canal
     id_asesor: string
     prob_inicial: number
@@ -71,6 +75,18 @@ export const api = {
     pedir<Gestion>(`/gestiones/${idGestion}/cerrar`, {
       method: 'POST',
       body: JSON.stringify(cuerpo),
+    }),
+
+  iniciarCopiloto: (idGestion: string, canal: Canal | null) =>
+    pedir<GuiaCopiloto>(`/gestiones/${idGestion}/copiloto/iniciar`, {
+      method: 'POST',
+      body: JSON.stringify({ canal }),
+    }),
+
+  turnoCopiloto: (idGestion: string, conversationId: string, texto: string) =>
+    pedir<GuiaCopiloto>(`/gestiones/${idGestion}/copiloto/turno`, {
+      method: 'POST',
+      body: JSON.stringify({ conversation_id: conversationId, texto }),
     }),
 
   calificar: (idGestion: string, cuerpo: CalificacionEnvio) =>

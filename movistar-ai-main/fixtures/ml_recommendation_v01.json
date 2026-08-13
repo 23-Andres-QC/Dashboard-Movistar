@@ -1,0 +1,42 @@
+{
+  "contract_version": "0.1",
+  "request_id": "req-demo-001",
+  "recommendation_id": "rec-demo-001",
+  "generated_at": "2026-08-11T10:30:00-05:00",
+  "customer": {
+    "customer_id": "CLI000001",
+    "profile_summary": {
+      "customer_type": "postpago",
+      "age_range": "56-65",
+      "tenure_months": 17,
+      "has_mobile": true,
+      "has_home": false,
+      "app_user": true
+    }
+  },
+  "primary_recommendation": {
+    "offer_id": "OF004",
+    "offer_name": "Plan Movil Ilimitado",
+    "acceptance_probability": 0.71,
+    "recommended_channel": "Call In",
+    "recommended_moment": null,
+    "reason_codes": [
+      "HIGH_DATA_USAGE",
+      "CURRENT_PLAN_NEAR_LIMIT"
+    ]
+  },
+  "alternatives": [
+    {
+      "offer_id": "OF003",
+      "offer_name": "Plan Movil Max 50GB",
+      "acceptance_probability": 0.58,
+      "reason_codes": [
+        "HIGH_DATA_USAGE"
+      ]
+    }
+  ],
+  "model_metadata": {
+    "model_version": "nbo-mock-v1"
+  }
+}
+

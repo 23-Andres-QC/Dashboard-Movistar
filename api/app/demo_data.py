@@ -27,11 +27,17 @@ def buscar_por_dni(dni: str) -> dict | None:
     return None
 
 
-def _entrada_por_id(id_cliente: str) -> dict | None:
+def _entrada_por_id(cliente_id: str) -> dict | None:
     for entrada in _cargar():
-        if entrada["cliente"]["id_cliente"] == id_cliente:
+        if entrada["cliente"]["cliente_id"] == cliente_id:
             return entrada
     return None
+
+
+def buscar_por_id(cliente_id: str) -> dict | None:
+    """Ficha del cliente por su identificador interno."""
+    entrada = _entrada_por_id(cliente_id)
+    return entrada["cliente"] if entrada else None
 
 
 def recomendaciones(id_cliente: str) -> list[dict] | None:

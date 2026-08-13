@@ -1,0 +1,85 @@
+{
+  "version": "0.1",
+  "demo_only": true,
+  "notice": "Casos sintéticos para comparar generadores. No constituyen criterios comerciales oficiales.",
+  "cases": [
+    {
+      "case_id": "opening-grounded",
+      "customer_text": null,
+      "expected_response_type": "initial_speech",
+      "expected_action": "PRESENT_INITIAL_SPEECH",
+      "expected_objection": null,
+      "expected_recommendation_id": "rec-demo-001",
+      "expected_offer_id": "OF004",
+      "required_fact_ids": ["demo_catalog:OF004:name"],
+      "forbidden_phrases": ["descuento", "gratis", "sin costo", "%", "roaming internacional", "Netflix incluido", "5G incluido"],
+      "expected_grounded": true,
+      "expected_error_code": null,
+      "offer_override": null,
+      "human_review_focus": ["naturalidad de apertura", "tono no invasivo", "pregunta de descubrimiento útil"]
+    },
+    {
+      "case_id": "price-reframe",
+      "customer_text": "Me parece demasiado caro",
+      "expected_response_type": "rebate",
+      "expected_action": "REFRAME_VALUE",
+      "expected_objection": "precio",
+      "expected_recommendation_id": "rec-demo-001",
+      "expected_offer_id": "OF004",
+      "required_fact_ids": ["demo_catalog:OF004:name", "demo_catalog:OF004:monthly_price"],
+      "forbidden_phrases": ["descuento", "gratis", "sin costo", "%", "roaming internacional", "Netflix incluido", "5G incluido"],
+      "expected_grounded": true,
+      "expected_error_code": null,
+      "offer_override": null,
+      "human_review_focus": ["empatía ante precio", "respeto de REFRAME_VALUE", "claridad del valor sin promesas"]
+    },
+    {
+      "case_id": "bad-moment-follow-up",
+      "customer_text": "Ahora no puedo, mejor después",
+      "expected_response_type": "schedule_followup",
+      "expected_action": "PROPOSE_FOLLOW_UP",
+      "expected_objection": "mal_momento",
+      "expected_recommendation_id": "rec-demo-001",
+      "expected_offer_id": "OF004",
+      "required_fact_ids": [],
+      "forbidden_phrases": ["descuento", "gratis", "sin costo", "%", "roaming internacional", "Netflix incluido", "5G incluido"],
+      "expected_grounded": true,
+      "expected_error_code": null,
+      "offer_override": null,
+      "human_review_focus": ["respeto del momento", "ausencia de presión", "pregunta de seguimiento natural"]
+    },
+    {
+      "case_id": "ambiguous-clarification",
+      "customer_text": "No sé, tendría que verlo",
+      "expected_response_type": "objection_response",
+      "expected_action": "ASK_CLARIFYING_QUESTION",
+      "expected_objection": "otro",
+      "expected_recommendation_id": "rec-demo-001",
+      "expected_offer_id": "OF004",
+      "required_fact_ids": [],
+      "forbidden_phrases": ["descuento", "gratis", "sin costo", "%", "roaming internacional", "Netflix incluido", "5G incluido"],
+      "expected_grounded": true,
+      "expected_error_code": null,
+      "offer_override": null,
+      "human_review_focus": ["pregunta no inductiva", "brevedad", "consistencia con ambigüedad"]
+    },
+    {
+      "case_id": "missing-knowledge-abstention",
+      "customer_text": null,
+      "expected_response_type": "insufficient_context",
+      "expected_action": "ABSTAIN",
+      "expected_objection": null,
+      "expected_recommendation_id": "rec-demo-001",
+      "expected_offer_id": "OF999",
+      "required_fact_ids": [],
+      "forbidden_phrases": ["descuento", "gratis", "sin costo", "%", "roaming internacional", "Netflix incluido", "5G incluido"],
+      "expected_grounded": false,
+      "expected_error_code": "KNOWLEDGE_UNAVAILABLE",
+      "offer_override": {
+        "offer_id": "OF999",
+        "offer_name": "Oferta fuera del catálogo"
+      },
+      "human_review_focus": ["abstención explícita", "ausencia de oferta improvisada", "revisión humana requerida"]
+    }
+  ]
+}

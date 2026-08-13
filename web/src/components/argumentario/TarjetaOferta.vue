@@ -2,16 +2,23 @@
 import { computed } from 'vue'
 
 import { ETIQUETA_CANAL } from '@/api/etiquetas'
-import type { Recomendacion } from '@/api/tipos'
+import type { Canal, Recomendacion } from '@/api/tipos'
 
-const props = defineProps<{ oferta: Recomendacion }>()
+const props = defineProps<{
+  oferta: Recomendacion
+  /** Probabilidad del canal que el asesor está mirando. */
+  probabilidad: number
+  canalActivo: Canal | null
+}>()
 
-const canal = computed(() =>
-  props.oferta.canal_sugerido ? ETIQUETA_CANAL[props.oferta.canal_sugerido] : null,
+const canal = computed(() => (props.canalActivo ? ETIQUETA_CANAL[props.canalActivo] : null))
+
+const esOtroCanal = computed(
+  () => props.canalActivo !== null && props.canalActivo !== props.oferta.canal_sugerido,
 )
 
 /** La escala es fija 0–100: la barra se llena, no se reescala. */
-const relleno = computed(() => Math.min(100, Math.max(0, props.oferta.probabilidad)))
+const relleno = computed(() => Math.min(100, Math.max(0, props.probabilidad)))
 const anchoMargen = computed(() => Math.min(100 - relleno.value, props.oferta.margen))
 </script>
 
@@ -26,9 +33,11 @@ const anchoMargen = computed(() => Math.min(100 - relleno.value, props.oferta.ma
 
     <div class="tasa">
       <div class="lectura">
-        <span class="cifra prob">{{ oferta.probabilidad }}<span class="pct">%</span></span>
+        <span class="cifra prob">{{ probabilidad }}<span class="pct">%</span></span>
         <span v-if="oferta.margen > 0" class="cifra margen">±{{ oferta.margen }}</span>
-        <span class="micro leyenda">Probabilidad de aceptación</span>
+        <span class="micro leyenda">
+          Probabilidad de aceptación<template v-if="canal"> · {{ canal }}</template>
+        </span>
       </div>
 
       <div
@@ -64,9 +73,11 @@ const anchoMargen = computed(() => Math.min(100 - relleno.value, props.oferta.ma
       </div>
     </dl>
 
-    <p v-if="canal || oferta.franja_sugerida" class="contacto">
-      <span v-if="canal" class="micro chip">{{ canal }}</span>
-      <span v-if="oferta.franja_sugerida">{{ oferta.franja_sugerida }}</span>
+    <p v-if="oferta.franja_sugerida" class="contacto">
+      <span class="micro chip" :class="{ alterno: esOtroCanal }">
+        {{ esOtroCanal ? 'Fuera del canal recomendado' : 'Canal recomendado' }}
+      </span>
+      <span>{{ oferta.franja_sugerida }}</span>
     </p>
   </article>
 </template>
@@ -217,9 +228,15 @@ const anchoMargen = computed(() => Math.min(100 - relleno.value, props.oferta.ma
 
 .chip {
   padding: 3px 8px;
-  border: 1px solid var(--movistar-azul);
+  border: 1px solid var(--verde);
   border-radius: 3px;
-  color: var(--movistar-azul);
+  color: var(--verde);
   background: var(--superficie);
+  white-space: nowrap;
+}
+
+.chip.alterno {
+  border-color: var(--ambar);
+  color: var(--ambar);
 }
 </style>
