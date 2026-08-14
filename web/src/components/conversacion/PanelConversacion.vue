@@ -66,10 +66,19 @@ watch(
           :actual="i === intercambios.length - 1"
         />
       </ul>
-      <p v-else-if="!hayGestion" class="vacio">Inicie la gestión para registrar la llamada.</p>
-      <p v-else class="vacio">
-        Escriba lo que dice el cliente, o avance el guion de demo con «Siguiente turno».
-      </p>
+      <div v-else class="vacio">
+        <span class="marca-vacio" aria-hidden="true">‹ ›</span>
+        <p class="titulo-vacio">
+          {{ hayGestion ? 'Escuchando al cliente' : 'Llamada sin iniciar' }}
+        </p>
+        <p class="pista">
+          {{
+            hayGestion
+              ? 'Escriba abajo lo que dice el cliente y el copiloto le dirá qué responder.'
+              : 'Pulse «Iniciar gestión» para abrir la llamada y recibir el speech.'
+          }}
+        </p>
+      </div>
     </div>
 
     <EntradaCliente
@@ -133,9 +142,36 @@ watch(
   min-height: 0;
 }
 
+/* El hilo vacío ocupa mucho: se llena con la instrucción, centrada. */
 .vacio {
-  padding: var(--gap-lg) var(--gap);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 100%;
+  min-height: 220px;
+  padding: var(--gap-xl) var(--gap);
+  text-align: center;
+}
+
+.marca-vacio {
+  font-family: var(--fuente-cifra);
+  font-size: 30px;
+  color: var(--borde-cielo);
+  letter-spacing: -0.08em;
+}
+
+.titulo-vacio {
+  font-size: var(--t-md);
+  font-weight: 600;
+  color: var(--tinta-media);
+}
+
+.pista {
+  max-width: 340px;
   font-size: var(--t-sm);
+  line-height: 1.45;
   color: var(--tinta-suave);
 }
 

@@ -14,7 +14,7 @@ import AvisoDiscreto from '@/components/ui/AvisoDiscreto.vue'
 import EstadoVacio from '@/components/ui/EstadoVacio.vue'
 
 import { ID_ASESOR, NOMBRE_ASESOR, useGestionStore } from '@/stores/gestion'
-import type { CalificacionEnvio, CierreEnvio, Motivo } from '@/api/tipos'
+import type { CalificacionEnvio, CierreEnvio, MedioProbatorio, Motivo } from '@/api/tipos'
 
 const route = useRoute()
 const router = useRouter()
@@ -69,9 +69,17 @@ function pedirCierre(datos: CierreEnvio) {
   cierrePendiente.value = datos
 }
 
-async function confirmarCierre(calificacion: CalificacionEnvio, motivo: Motivo | null) {
+async function confirmarCierre(
+  calificacion: CalificacionEnvio,
+  motivo: Motivo | null,
+  medio: MedioProbatorio | null,
+) {
   if (!cierrePendiente.value) return
-  await store.cerrarGestion({ ...cierrePendiente.value, motivo_real: motivo })
+  await store.cerrarGestion({
+    ...cierrePendiente.value,
+    motivo_real: motivo,
+    medio_probatorio: medio,
+  })
   await store.calificar(calificacion)
   cierrePendiente.value = null
 }
@@ -152,7 +160,6 @@ watch(dniRuta, (nuevo, anterior) => {
             :id-gestion="idGestion"
             :prob-actual="probActual"
             :objecion-activa="objecionActiva"
-            :motivo-sugerido="desenlace?.motivo_real ?? null"
             :resaltar-rechazo="rumboRechazo"
             @cerrar="pedirCierre"
           />

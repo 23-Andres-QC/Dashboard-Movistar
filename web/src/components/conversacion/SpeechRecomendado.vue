@@ -20,7 +20,7 @@ const inseguro = computed(
   () => props.guia !== null && (!props.guia.grounded || props.guia.requiere_revision),
 )
 
-const origen = computed(() => (props.guia ? 'Copiloto' : 'Guion base'))
+const origen = computed(() => (props.guia ? 'Copiloto' : ''))
 </script>
 
 <template>

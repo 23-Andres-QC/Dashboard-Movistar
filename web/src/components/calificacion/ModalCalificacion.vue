@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
-import { ETIQUETA_MOTIVO, ETIQUETA_RESULTADO, MOTIVOS } from '@/api/etiquetas'
-import type { CalificacionEnvio, Motivo, Resultado } from '@/api/tipos'
+import { ETIQUETA_MEDIO, ETIQUETA_MOTIVO, ETIQUETA_RESULTADO, MEDIOS, MOTIVOS } from '@/api/etiquetas'
+import type { CalificacionEnvio, MedioProbatorio, Motivo, Resultado } from '@/api/tipos'
 
 const props = defineProps<{
   resultado: Exclude<Resultado, 'en_curso'>
@@ -11,9 +11,11 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  enviar: [datos: CalificacionEnvio, motivo: Motivo | null]
+  enviar: [datos: CalificacionEnvio, motivo: Motivo | null, medio: MedioProbatorio | null]
   omitir: []
 }>()
+
+const medio = ref<MedioProbatorio | ''>('')
 
 const facilidad = ref<number | null>(props.sugerida?.facilidad_venta ?? null)
 const pertinente = ref<boolean | null>(props.sugerida?.oferta_fue_pertinente ?? null)
@@ -48,6 +50,7 @@ async function enviar() {
         comentario: comentario.value.trim() || null,
       },
       motivo.value === '' ? null : motivo.value,
+      medio.value === '' ? null : medio.value,
     )
   } finally {
     enviando.value = false
@@ -158,6 +161,14 @@ onBeforeUnmount(() => document.removeEventListener('keydown', alPulsarTecla))
           </button>
         </div>
       </fieldset>
+
+      <label class="campo">
+        <span class="micro">Medio probatorio</span>
+        <select v-model="medio">
+          <option value="">Sin registrar</option>
+          <option v-for="m in MEDIOS" :key="m" :value="m">{{ ETIQUETA_MEDIO[m] }}</option>
+        </select>
+      </label>
 
       <label class="campo">
         <span class="micro">Comentario (opcional)</span>

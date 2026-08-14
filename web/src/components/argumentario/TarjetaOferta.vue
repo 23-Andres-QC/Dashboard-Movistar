@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import AnilloProbabilidad from '@/components/ui/AnilloProbabilidad.vue'
 import { ETIQUETA_CANAL } from '@/api/etiquetas'
 import type { Canal, Recomendacion } from '@/api/tipos'
 
@@ -16,10 +17,6 @@ const canal = computed(() => (props.canalActivo ? ETIQUETA_CANAL[props.canalActi
 const esOtroCanal = computed(
   () => props.canalActivo !== null && props.canalActivo !== props.oferta.canal_sugerido,
 )
-
-/** La escala es fija 0–100: la barra se llena, no se reescala. */
-const relleno = computed(() => Math.min(100, Math.max(0, props.probabilidad)))
-const anchoMargen = computed(() => Math.min(100 - relleno.value, props.oferta.margen))
 </script>
 
 <template>
@@ -32,46 +29,23 @@ const anchoMargen = computed(() => Math.min(100 - relleno.value, props.oferta.ma
     <h2 class="nombre">{{ oferta.oferta }}</h2>
 
     <div class="tasa">
-      <div class="lectura">
-        <span class="cifra prob">{{ probabilidad }}<span class="pct">%</span></span>
-        <span v-if="oferta.margen > 0" class="cifra margen">±{{ oferta.margen }}</span>
-        <span class="micro leyenda">
-          Probabilidad de aceptación<template v-if="canal"> · {{ canal }}</template>
-        </span>
-      </div>
+      <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="104" />
 
-      <div
-        class="riel"
-        role="meter"
-        :aria-valuenow="oferta.probabilidad"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        :aria-label="`Probabilidad de aceptación ${oferta.probabilidad} de 100`"
-      >
-        <span class="lleno" :style="{ width: `${relleno}%` }"></span>
-        <span
-          v-if="anchoMargen > 0"
-          class="incierto"
-          :style="{ left: `${relleno}%`, width: `${anchoMargen}%` }"
-        ></span>
-      </div>
-
-      <p class="micro procedencia">
-        {{ oferta.origen === 'lookalike' ? 'Clientes similares' : 'Historial propio' }}
-        <span v-if="oferta.margen > 0">· el tramo claro es el margen</span>
-      </p>
+      <dl class="cifras">
+        <div v-if="oferta.ahorro != null" class="celda">
+          <dt class="micro">Ahorro / mes</dt>
+          <dd class="cifra monto">S/ {{ oferta.ahorro }}</dd>
+        </div>
+        <div v-if="oferta.precio_mensual != null" class="celda">
+          <dt class="micro">Cuota</dt>
+          <dd class="cifra monto neutro">S/ {{ oferta.precio_mensual }}</dd>
+        </div>
+        <div class="celda">
+          <dt class="micro">Aceptación por</dt>
+          <dd class="canal-valor">{{ canal ?? '—' }}</dd>
+        </div>
+      </dl>
     </div>
-
-    <dl v-if="oferta.ahorro != null || oferta.instalacion != null" class="cifras">
-      <div v-if="oferta.ahorro != null" class="celda">
-        <dt class="micro">Ahorro / mes</dt>
-        <dd class="cifra monto">S/ {{ oferta.ahorro }}</dd>
-      </div>
-      <div v-if="oferta.instalacion != null" class="celda">
-        <dt class="micro">Instalación</dt>
-        <dd class="cifra monto neutro">S/ {{ oferta.instalacion }}</dd>
-      </div>
-    </dl>
 
     <p v-if="oferta.franja_sugerida" class="contacto">
       <span class="micro chip" :class="{ alterno: esOtroCanal }">
@@ -128,93 +102,42 @@ const anchoMargen = computed(() => Math.min(100 - relleno.value, props.oferta.ma
 }
 
 .tasa {
-  margin-top: var(--gap);
-}
-
-.lectura {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
-}
-
-.prob {
-  font-size: var(--t-xxl);
-  font-weight: 600;
-  line-height: 1;
-  color: var(--movistar-noche);
-}
-
-.pct {
-  font-size: var(--t-md);
-  margin-left: 1px;
-}
-
-.margen {
-  font-size: var(--t-sm);
-  color: var(--tinta-media);
-}
-
-.leyenda {
-  margin-left: auto;
-  color: var(--tinta-media);
-}
-
-.procedencia {
-  margin-top: 5px;
-  color: var(--tinta-suave);
-  letter-spacing: 0.06em;
-}
-
-/* Escala fija 0–100: se llena, no se reescala. */
-.riel {
-  position: relative;
-  margin-top: 7px;
-  height: 8px;
-  border-radius: 4px;
-  background: var(--superficie);
-  border: 1px solid var(--linea);
-  overflow: hidden;
-}
-
-.lleno {
-  position: absolute;
-  inset: 0 auto 0 0;
-  background: var(--movistar-azul);
-  transition: width 280ms ease;
-}
-
-/* Tramo de incertidumbre: hasta dónde podría llegar el estimado. */
-.incierto {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  background: var(--movistar-azul);
-  opacity: 0.28;
-  border-left: 1px solid var(--superficie);
+  align-items: center;
+  gap: var(--gap-lg);
+  margin-top: var(--gap);
+  padding-top: var(--gap);
+  border-top: 1px solid var(--borde-cielo);
 }
 
 .cifras {
   display: flex;
-  gap: var(--gap-xl);
-  margin-top: var(--gap);
-  padding-top: var(--gap);
-  border-top: 1px solid var(--linea);
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
 }
 
 .celda {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 0;
 }
 
 .monto {
   font-size: var(--t-lg);
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 1.1;
   color: var(--verde);
 }
 
 .monto.neutro {
-  color: var(--tinta-media);
+  color: var(--movistar-noche);
+}
+
+.canal-valor {
+  font-size: var(--t-base);
+  font-weight: 600;
+  color: var(--movistar-azul);
 }
 
 .contacto {

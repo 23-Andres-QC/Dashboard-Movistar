@@ -23,8 +23,15 @@ const tonoRiesgo = computed(() =>
 )
 
 const tonoConsumo = computed(() =>
-  (props.cliente.pct_consumo_datos ?? 0) >= 85 ? 'alerta' : 'normal',
+  (props.cliente.pct_consumo_datos ?? 0) >= 85 ? 'aviso' : 'normal',
 )
+
+/** El churn como porcentaje: más accionable que la palabra sola. */
+const riesgoTexto = computed(() => {
+  if (props.cliente.riesgo_baja === null) return null
+  if (props.cliente.prob_churn === null) return props.cliente.riesgo_baja
+  return `${Math.round(props.cliente.prob_churn * 100)}%`
+})
 
 /** Qué servicios tiene hoy, que es lo que define si le falta algo para MT. */
 const productos = computed(() => {
@@ -95,30 +102,30 @@ const seRealza = (campo: string) => realzados.value.includes(campo)
     <div class="datos">
       <DatoFicha etiqueta="Antigüedad" :valor="antiguedad" />
       <DatoFicha
-        etiqueta="Facturación"
+        etiqueta="Factura / mes"
         :valor="
           cliente.monto_facturado_prom === null ? null : `S/ ${cliente.monto_facturado_prom}`
         "
         :destacado="seRealza('monto_facturado_prom')"
       />
-      <DatoFicha etiqueta="Servicios" :valor="productos" />
-      <DatoFicha etiqueta="Riesgo de baja" :valor="cliente.riesgo_baja" :tono="tonoRiesgo" />
       <DatoFicha
         etiqueta="Consumo datos"
         :valor="cliente.pct_consumo_datos === null ? null : `${cliente.pct_consumo_datos}%`"
         :tono="tonoConsumo"
+        :barra="cliente.pct_consumo_datos"
         :destacado="seRealza('pct_consumo_datos') || seRealza('consumo_datos_gb_prom')"
       />
+      <DatoFicha
+        etiqueta="Riesgo de baja"
+        :valor="riesgoTexto"
+        :tono="tonoRiesgo"
+        :barra="cliente.prob_churn === null ? null : Math.round(cliente.prob_churn * 100)"
+      />
       <DatoFicha etiqueta="Mora" :valor="mora" :tono="tonoMora" />
-      <DatoFicha etiqueta="Reclamos" :valor="cliente.n_reclamos" />
+      <DatoFicha etiqueta="Servicios" :valor="productos" />
       <DatoFicha
         etiqueta="Canal habitual"
         :valor="cliente.canal_mas_usado ? ETIQUETA_CANAL[cliente.canal_mas_usado] : null"
-      />
-      <DatoFicha
-        etiqueta="Usa la app"
-        :valor="cliente.es_usuario_app ? 'Sí' : 'No'"
-        :tono="cliente.es_usuario_app ? 'ok' : 'normal'"
       />
     </div>
   </section>
@@ -184,7 +191,8 @@ const seRealza = (campo: string) => realzados.value.includes(campo)
 
 .datos {
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  gap: 6px;
   margin-left: auto;
 }
 
@@ -198,7 +206,6 @@ const seRealza = (campo: string) => realzados.value.includes(campo)
   .datos {
     margin-left: 0;
     flex-wrap: wrap;
-    gap: var(--gap-sm) 0;
   }
 }
 </style>

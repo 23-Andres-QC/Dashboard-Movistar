@@ -11,7 +11,6 @@ const props = defineProps<{
   hora: string | null
 }>()
 
-/** El último paso toma el nombre del desenlace una vez registrado. */
 const pasos = computed(() =>
   PASOS_FUNNEL.map((nombre, i) => ({
     numero: i + 1,
@@ -32,17 +31,22 @@ const tono = computed(() => props.resultado ?? '')
   <nav class="funnel" :class="tono" aria-label="Seguimiento del ofrecimiento">
     <ol>
       <li
-        v-for="paso_ in pasos"
-        :key="paso_.numero"
+        v-for="p in pasos"
+        :key="p.numero"
         class="paso"
-        :class="{ hecho: paso_.hecho, actual: paso_.actual, desenlace: paso_.final && !!resultado }"
+        :class="{ hecho: p.hecho, actual: p.actual, desenlace: p.final && !!resultado }"
       >
-        <span class="marca" aria-hidden="true">
-          <span v-if="paso_.hecho" class="tilde">✓</span>
-          <span v-else class="cifra">{{ paso_.numero }}</span>
+        <!-- Los conectores viven en su propia fila: nunca cruzan el texto. -->
+        <span class="rieles" aria-hidden="true">
+          <span class="riel izq"></span>
+          <span class="marca">
+            <span v-if="p.hecho" class="tilde">✓</span>
+            <span v-else class="cifra">{{ p.numero }}</span>
+          </span>
+          <span class="riel der"></span>
         </span>
-        <span class="nombre">{{ paso_.nombre }}</span>
-        <span v-if="paso_.final && hora" class="cifra hora">{{ hora }}</span>
+        <span class="nombre">{{ p.nombre }}</span>
+        <span v-if="p.final && hora" class="cifra hora">{{ hora }}</span>
       </li>
     </ol>
   </nav>
@@ -50,7 +54,7 @@ const tono = computed(() => props.resultado ?? '')
 
 <style scoped>
 .funnel {
-  padding: 10px var(--gap-lg);
+  padding: 12px var(--gap-lg) 10px;
   background: var(--superficie);
   border-bottom: 1px solid var(--linea);
 }
@@ -58,46 +62,54 @@ const tono = computed(() => props.resultado ?? '')
 ol {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: var(--gap-sm);
 }
 
 .paso {
-  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--gap-sm);
+  gap: 5px;
   min-width: 0;
 }
 
-/* Hilo que une los pasos; se tiñe cuando el tramo ya se recorrió. */
-.paso:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 26px;
-  right: -8px;
-  top: 12px;
-  height: 2px;
-  background: var(--linea);
-  z-index: 0;
+.rieles {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
-.paso.hecho:not(:last-child)::after {
+.riel {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--linea);
+}
+
+.paso:first-child .izq,
+.paso:last-child .der {
+  visibility: hidden;
+}
+
+/* El tramo de entrada se tiñe cuando el paso ya se alcanzó. */
+.hecho .izq,
+.hecho .der,
+.actual .izq {
   background: var(--verde);
 }
 
 .marca {
-  position: relative;
-  z-index: 1;
   display: grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   flex: none;
+  margin: 0 6px;
   border: 2px solid var(--linea);
   border-radius: 50%;
   background: var(--superficie);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--tinta-suave);
+  transition: background-color 200ms ease, border-color 200ms ease;
 }
 
 .hecho .marca {
@@ -107,13 +119,15 @@ ol {
 }
 
 .tilde {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1;
 }
 
 .actual .marca {
   border-color: var(--movistar-azul);
+  background: var(--movistar-cielo);
   color: var(--movistar-azul);
+  box-shadow: 0 0 0 4px var(--movistar-cielo);
 }
 
 .nombre {
@@ -123,9 +137,11 @@ ol {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--tinta-suave);
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .hecho .nombre {
@@ -141,44 +157,31 @@ ol {
   color: var(--tinta-suave);
 }
 
-/* El desenlace tiñe el último paso. */
 .desenlace .nombre {
   color: var(--verde);
 }
 
-.rechazado .desenlace .marca,
-.sin_contacto .desenlace .marca {
+.rechazado .desenlace .marca {
   border-color: var(--alarma);
   background: var(--alarma);
+  color: var(--tinta-inversa);
 }
-
-.rechazado .desenlace .nombre,
-.sin_contacto .desenlace .nombre {
+.rechazado .desenlace .nombre {
   color: var(--alarma);
 }
 
 .sin_contacto .desenlace .marca {
   border-color: var(--tinta-media);
   background: var(--tinta-media);
+  color: var(--tinta-inversa);
 }
-
 .sin_contacto .desenlace .nombre {
   color: var(--tinta-media);
 }
 
-@media (max-width: 900px) {
-  ol {
-    grid-template-columns: repeat(5, auto);
-    overflow-x: auto;
-  }
-
+@media (max-width: 760px) {
   .nombre {
     display: none;
-  }
-
-  .paso:not(:last-child)::after {
-    right: -8px;
-    left: 26px;
   }
 }
 </style>
