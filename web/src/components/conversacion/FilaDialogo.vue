@@ -22,18 +22,11 @@ const inseguro = computed(() => {
   return g !== null && (!g.grounded || g.requiere_revision)
 })
 
-/** Cuando el copiloto solo puede pedir aclaración y hay línea de guion, manda
- *  el guion: repetir «cuénteme más» en cada turno no ayuda al asesor. */
-const usaRespaldo = computed(() => {
-  const g = props.intercambio.guia
-  if (!g || !props.intercambio.respaldo) return false
-  // El motor devuelve `otro` cuando no reconoce la objeción, no null.
-  const sinObjecion = !g.objecion_categoria || g.objecion_categoria === 'otro'
-  return g.recommended_action === 'ASK_CLARIFYING_QUESTION' && sinObjecion
-})
+const queDecir = computed(() => props.intercambio.guia?.que_decir ?? '')
 
-const queDecir = computed(() =>
-  usaRespaldo.value ? props.intercambio.respaldo! : (props.intercambio.guia?.que_decir ?? ''),
+/** El copiloto pide contexto: aún no hay objeción que rebatir. */
+const pideContexto = computed(
+  () => props.intercambio.guia?.recommended_action === 'ASK_CLARIFYING_QUESTION',
 )
 </script>
 
@@ -64,14 +57,14 @@ const queDecir = computed(() =>
         </p>
         <template v-else>
           <p class="responder">{{ queDecir }}</p>
-          <p v-if="!usaRespaldo && intercambio.guia.pregunta_seguimiento" class="pregunta">
+          <p v-if="intercambio.guia.pregunta_seguimiento" class="pregunta">
             {{ intercambio.guia.pregunta_seguimiento }}
           </p>
           <p class="porque">
-            <span class="micro fuente">{{ usaRespaldo ? 'Guion base' : 'Copiloto' }}</span>
-            <template v-if="!usaRespaldo && intercambio.guia.resumen">
-              {{ intercambio.guia.resumen }}
-            </template>
+            <span class="micro fuente" :class="{ contexto: pideContexto }">
+              {{ pideContexto ? 'Levantando contexto' : 'Rebate autorizado' }}
+            </span>
+            <template v-if="intercambio.guia.resumen">{{ intercambio.guia.resumen }}</template>
           </p>
         </template>
       </template>
@@ -153,9 +146,15 @@ const queDecir = computed(() =>
 
 .fuente {
   padding: 1px 6px;
-  border: 1px solid var(--linea);
+  border: 1px solid var(--verde);
   border-radius: 3px;
+  color: var(--verde);
   white-space: nowrap;
+}
+
+.fuente.contexto {
+  border-color: var(--linea);
+  color: var(--tinta-suave);
 }
 
 .pensando {

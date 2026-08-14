@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import TituloPanel from '@/components/ui/TituloPanel.vue'
 import { ETIQUETA_MEDIO, ETIQUETA_MOTIVO, ETIQUETA_RESULTADO, MEDIOS, MOTIVOS } from '@/api/etiquetas'
 import type { CierreEnvio, MedioProbatorio, Motivo, Resultado } from '@/api/tipos'
 
@@ -12,7 +11,7 @@ const props = defineProps<{
   probActual: number
   objecionActiva: Motivo | null
   motivoSugerido: Motivo | null
-  /** La conversación va hacia el rechazo: se marca el botón para no insistir. */
+  /** La conversación va hacia el rechazo: se marca para no insistir. */
   resaltarRechazo: boolean
 }>()
 
@@ -36,7 +35,6 @@ function elegir(resultado: Exclude<Resultado, 'en_curso'>) {
     motivo.value = ''
     return
   }
-  // Lo más probable ya está en pantalla: la objeción viva o el motivo del caso.
   if (motivo.value === '') motivo.value = props.motivoSugerido ?? props.objecionActiva ?? ''
 }
 
@@ -46,7 +44,6 @@ function confirmar() {
     resultado: seleccion.value,
     motivo_real: motivo.value === '' ? null : motivo.value,
     prob_final: props.probActual,
-    // Sin contacto no hubo contactabilidad real: es el `pendiente` del dataset.
     contactabilidad: seleccion.value === 'sin_contacto' ? 'no_contactado' : 'contactado',
     es_rebate: props.objecionActiva !== null,
     medio_probatorio: medio.value === '' ? null : medio.value,
@@ -55,94 +52,93 @@ function confirmar() {
 </script>
 
 <template>
-  <section class="bloque">
-    <TituloPanel texto="Cierre de la gestión" acento="ninguno" :contador="idGestion ?? '—'" />
-
-    <div v-if="cerrada" class="cerrada">
-      <span class="micro">Resultado registrado</span>
-      <span class="valor" :class="resultadoCerrado ?? ''">
-        {{ resultadoCerrado ? ETIQUETA_RESULTADO[resultadoCerrado] : '' }}
-      </span>
+  <section class="cierre" :class="{ registrado: cerrada }">
+    <!-- Cerrada: una sola línea con el desenlace. -->
+    <div v-if="cerrada" class="resuelto" :class="resultadoCerrado ?? ''">
+      <span class="icono" aria-hidden="true">{{ resultadoCerrado === 'vendido' ? '✓' : '—' }}</span>
+      <span class="valor">{{ resultadoCerrado ? ETIQUETA_RESULTADO[resultadoCerrado] : '' }}</span>
+      <span class="cifra id">{{ idGestion }}</span>
     </div>
 
-    <div v-else class="formulario">
+    <template v-else>
       <div class="botones" role="group" aria-label="Resultado de la gestión">
         <button
           v-for="r in RESULTADOS"
           :key="r"
           type="button"
-          class="micro opcion"
-          :class="[
-            r,
-            { activa: seleccion === r, sugerida: resaltarRechazo && r === 'rechazado' },
-          ]"
+          class="opcion"
+          :class="[r, { activa: seleccion === r, sugerida: resaltarRechazo && r === 'rechazado' }]"
           :aria-pressed="seleccion === r"
           :disabled="!idGestion"
           @click="elegir(r)"
         >
-          {{ ETIQUETA_RESULTADO[r] }}
+          <span class="icono" aria-hidden="true">{{ r === 'vendido' ? '✓' : r === 'rechazado' ? '✕' : '—' }}</span>
+          <span class="micro">{{ ETIQUETA_RESULTADO[r] }}</span>
         </button>
       </div>
 
-      <label class="campo">
-        <span class="micro">Motivo real {{ requiereMotivo ? '' : '(opcional)' }}</span>
-        <select v-model="motivo" :disabled="!seleccion || seleccion === 'vendido'">
-          <option value="">Sin especificar</option>
-          <option v-for="m in MOTIVOS" :key="m" :value="m">{{ ETIQUETA_MOTIVO[m] }}</option>
-        </select>
-      </label>
+      <div v-if="seleccion" class="detalle">
+        <label class="campo">
+          <span class="micro">
+            Motivo real
+            <span v-if="requiereMotivo" class="obligatorio">obligatorio</span>
+          </span>
+          <select v-model="motivo" :disabled="seleccion === 'vendido'">
+            <option value="">Sin especificar</option>
+            <option v-for="m in MOTIVOS" :key="m" :value="m">{{ ETIQUETA_MOTIVO[m] }}</option>
+          </select>
+        </label>
 
-      <label class="campo">
-        <span class="micro">Medio probatorio</span>
-        <select v-model="medio" :disabled="!seleccion">
-          <option value="">Sin registrar</option>
-          <option v-for="m in MEDIOS" :key="m" :value="m">{{ ETIQUETA_MEDIO[m] }}</option>
-        </select>
-      </label>
+        <label class="campo">
+          <span class="micro">Medio probatorio</span>
+          <select v-model="medio">
+            <option value="">Sin registrar</option>
+            <option v-for="m in MEDIOS" :key="m" :value="m">{{ ETIQUETA_MEDIO[m] }}</option>
+          </select>
+        </label>
 
-      <button class="confirmar" type="button" :disabled="!puedeCerrar" @click="confirmar">
-        Cerrar gestión
-      </button>
-    </div>
+        <button class="confirmar" type="button" :disabled="!puedeCerrar" @click="confirmar">
+          Cerrar gestión
+        </button>
+      </div>
+    </template>
   </section>
 </template>
 
 <style scoped>
-.bloque {
-  border-bottom: 1px solid var(--linea);
-}
-
-.formulario {
-  padding: var(--gap-sm) var(--gap) var(--gap);
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-sm);
+.cierre {
+  padding: var(--gap-sm) var(--gap);
+  border-top: 1px solid var(--linea);
+  background: var(--superficie-tenue);
 }
 
 .botones {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
+  gap: 6px;
 }
 
 .opcion {
-  padding: 7px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 4px;
   border: 1px solid var(--linea);
   border-radius: var(--r);
   background: var(--superficie);
   color: var(--tinta-media);
+  transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+.icono {
+  font-size: 13px;
+  line-height: 1;
 }
 
 .opcion:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* Rumbo al rechazo: se resalta el botón para que el asesor deje de insistir. */
-.opcion.sugerida:not(.activa) {
-  border-color: var(--alarma);
-  border-width: 2px;
-  color: var(--alarma);
 }
 
 .opcion.activa.vendido {
@@ -163,36 +159,54 @@ function confirmar() {
   color: var(--tinta-inversa);
 }
 
+/* Rumbo al rechazo: se marca para que el asesor deje de insistir. */
+.opcion.sugerida:not(.activa) {
+  border-color: var(--alarma);
+  border-width: 2px;
+  color: var(--alarma);
+}
+
+.detalle {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: end;
+  gap: var(--gap-sm);
+  margin-top: var(--gap-sm);
+}
+
 .campo {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  min-width: 0;
 }
 
-select,
-input {
-  padding: 6px 8px;
+select {
+  padding: 7px 8px;
   border: 1px solid var(--linea);
   border-radius: var(--r);
   background: var(--superficie);
   font-size: var(--t-sm);
 }
 
-select:disabled,
-input:disabled {
+select:disabled {
   background: var(--superficie-tenue);
   color: var(--tinta-suave);
 }
 
+.obligatorio {
+  color: var(--alarma);
+}
+
 .confirmar {
-  margin-top: 2px;
-  padding: 8px;
+  padding: 8px 18px;
   border: 1px solid var(--movistar-noche);
   border-radius: var(--r);
   background: var(--movistar-noche);
   color: var(--tinta-inversa);
   font-size: var(--t-sm);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .confirmar:disabled {
@@ -202,26 +216,37 @@ input:disabled {
   cursor: not-allowed;
 }
 
-.cerrada {
+.resuelto {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: center;
   gap: var(--gap-sm);
-  padding: var(--gap);
+  padding: 6px 2px;
 }
 
-.valor {
+.resuelto .valor {
   font-size: var(--t-md);
   font-weight: 600;
 }
 
-.valor.vendido {
+.resuelto .id {
+  margin-left: auto;
+  font-size: var(--t-xs);
+  color: var(--tinta-suave);
+}
+
+.resuelto.vendido {
   color: var(--verde);
 }
-.valor.rechazado {
+.resuelto.rechazado {
   color: var(--alarma);
 }
-.valor.sin_contacto {
+.resuelto.sin_contacto {
   color: var(--tinta-media);
+}
+
+@media (max-width: 700px) {
+  .detalle {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

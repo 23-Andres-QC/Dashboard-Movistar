@@ -7,7 +7,8 @@ import FranjaFicha from '@/components/ficha/FranjaFicha.vue'
 import ModalCalificacion from '@/components/calificacion/ModalCalificacion.vue'
 import PanelArgumentario from '@/components/argumentario/PanelArgumentario.vue'
 import PanelConversacion from '@/components/conversacion/PanelConversacion.vue'
-import PanelSeguimiento from '@/components/seguimiento/PanelSeguimiento.vue'
+import FunnelHorizontal from '@/components/seguimiento/FunnelHorizontal.vue'
+import PanelCierre from '@/components/seguimiento/PanelCierre.vue'
 import RailSuperior from '@/components/rail/RailSuperior.vue'
 import AvisoDiscreto from '@/components/ui/AvisoDiscreto.vue'
 import EstadoVacio from '@/components/ui/EstadoVacio.vue'
@@ -86,7 +87,6 @@ onMounted(() => {
   if (dniRuta.value) store.buscar(dniRuta.value)
 })
 
-// Permite entrar directo a /asesor/45789123 y también navegar entre DNIs.
 watch(dniRuta, (nuevo, anterior) => {
   if (nuevo && nuevo !== anterior && nuevo !== cliente.value?.dni) store.buscar(nuevo)
 })
@@ -107,50 +107,56 @@ watch(dniRuta, (nuevo, anterior) => {
     <template v-if="clienteVista">
       <FranjaFicha :cliente="clienteVista" :ultima-captura="ultimaCaptura" />
 
+      <FunnelHorizontal
+        :paso="pasoFunnel"
+        :resultado="cierre?.resultado ?? null"
+        :hora="horaCierre"
+      />
+
       <div class="columnas">
         <PanelArgumentario
-            :oferta="ofertaPrincipal"
-            :alternativas="alternativas"
-            :descartadas="descartadas"
+          :oferta="ofertaPrincipal"
+          :alternativas="alternativas"
+          :descartadas="descartadas"
           :objecion-activa="objecionActiva"
           :probabilidad="probInicial"
           :canal-seleccionado="canalSeleccionado"
           :mejor-canal="mejorCanal"
+          :prob-churn="clienteVista.prob_churn"
           :hay-gestion="hayGestion"
           :en-curso="hayGestion && !cerrada"
           @seleccionar-canal="store.seleccionarCanal($event)"
         />
 
-        <PanelConversacion
-          :oferta="ofertaPrincipal"
-          :speech-inicial="speechInicial"
-          :intercambios="intercambios"
-          :copiloto-pensando="copilotoPensando"
-          :temperatura="temperatura"
-          :estado="estadoCliente"
-          :quedan-turnos="quedanTurnos"
-          :cerrada="cerrada"
-          :hay-gestion="hayGestion"
-          :cargando="abriendoGestion"
-          @iniciar="store.iniciarGestion()"
-          @siguiente="store.siguienteTurno()"
-          @decir="store.decirCliente($event)"
-        />
+        <div class="centro panel">
+          <PanelConversacion
+            :oferta="ofertaPrincipal"
+            :speech-inicial="speechInicial"
+            :intercambios="intercambios"
+            :copiloto-pensando="copilotoPensando"
+            :temperatura="temperatura"
+            :estado="estadoCliente"
+            :quedan-turnos="quedanTurnos"
+            :cerrada="cerrada"
+            :hay-gestion="hayGestion"
+            :cargando="abriendoGestion"
+            @iniciar="store.iniciarGestion()"
+            @siguiente="store.siguienteTurno()"
+            @decir="store.decirCliente($event)"
+          />
 
-        <PanelSeguimiento
-          :paso="pasoFunnel"
-          :cerrada="cerrada"
-          :resultado-cerrado="cierre?.resultado ?? null"
-          :hora-cierre="horaCierre"
-          :id-gestion="idGestion"
-          :prob-actual="probActual"
-          :objecion-activa="objecionActiva"
-          :motivo-sugerido="desenlace?.motivo_real ?? null"
-          :resaltar-rechazo="rumboRechazo"
-          :oferta="ofertaPrincipal"
-          :prob-churn="clienteVista.prob_churn"
-          @cerrar="pedirCierre"
-        />
+          <!-- El resultado se registra al final de la llamada, bajo el chat. -->
+          <PanelCierre
+            :cerrada="cerrada"
+            :resultado-cerrado="cierre?.resultado ?? null"
+            :id-gestion="idGestion"
+            :prob-actual="probActual"
+            :objecion-activa="objecionActiva"
+            :motivo-sugerido="desenlace?.motivo_real ?? null"
+            :resaltar-rechazo="rumboRechazo"
+            @cerrar="pedirCierre"
+          />
+        </div>
       </div>
     </template>
 
@@ -179,11 +185,19 @@ watch(dniRuta, (nuevo, anterior) => {
 
 .columnas {
   display: grid;
-  grid-template-columns: var(--col-izq) 1fr var(--col-der);
+  grid-template-columns: var(--col-izq) 1fr;
   gap: var(--gap);
   padding: var(--gap);
   flex: 1;
   min-height: 0;
+}
+
+/* La columna central apila copiloto y cierre dentro de un solo panel. */
+.centro {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 @media (max-width: 1180px) {
@@ -193,6 +207,11 @@ watch(dniRuta, (nuevo, anterior) => {
 
   .columnas {
     grid-template-columns: 1fr;
+  }
+
+  .centro {
+    grid-template-rows: none;
+    overflow: visible;
   }
 }
 

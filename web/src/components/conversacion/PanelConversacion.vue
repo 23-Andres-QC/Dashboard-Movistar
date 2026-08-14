@@ -35,7 +35,7 @@ watch(
 </script>
 
 <template>
-  <section class="panel columna" aria-label="Conversación">
+  <section class="columna" aria-label="Conversación">
     <!-- Arriba: cómo convencerlo. -->
     <SpeechRecomendado
       :guia="speechInicial"

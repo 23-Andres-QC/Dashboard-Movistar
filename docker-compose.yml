@@ -30,6 +30,10 @@ services:
       AI_ENGINE_PORT: 8000
       AI_ENGINE_CORS_ORIGINS: ${AI_ENGINE_CORS_ORIGINS:-*}
       AI_ENGINE_GENERATOR: ${AI_ENGINE_GENERATOR:-deterministic}
+      # Con una API key y AI_ENGINE_GENERATOR=openai el copiloto redacta con un
+      # LLM. Si el proveedor falla o viola guardrails, cae al determinista.
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
     ports:
       - "${AI_PORT:-8100}:8000"
     volumes:

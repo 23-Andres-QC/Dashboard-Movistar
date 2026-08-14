@@ -4,6 +4,7 @@ import ListaAngulos from './ListaAngulos.vue'
 import ListaRebates from './ListaRebates.vue'
 import SelectorCanal from './SelectorCanal.vue'
 import TarjetaOferta from './TarjetaOferta.vue'
+import BloquePorQue from '@/components/seguimiento/BloquePorQue.vue'
 import TituloPanel from '@/components/ui/TituloPanel.vue'
 import type { Canal, Motivo, Recomendacion } from '@/api/tipos'
 
@@ -15,6 +16,7 @@ defineProps<{
   probabilidad: number
   canalSeleccionado: Canal | null
   mejorCanal: Canal | null
+  probChurn: number | null
   /** Con la gestión abierta el canal ya no se cambia. */
   hayGestion: boolean
   /** Hay gestión abierta y viva: lo que se recomienda cambia turno a turno. */
@@ -43,6 +45,7 @@ defineEmits<{ seleccionarCanal: [canal: Canal] }>()
       <ListaAlternativas :alternativas="alternativas" :descartadas="descartadas" />
       <ListaAngulos :angulos="oferta.angulos" />
       <ListaRebates :rebates="oferta.rebates" :objecion-activa="objecionActiva" />
+      <BloquePorQue :explicacion="oferta.explicacion" :prob-churn="probChurn" />
     </template>
     <p v-else class="vacio">Calculando recomendaciones…</p>
   </aside>
