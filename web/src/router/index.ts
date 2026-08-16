@@ -6,7 +6,7 @@ export const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/asesor/:dni?', name: 'asesor', component: ConsolaAsesor, props: true },
-    { path: '/', redirect: '/asesor' },
-    { path: '/:pathMatch(.*)*', redirect: '/asesor' },
+    { path: '/', name: 'inicio', component: ConsolaAsesor },
+    { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })

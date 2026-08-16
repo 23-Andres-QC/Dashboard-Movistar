@@ -10,7 +10,7 @@ const modoOscuro = ref(false)
 const router = useRouter()
 
 function irInicio() {
-  router.push({ name: 'asesor' })
+  router.push({ name: 'inicio' })
 }
 
 function alternarTema() {
