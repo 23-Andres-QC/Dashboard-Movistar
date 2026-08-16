@@ -56,7 +56,7 @@ defineProps<{ oferta: Recomendacion; planActual: string | null; facturacion: num
 .confianza { color: var(--verde); }
 .comparacion { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding: 10px var(--gap-lg) 0; }
 .antes, .ahora { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 8px 9px; border-radius: var(--r-chico); }
-.antes { border: 1px solid #dbe3ea; background: #f7fafc; color: #44555f; }
+.antes { border: 1px solid #c9d8e1; background: #e5eef3; color: #334b59; }
 .ahora { border: 2px solid #0b2739; background: #0b2739; color: #ffffff; box-shadow: inset 0 3px 0 #ffd23f; }
 .antes .etiqueta { color: #5c6b77; }
 .ahora .etiqueta { color: #ffd23f; }
