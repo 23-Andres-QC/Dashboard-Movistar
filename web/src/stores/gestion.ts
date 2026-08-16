@@ -301,6 +301,29 @@ export const useGestionStore = defineStore('gestion', () => {
     copilotoPensando.value = true
     avanzarFunnel(3) // oferta presentada
 
+    // Las líneas del guion demo son respuestas validadas: se muestran de
+    // inmediato y no quedan bloqueadas esperando al servicio externo.
+    if (respaldo) {
+      intercambio.guia = {
+        conversation_id: conversationId.value,
+        response_type: 'demo_fallback',
+        conversation_stage: 'guion_demo',
+        recommended_action: 'RESPOND_WITH_SCRIPT',
+        resumen: 'Respuesta validada para este escenario de demostración.',
+        que_decir: respaldo,
+        pregunta_seguimiento: null,
+        oferta_alternativa: null,
+        objecion_categoria: null,
+        objecion_confianza: null,
+        grounded: true,
+        requiere_revision: false,
+        flags: ['demo_fallback'],
+      }
+      intercambio.pendiente = false
+      copilotoPensando.value = false
+      return
+    }
+
     try {
       const guia = await api.turnoCopiloto(idGestion.value, conversationId.value, limpio)
       intercambio.guia = guia
@@ -372,6 +395,7 @@ export const useGestionStore = defineStore('gestion', () => {
     }
 
     await decirCliente(turno.cliente, turno.etiqueta, turno.asesor)
+    if (turno.objecion) await registrarObjecion(turno.objecion)
   }
 
   async function cerrarGestion(datos: CierreEnvio) {
