@@ -93,15 +93,15 @@
   --movistar-noche-2: #0a2231;
   --movistar-cielo: #123b52;
   --borde-cielo: #28627d;
-  --ambar: #ffd166;
-  --alarma: #ff8a80;
-  --verde: #70d6a0;
-  --verde-vivo: #5bd494;
+  --ambar: #ffd23f;
+  --alarma: #ff6257;
+  --verde: #59e391;
+  --verde-vivo: #67e8a1;
   --info-fondo: #123b52;
   --warn-fondo: #44351e;
-  --ambar-fondo: #4a3a1e;
-  --risk-fondo: #482421;
-  --good-fondo: #173d31;
+  --ambar-fondo: #604900;
+  --risk-fondo: #681f1a;
+  --good-fondo: #125b38;
   --sombra-1: 0 1px 3px rgba(0, 0, 0, 0.24);
   --sombra-2: 0 3px 8px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(0, 0, 0, 0.18);
 }

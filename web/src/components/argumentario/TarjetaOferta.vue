@@ -155,9 +155,9 @@ const esOtroCanal = computed(
 }
 
 .sello.mejor-opcion {
-  border-color: rgba(244, 183, 53, 0.9);
-  background: rgba(244, 183, 53, 0.2);
-  color: #ffe29a;
+  border-color: #ffd23f;
+  background: #ffd23f;
+  color: #182a33;
 }
 
 /* Filas apiladas: cada etiqueta y su valor en una línea, sin truncarse. */

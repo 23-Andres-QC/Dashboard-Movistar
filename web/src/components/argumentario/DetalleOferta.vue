@@ -56,11 +56,13 @@ defineProps<{ oferta: Recomendacion; planActual: string | null; facturacion: num
 .confianza { color: var(--verde); }
 .comparacion { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding: 10px var(--gap-lg) 0; }
 .antes, .ahora { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 8px 9px; border-radius: var(--r-chico); }
-.antes { background: var(--superficie-tenue); color: var(--tinta-media); }
-.ahora { border: 1px solid rgba(193, 132, 15, 0.55); background: var(--ambar-fondo); color: var(--ambar); }
+.antes { background: #f7fafc; color: #44555f; }
+.ahora { border: 1px solid #0b2739; background: #0b2739; color: #ffffff; }
 .antes strong, .ahora strong { overflow: hidden; color: var(--tinta); font-size: var(--t-xs); text-overflow: ellipsis; white-space: nowrap; }
-.ahora strong { color: var(--ambar); }
+.antes strong { color: #14232e; }
+.ahora strong { color: #ffffff; }
 .antes span:last-child, .ahora span:last-child { font-size: var(--t-xs); }
+.ahora span:last-child { color: #d9e5ea; }
 .flecha { color: var(--movistar-azul-hondo); font-size: 20px; font-weight: 700; }
 .metricas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 10px var(--gap-lg); }
 .metricas div { display: flex; flex-direction: column; gap: 2px; padding: 7px; border: 1px solid var(--linea); border-radius: var(--r-chico); background: var(--superficie); }
