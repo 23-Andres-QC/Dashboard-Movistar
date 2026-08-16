@@ -54,7 +54,9 @@ defineEmits<{ seleccionarCanal: [canal: Canal]; verDetalle: [] }>()
       <ListaAlternativas
         :alternativas="alternativas"
         :descartadas="descartadas"
+        :alternativa-activa="alternativaActiva"
         @seleccionar="alternativaActiva = $event"
+        @volver="alternativaActiva = null"
       />
 
       <TarjetaOferta

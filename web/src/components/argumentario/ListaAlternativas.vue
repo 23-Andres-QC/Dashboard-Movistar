@@ -2,8 +2,12 @@
 import TituloPanel from '@/components/ui/TituloPanel.vue'
 import type { Recomendacion } from '@/api/tipos'
 
-defineProps<{ alternativas: Recomendacion[]; descartadas: Recomendacion[] }>()
-defineEmits<{ seleccionar: [oferta: Recomendacion] }>()
+defineProps<{
+  alternativas: Recomendacion[]
+  descartadas: Recomendacion[]
+  alternativaActiva: Recomendacion | null
+}>()
+defineEmits<{ seleccionar: [oferta: Recomendacion]; volver: [] }>()
 </script>
 
 <template>
@@ -13,6 +17,9 @@ defineEmits<{ seleccionar: [oferta: Recomendacion] }>()
       acento="ninguno"
       :contador="alternativas.length + descartadas.length"
     />
+    <button v-if="alternativaActiva" class="volver" type="button" @click="$emit('volver')">
+      ← Mejor plan
+    </button>
     <ul>
       <button v-for="alt in alternativas" :key="alt.oferta" class="fila seleccionable" type="button" @click="$emit('seleccionar', alt)">
         <span class="nombre" :title="alt.oferta">{{ alt.oferta }}</span>
@@ -40,6 +47,19 @@ defineEmits<{ seleccionar: [oferta: Recomendacion] }>()
 <style scoped>
 .bloque {
   overflow: hidden;
+}
+
+.volver {
+  width: calc(100% - 24px);
+  margin: 8px 12px 0;
+  padding: 7px 10px;
+  border: 1px solid var(--movistar-azul);
+  border-radius: var(--r-chico);
+  background: var(--info-fondo);
+  color: var(--movistar-azul-hondo);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  text-align: left;
 }
 
 .fila {
