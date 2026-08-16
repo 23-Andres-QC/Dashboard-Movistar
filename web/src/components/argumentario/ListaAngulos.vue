@@ -6,7 +6,7 @@ defineProps<{ angulos: Angulo[] }>()
 </script>
 
 <template>
-  <section v-if="angulos.length" class="bloque">
+  <section v-if="angulos.length" class="bloque tarjeta-suelta">
     <TituloPanel texto="Ángulos de convencimiento" acento="azul" :contador="angulos.length" />
     <ul>
       <li v-for="(angulo, i) in angulos" :key="angulo.titulo" class="angulo">
@@ -22,7 +22,7 @@ defineProps<{ angulos: Angulo[] }>()
 
 <style scoped>
 .bloque {
-  border-bottom: 1px solid var(--linea);
+  overflow: hidden;
 }
 
 .angulo {

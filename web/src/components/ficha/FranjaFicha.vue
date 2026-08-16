@@ -136,9 +136,11 @@ const seRealza = (campo: string) => realzados.value.includes(campo)
   display: flex;
   align-items: center;
   gap: var(--gap-xl);
-  padding: 10px var(--gap-lg);
+  padding: 11px var(--gap-lg);
   background: var(--superficie);
-  border-bottom: 1px solid var(--linea);
+  border: 1px solid var(--linea);
+  border-radius: var(--r);
+  box-shadow: var(--sombra-1);
   overflow-x: auto;
 }
 

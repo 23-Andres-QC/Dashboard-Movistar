@@ -36,7 +36,7 @@ const caida = computed(() => {
 </script>
 
 <template>
-  <section v-if="canales.length" class="selector">
+  <section v-if="canales.length" class="selector tarjeta-suelta">
     <header class="cabecera">
       <span class="micro">Probabilidad por canal</span>
       <span v-if="mejorCanal" class="micro mejor">
@@ -72,7 +72,6 @@ const caida = computed(() => {
 <style scoped>
 .selector {
   padding: var(--gap) var(--gap-lg);
-  border-bottom: 1px solid var(--linea);
 }
 
 .cabecera {

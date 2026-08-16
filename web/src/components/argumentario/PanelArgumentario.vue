@@ -2,10 +2,9 @@
 import ListaAlternativas from './ListaAlternativas.vue'
 import ListaAngulos from './ListaAngulos.vue'
 import ListaRebates from './ListaRebates.vue'
+import PlanActual from './PlanActual.vue'
 import SelectorCanal from './SelectorCanal.vue'
 import TarjetaOferta from './TarjetaOferta.vue'
-import BloquePorQue from '@/components/seguimiento/BloquePorQue.vue'
-import TituloPanel from '@/components/ui/TituloPanel.vue'
 import type { Canal, Motivo, Recomendacion } from '@/api/tipos'
 
 defineProps<{
@@ -16,7 +15,8 @@ defineProps<{
   probabilidad: number
   canalSeleccionado: Canal | null
   mejorCanal: Canal | null
-  probChurn: number | null
+  planActual: string | null
+  facturacion: number | null
   /** Con la gestión abierta el canal ya no se cambia. */
   hayGestion: boolean
   /** Hay gestión abierta y viva: lo que se recomienda cambia turno a turno. */
@@ -27,14 +27,18 @@ defineEmits<{ seleccionarCanal: [canal: Canal] }>()
 </script>
 
 <template>
-  <aside class="panel columna" aria-label="Argumentario">
-    <TituloPanel texto="Qué decirle ahora" acento="azul" :vivo="enCurso" />
+  <!-- Sin fondo propio: la columna se funde con el gris de la página y solo
+       las tarjetas destacan en blanco. Así no quedan parches sueltos. -->
+  <aside class="columna" aria-label="Argumentario">
     <template v-if="oferta">
+      <PlanActual :plan="planActual" :facturacion="facturacion" />
+
       <TarjetaOferta
         :oferta="oferta"
         :probabilidad="probabilidad"
         :canal-activo="canalSeleccionado"
       />
+
       <SelectorCanal
         :prob-por-canal="oferta.prob_por_canal"
         :mejor-canal="mejorCanal"
@@ -42,24 +46,29 @@ defineEmits<{ seleccionarCanal: [canal: Canal] }>()
         :bloqueado="hayGestion"
         @seleccionar="$emit('seleccionarCanal', $event)"
       />
+
       <ListaAlternativas :alternativas="alternativas" :descartadas="descartadas" />
       <ListaAngulos :angulos="oferta.angulos" />
       <ListaRebates :rebates="oferta.rebates" :objecion-activa="objecionActiva" />
-      <BloquePorQue :explicacion="oferta.explicacion" :prob-churn="probChurn" />
     </template>
-    <p v-else class="vacio">Calculando recomendaciones…</p>
+
+    <p v-else class="vacio tarjeta-suelta">Calculando recomendaciones…</p>
   </aside>
 </template>
 
 <style scoped>
 .columna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
   overflow-y: auto;
-  align-self: start;
-  max-height: 100%;
+  align-self: stretch;
+  min-height: 0;
+  padding-right: 2px;
 }
 
 .vacio {
-  padding: var(--gap);
+  padding: var(--gap-lg);
   font-size: var(--t-sm);
   color: var(--tinta-suave);
 }

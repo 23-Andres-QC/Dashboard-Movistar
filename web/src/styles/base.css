@@ -65,6 +65,16 @@ button {
   background: var(--superficie);
   border: 1px solid var(--linea);
   border-radius: var(--r);
+  box-shadow: var(--sombra-1);
+}
+
+/* Tarjeta suelta dentro de una columna sin fondo propio. */
+.tarjeta-suelta {
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: var(--r);
+  box-shadow: var(--sombra-1);
+  overflow: hidden;
 }
 
 .micro {

@@ -7,94 +7,74 @@ defineProps<{ rebates: Rebate[]; objecionActiva: Motivo | null }>()
 </script>
 
 <template>
-  <section v-if="rebates.length" class="bloque">
+  <section v-if="rebates.length" class="bloque tarjeta-suelta">
     <TituloPanel
-      texto="Rebates por objeción"
+      texto="Objeciones previstas"
       acento="ambar"
       :vivo="objecionActiva !== null"
       :contador="rebates.length"
     />
-    <ul>
+    <!-- Solo el nombre de la objeción: la respuesta la redacta el copiloto en
+         vivo, así que repetir aquí un texto fijo sobraba. -->
+    <ul class="chips">
       <li
         v-for="rebate in rebates"
         :key="rebate.objecion"
-        class="rebate"
+        class="chip"
         :class="{ activo: rebate.objecion === objecionActiva }"
       >
-        <div class="cabecera">
-          <span class="micro objecion">{{ ETIQUETA_MOTIVO[rebate.objecion] }}</span>
-          <span v-if="rebate.objecion === objecionActiva" class="micro marca">Detectada</span>
-        </div>
-        <p class="cita">«{{ rebate.cita }}»</p>
-        <p class="texto">{{ rebate.texto }}</p>
+        <span class="punto" aria-hidden="true"></span>
+        {{ ETIQUETA_MOTIVO[rebate.objecion] }}
       </li>
     </ul>
+    <p v-if="objecionActiva" class="nota">
+      Detectada en la llamada. La respuesta está en «Usted debe decir».
+    </p>
   </section>
 </template>
 
 <style scoped>
-.bloque {
-  border-bottom: 1px solid var(--linea);
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: var(--gap) var(--gap-lg);
 }
 
-.rebate {
-  padding: 11px var(--gap-lg) 12px;
-  border-bottom: 1px solid var(--superficie-tenue);
-  /* La barra ámbar existe siempre, transparente: al llegar la objeción cambia
-     de color en lugar de empujar el contenido. */
-  border-left: 3px solid transparent;
-  transition: background-color 160ms ease, border-color 160ms ease;
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  background: var(--superficie-tenue);
+  font-size: var(--t-sm);
+  color: var(--tinta-media);
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
 }
 
-.rebate:last-child {
-  border-bottom: 0;
+.punto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--linea);
 }
 
 .activo {
-  border-left-color: var(--ambar);
+  border-color: rgba(143, 74, 11, 0.45);
   background: var(--warn-fondo);
-}
-
-.cabecera {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--gap-sm);
-}
-
-.objecion {
-  color: var(--tinta-media);
-}
-
-.activo .objecion {
   color: var(--ambar);
+  font-weight: 600;
 }
 
-.marca {
-  padding: 1px 6px;
-  border: 1px solid var(--ambar);
-  border-radius: 3px;
-  color: var(--ambar);
-  letter-spacing: 0.1em;
+.activo .punto {
+  background: var(--ambar);
 }
 
-.cita {
-  margin-top: 3px;
-  font-size: var(--t-sm);
-  font-style: italic;
+.nota {
+  padding: 0 var(--gap-lg) var(--gap);
+  font-size: var(--t-xs);
   color: var(--tinta-suave);
-}
-
-.texto {
-  margin-top: 5px;
-  font-size: var(--t-base);
-  line-height: 1.45;
-  color: var(--tinta);
-}
-
-/* Lo que hay que decir ahora se lee un punto más fuerte. */
-.activo .texto {
-  font-weight: 500;
-  color: var(--movistar-noche);
 }
 </style>

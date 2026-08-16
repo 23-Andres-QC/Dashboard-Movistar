@@ -6,7 +6,7 @@ defineProps<{ alternativas: Recomendacion[]; descartadas: Recomendacion[] }>()
 </script>
 
 <template>
-  <section v-if="alternativas.length || descartadas.length" class="bloque">
+  <section v-if="alternativas.length || descartadas.length" class="bloque tarjeta-suelta">
     <TituloPanel
       texto="Alternativas"
       acento="ninguno"
@@ -38,7 +38,7 @@ defineProps<{ alternativas: Recomendacion[]; descartadas: Recomendacion[] }>()
 
 <style scoped>
 .bloque {
-  border-bottom: 1px solid var(--linea);
+  overflow: hidden;
 }
 
 .fila {

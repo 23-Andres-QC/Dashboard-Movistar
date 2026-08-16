@@ -113,15 +113,19 @@ watch(dniRuta, (nuevo, anterior) => {
     />
 
     <template v-if="clienteVista">
-      <FranjaFicha :cliente="clienteVista" :ultima-captura="ultimaCaptura" />
+      <div class="marco">
+        <FranjaFicha :cliente="clienteVista" :ultima-captura="ultimaCaptura" />
+      </div>
 
-      <FunnelHorizontal
-        :paso="pasoFunnel"
-        :resultado="cierre?.resultado ?? null"
-        :hora="horaCierre"
-      />
+      <div class="marco">
+        <FunnelHorizontal
+          :paso="pasoFunnel"
+          :resultado="cierre?.resultado ?? null"
+          :hora="horaCierre"
+        />
+      </div>
 
-      <div class="columnas">
+      <div class="columnas marco">
         <PanelArgumentario
           :oferta="ofertaPrincipal"
           :alternativas="alternativas"
@@ -130,7 +134,8 @@ watch(dniRuta, (nuevo, anterior) => {
           :probabilidad="probInicial"
           :canal-seleccionado="canalSeleccionado"
           :mejor-canal="mejorCanal"
-          :prob-churn="clienteVista.prob_churn"
+          :plan-actual="clienteVista.plan_actual"
+          :facturacion="clienteVista.monto_facturado_prom"
           :hay-gestion="hayGestion"
           :en-curso="hayGestion && !cerrada"
           @seleccionar-canal="store.seleccionarCanal($event)"
@@ -188,6 +193,22 @@ watch(dniRuta, (nuevo, anterior) => {
   flex-direction: column;
   height: 100%;
   min-height: 0;
+}
+
+/* El contenido no se pega a los bordes en pantallas anchas. */
+.marco {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+
+.marco + .marco {
+  margin-top: var(--gap);
+}
+
+.marco:first-of-type {
+  margin-top: var(--gap);
 }
 
 .columnas {

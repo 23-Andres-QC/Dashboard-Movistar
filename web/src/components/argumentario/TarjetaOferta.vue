@@ -17,149 +17,211 @@ const canal = computed(() => (props.canalActivo ? ETIQUETA_CANAL[props.canalActi
 const esOtroCanal = computed(
   () => props.canalActivo !== null && props.canalActivo !== props.oferta.canal_sugerido,
 )
+
+/** Filas de una línea: etiqueta y valor alineados, sin cortes de texto. */
+const filas = computed(() => {
+  const salida: { clave: string; etiqueta: string; valor: string; tono: string }[] = []
+  if (props.oferta.ahorro != null && props.oferta.ahorro > 0) {
+    salida.push({
+      clave: 'ahorro',
+      etiqueta: 'Ahorro / mes',
+      valor: `S/ ${props.oferta.ahorro}`,
+      tono: 'verde',
+    })
+  }
+  if (props.oferta.precio_mensual != null) {
+    salida.push({
+      clave: 'cuota',
+      etiqueta: 'Cuota mensual',
+      valor: `S/ ${props.oferta.precio_mensual}`,
+      tono: 'noche',
+    })
+  }
+  salida.push({
+    clave: 'canal',
+    etiqueta: 'Aceptación por',
+    valor: canal.value ?? '—',
+    tono: esOtroCanal.value ? 'ambar' : 'azul',
+  })
+  return salida
+})
 </script>
 
 <template>
-  <article class="tarjeta">
+  <article class="tarjeta tarjeta-suelta">
     <header class="cabecera">
       <span class="micro rango">Oferta recomendada</span>
-      <span class="micro sello" :class="oferta.confianza">Confianza {{ oferta.confianza }}</span>
+      <h2 class="nombre">{{ oferta.oferta }}</h2>
+      <div class="sellos">
+        <span class="micro sello" :class="oferta.confianza">
+          Confianza {{ oferta.confianza }}
+        </span>
+        <span v-if="oferta.es_movistar_total" class="micro sello mt">Movistar Total</span>
+      </div>
     </header>
 
-    <h2 class="nombre">{{ oferta.oferta }}</h2>
-
-    <div class="tasa">
-      <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="104" />
+    <div class="cuerpo">
+      <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="118" />
 
       <dl class="cifras">
-        <div v-if="oferta.ahorro != null" class="celda">
-          <dt class="micro">Ahorro / mes</dt>
-          <dd class="cifra monto">S/ {{ oferta.ahorro }}</dd>
-        </div>
-        <div v-if="oferta.precio_mensual != null" class="celda">
-          <dt class="micro">Cuota</dt>
-          <dd class="cifra monto neutro">S/ {{ oferta.precio_mensual }}</dd>
-        </div>
-        <div class="celda">
-          <dt class="micro">Aceptación por</dt>
-          <dd class="canal-valor">{{ canal ?? '—' }}</dd>
+        <div v-for="f in filas" :key="f.clave" class="fila">
+          <dt class="micro etiqueta">{{ f.etiqueta }}</dt>
+          <dd class="valor" :class="[f.tono, { cifra: f.clave !== 'canal' }]">{{ f.valor }}</dd>
         </div>
       </dl>
     </div>
 
-    <p v-if="oferta.franja_sugerida" class="contacto">
+    <p v-if="oferta.franja_sugerida" class="pie">
       <span class="micro chip" :class="{ alterno: esOtroCanal }">
-        {{ esOtroCanal ? 'Fuera del canal recomendado' : 'Canal recomendado' }}
+        {{ esOtroCanal ? 'Fuera del recomendado' : 'Canal recomendado' }}
       </span>
-      <span>{{ oferta.franja_sugerida }}</span>
+      <span class="franja">{{ oferta.franja_sugerida }}</span>
     </p>
   </article>
 </template>
 
 <style scoped>
 .tarjeta {
-  padding: var(--gap) var(--gap-lg) var(--gap-lg);
-  border-bottom: 1px solid var(--linea);
-  border-left: 3px solid var(--movistar-azul);
-  background: var(--movistar-cielo);
+  box-shadow: var(--sombra-2);
 }
 
+/* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
 .cabecera {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--gap-sm);
+  padding: 11px var(--gap-lg) 13px;
+  background: var(--movistar-noche);
+  color: var(--tinta-inversa);
 }
 
 .rango {
-  color: var(--movistar-noche);
-}
-
-.sello {
-  padding: 2px 7px;
-  border: 1px solid var(--linea);
-  border-radius: 3px;
-  background: var(--superficie);
-  color: var(--tinta-media);
-}
-
-.sello.alta {
-  border-color: var(--verde);
-  color: var(--verde);
-}
-
-.sello.baja {
-  border-color: var(--ambar);
-  color: var(--ambar);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .nombre {
-  margin-top: 6px;
+  margin-top: 3px;
   font-size: var(--t-lg);
   font-weight: 600;
   line-height: 1.25;
-  color: var(--movistar-noche);
 }
 
-.tasa {
+.sellos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+/* Chips con tinte, no bloques: el color se insinúa. */
+.sello {
+  padding: 3px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.sello.alta {
+  border-color: rgba(47, 163, 107, 0.7);
+  background: rgba(47, 163, 107, 0.18);
+}
+
+.sello.baja {
+  border-color: rgba(224, 150, 60, 0.7);
+  background: rgba(224, 150, 60, 0.18);
+}
+
+.sello.mt {
+  border-color: rgba(1, 157, 244, 0.75);
+  background: rgba(1, 157, 244, 0.2);
+}
+
+.cuerpo {
   display: flex;
   align-items: center;
   gap: var(--gap-lg);
-  margin-top: var(--gap);
-  padding-top: var(--gap);
-  border-top: 1px solid var(--borde-cielo);
+  padding: var(--gap-lg);
 }
 
+/* Filas apiladas: cada etiqueta y su valor en una línea, sin truncarse. */
 .cifras {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
+  flex: 1;
   min-width: 0;
-}
-
-.celda {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
-.monto {
-  font-size: var(--t-lg);
+.fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--linea-suave);
+}
+
+.fila:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.fila:first-child {
+  padding-top: 0;
+}
+
+.etiqueta {
+  color: var(--tinta-suave);
+  white-space: nowrap;
+}
+
+.valor {
+  font-size: var(--t-md);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.valor.verde {
   color: var(--verde);
 }
-
-.monto.neutro {
+.valor.noche {
   color: var(--movistar-noche);
 }
-
-.canal-valor {
-  font-size: var(--t-base);
-  font-weight: 600;
-  color: var(--movistar-azul);
+.valor.azul {
+  color: var(--movistar-azul-hondo);
+}
+.valor.ambar {
+  color: var(--ambar);
 }
 
-.contacto {
+.pie {
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
-  margin-top: var(--gap);
+  padding: 10px var(--gap-lg);
+  border-top: 1px solid var(--linea);
+  background: var(--superficie-tenue);
   font-size: var(--t-sm);
   color: var(--tinta-media);
 }
 
 .chip {
-  padding: 3px 8px;
-  border: 1px solid var(--verde);
-  border-radius: 3px;
+  padding: 3px 9px;
+  border: 1px solid rgba(29, 107, 69, 0.35);
+  border-radius: 999px;
+  background: var(--good-fondo);
   color: var(--verde);
-  background: var(--superficie);
   white-space: nowrap;
 }
 
 .chip.alterno {
-  border-color: var(--ambar);
+  border-color: rgba(143, 74, 11, 0.35);
+  background: var(--warn-fondo);
   color: var(--ambar);
+}
+
+.franja {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

@@ -25,6 +25,13 @@ const pasos = computed(() =>
 )
 
 const tono = computed(() => props.resultado ?? '')
+
+/** Barra continua bajo los pasos: el avance se lee sin contar círculos. */
+const avance = computed(() => {
+  const total = PASOS_FUNNEL.length
+  const hechos = Math.min(Math.max(props.paso, 0), total)
+  return Math.round((hechos / total) * 100)
+})
 </script>
 
 <template>
@@ -49,14 +56,20 @@ const tono = computed(() => props.resultado ?? '')
         <span v-if="p.final && hora" class="cifra hora">{{ hora }}</span>
       </li>
     </ol>
+
+    <div class="progreso" role="progressbar" :aria-valuenow="avance" aria-valuemin="0" aria-valuemax="100">
+      <span class="avance" :style="{ width: `${avance}%` }"></span>
+    </div>
   </nav>
 </template>
 
 <style scoped>
 .funnel {
-  padding: 12px var(--gap-lg) 10px;
+  padding: 13px var(--gap-lg) 11px;
   background: var(--superficie);
-  border-bottom: 1px solid var(--linea);
+  border: 1px solid var(--linea);
+  border-radius: var(--r);
+  box-shadow: var(--sombra-1);
 }
 
 ol {
@@ -155,6 +168,35 @@ ol {
 .hora {
   font-size: var(--t-micro);
   color: var(--tinta-suave);
+}
+
+.progreso {
+  height: 4px;
+  margin-top: 11px;
+  border-radius: 2px;
+  background: var(--linea-suave);
+  overflow: hidden;
+}
+
+.avance {
+  display: block;
+  height: 100%;
+  background: var(--verde-vivo);
+  transition: width 320ms ease;
+}
+
+.rechazado .avance {
+  background: var(--alarma);
+}
+
+.sin_contacto .avance {
+  background: var(--tinta-suave);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avance {
+    transition: none;
+  }
 }
 
 .desenlace .nombre {

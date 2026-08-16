@@ -1,51 +1,57 @@
 /* Identidad visual · Consola NBO Movistar
-   Superficies blancas, filetes de 1px, radios de 6px.
-   Sin sombras difusas y sin degradados: el color solo aparece cuando significa
-   algo. La disciplina es lo que la hace parecer una herramienta y no una demo. */
+   Look corporativo: paleta contenida, sombras neutras (nunca de color), chips
+   con tinte en vez de bloques grandes. El azul y el verde de Movistar se usan
+   con disciplina — significan algo, no decoran. */
 
 :root {
   /* --- Marca -------------------------------------------------------- */
-  --marca-azul: #0066ff; /* azul del símbolo, solo para el logotipo */
+  --marca-azul: #0066ff; /* símbolo del logotipo */
   --movistar-azul: #019df4; /* azul de interfaz */
-  --movistar-azul-hondo: #0b7fc4; /* estados activos y foco sobre azul */
-  --movistar-noche: #0b2739; /* rail, titulares, botón de cierre */
-  --movistar-cielo: #e5f5fe; /* fondo de lo recomendado */
-  --borde-cielo: #b9e2f8; /* filete dentro de superficies cielo */
+  --movistar-azul-hondo: #0277b8; /* texto azul sobre fondo claro (AA) */
+  --movistar-noche: #0b2739; /* cabeceras y franjas sobrias */
+  --movistar-noche-2: #12374e; /* degradado plano de la cabecera */
+  --movistar-cielo: #e8f6fe; /* tinte de lo recomendado */
+  --borde-cielo: #bfe3f7;
 
   /* --- Neutros ------------------------------------------------------- */
-  --gris-canvas: #eef1f4;
-  --linea: #dce3e8;
-  --linea-suave: #eaeff3;
+  --gris-canvas: #eef1f5; /* fondo de página */
+  --linea: #dbe3ea;
+  --linea-suave: #eaeff4;
   --superficie: #ffffff;
-  --superficie-tenue: #f7f9fb;
+  --superficie-tenue: #f6f9fb;
 
-  /* --- Tinta --------------------------------------------------------- */
-  --tinta: #14232e;
-  --tinta-media: #4a5c68;
-  --tinta-suave: #7d8c97;
+  /* --- Tinta. Calibrada para AA sobre blanco y sobre tintes ---------- */
+  --tinta: #14232e; /* 14.4:1 */
+  --tinta-media: #44555f; /* 8.0:1 */
+  --tinta-suave: #5c6b77; /* 5.6:1 — antes fallaba AA */
   --tinta-inversa: #ffffff;
 
   /* --- Semántica: un color, un significado --------------------------- */
-  --ambar: #b4530e; /* atención: objeción viva, fuera de lo recomendado */
-  --alarma: #a32118; /* riesgo: rechazo, sin fundamento, error */
-  --verde: #256b47; /* logro: canal recomendado, venta, confianza alta */
+  --ambar: #8f4a0b; /* 6.2:1 — atención */
+  --alarma: #a32118; /* 7.5:1 — riesgo */
+  --verde: #1d6b45; /* 6.4:1 — logro, en texto */
+  --verde-vivo: #2fa36b; /* solo rellenos y arcos, nunca texto */
 
-  --info-fondo: #e5f5fe;
-  --warn-fondo: #fdf3e8;
-  --risk-fondo: #fdeeed;
-  --good-fondo: #eaf4ef;
+  --info-fondo: #e8f6fe;
+  --warn-fondo: #fdf2e5;
+  --risk-fondo: #fdedec;
+  --good-fondo: #e8f4ee;
 
   --estado-info: var(--movistar-azul);
   --estado-warn: var(--ambar);
   --estado-risk: var(--alarma);
   --estado-good: var(--verde);
 
+  /* --- Sombras neutras: elevación, no brillo de color ---------------- */
+  --sombra-1: 0 1px 2px rgba(11, 39, 57, 0.07);
+  --sombra-2: 0 1px 3px rgba(11, 39, 57, 0.09), 0 6px 16px rgba(11, 39, 57, 0.06);
+  --sombra-modal: 0 12px 40px rgba(11, 39, 57, 0.22);
+
   /* --- Tipografía ---------------------------------------------------- */
   --fuente-cuerpo: 'Telefonica Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --fuente-micro: 'Barlow Semi Condensed', 'Telefonica Sans Condensed', 'Arial Narrow', sans-serif;
   --fuente-cifra: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
 
-  /* El argumentario se lee de un vistazo, a un metro de la pantalla. */
   --t-micro: 10.5px;
   --t-xs: 12px;
   --t-sm: 13px;
@@ -56,15 +62,16 @@
   --t-xxl: 40px;
 
   /* --- Ritmo --------------------------------------------------------- */
-  --r: 6px;
+  --r: 8px;
+  --r-chico: 5px;
   --gap-xs: 4px;
   --gap-sm: 8px;
   --gap: 12px;
   --gap-lg: 16px;
   --gap-xl: 22px;
 
-  /* --- Rejilla: la izquierda manda, es lo que el asesor lee ---------- */
-  --col-izq: 384px;
-  --col-der: 288px;
-  --rail-alto: 52px;
+  /* --- Rejilla ------------------------------------------------------- */
+  --ancho-max: 1680px; /* el contenido no se pega a los bordes */
+  --col-izq: 440px; /* la oferta necesita aire para el anillo y las cifras */
+  --rail-alto: 56px;
 }

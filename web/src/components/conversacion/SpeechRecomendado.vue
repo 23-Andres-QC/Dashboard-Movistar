@@ -72,7 +72,7 @@ const origen = computed(() => (props.guia ? 'Copiloto' : ''))
 
 .etiqueta {
   display: block;
-  color: var(--movistar-azul);
+  color: var(--movistar-azul-hondo);
 }
 
 .alerta {
