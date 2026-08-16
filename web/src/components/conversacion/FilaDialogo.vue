@@ -24,6 +24,12 @@ const inseguro = computed(() => {
 
 const queDecir = computed(() => props.intercambio.guia?.que_decir ?? '')
 
+const proximoArgumento = computed(() => {
+  const guia = props.intercambio.guia
+  if (!guia) return props.intercambio.pendiente ? 'Analizando el contexto…' : 'Listo para el siguiente turno.'
+  return guia.pregunta_seguimiento || guia.resumen || 'Confirme la necesidad antes de ofrecer.'
+})
+
 /** El copiloto pide contexto: aún no hay objeción que rebatir. */
 const pideContexto = computed(
   () => props.intercambio.guia?.recommended_action === 'ASK_CLARIFYING_QUESTION',
@@ -31,7 +37,7 @@ const pideContexto = computed(
 </script>
 
 <template>
-  <li class="fila" :class="{ actual }">
+  <li class="fila" :class="{ actual }" :aria-current="actual ? 'step' : undefined">
     <!-- Izquierda: lo que dice el cliente, literal. -->
     <div class="lado cliente">
       <span class="micro etiqueta">{{ intercambio.etiqueta }}</span>
@@ -69,13 +75,21 @@ const pideContexto = computed(
         </template>
       </template>
     </div>
+
+    <div class="lado siguiente">
+      <span class="micro etiqueta">Próximo argumento</span>
+      <p class="recomendacion">{{ proximoArgumento }}</p>
+      <span v-if="intercambio.guia?.recommended_action" class="micro accion">
+        {{ intercambio.guia.recommended_action.replaceAll('_', ' ') }}
+      </span>
+    </div>
   </li>
 </template>
 
 <style scoped>
 .fila {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   border-bottom: 1px solid var(--linea);
 }
 
@@ -86,6 +100,26 @@ const pideContexto = computed(
 .cliente {
   border-right: 1px solid var(--linea);
   background: var(--superficie-tenue);
+}
+
+.siguiente {
+  border-left: 1px solid var(--linea);
+  background: var(--info-fondo);
+}
+
+.recomendacion {
+  color: var(--movistar-noche);
+  font-size: var(--t-sm);
+  line-height: 1.4;
+}
+
+.accion {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 2px 6px;
+  border: 1px solid var(--borde-cielo);
+  border-radius: 3px;
+  color: var(--movistar-azul-hondo);
 }
 
 .etiqueta {
@@ -191,6 +225,10 @@ const pideContexto = computed(
   color: var(--tinta-suave);
 }
 
+.fila:not(.actual) .recomendacion {
+  color: var(--tinta-suave);
+}
+
 .fila:not(.actual) .responder {
   font-size: var(--t-sm);
 }
@@ -212,6 +250,11 @@ const pideContexto = computed(
   .cliente {
     border-right: 0;
     border-bottom: 1px solid var(--linea);
+  }
+
+  .siguiente {
+    border-left: 0;
+    border-top: 1px solid var(--linea);
   }
 }
 </style>
