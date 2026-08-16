@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 import AnilloProbabilidad from '@/components/ui/AnilloProbabilidad.vue'
-import { ETIQUETA_CANAL } from '@/api/etiquetas'
 import type { Canal, Recomendacion } from '@/api/tipos'
 
 const props = defineProps<{
@@ -14,39 +13,10 @@ const props = defineProps<{
 
 defineEmits<{ detalle: [] }>()
 
-const canal = computed(() => (props.canalActivo ? ETIQUETA_CANAL[props.canalActivo] : null))
-
 const esOtroCanal = computed(
   () => props.canalActivo !== null && props.canalActivo !== props.oferta.canal_sugerido,
 )
 
-/** Filas de una línea: etiqueta y valor alineados, sin cortes de texto. */
-const filas = computed(() => {
-  const salida: { clave: string; etiqueta: string; valor: string; tono: string }[] = []
-  if (props.oferta.ahorro != null && props.oferta.ahorro > 0) {
-    salida.push({
-      clave: 'ahorro',
-      etiqueta: 'Ahorro / mes',
-      valor: `S/ ${props.oferta.ahorro}`,
-      tono: 'verde',
-    })
-  }
-  if (props.oferta.precio_mensual != null) {
-    salida.push({
-      clave: 'cuota',
-      etiqueta: 'Cuota mensual',
-      valor: `S/ ${props.oferta.precio_mensual}`,
-      tono: 'noche',
-    })
-  }
-  salida.push({
-    clave: 'canal',
-    etiqueta: 'Aceptación por',
-    valor: canal.value ?? '—',
-    tono: esOtroCanal.value ? 'ambar' : 'azul',
-  })
-  return salida
-})
 </script>
 
 <template>
@@ -72,13 +42,7 @@ const filas = computed(() => {
 
     <div class="cuerpo">
       <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="118" />
-
-      <dl class="cifras">
-        <div v-for="f in filas" :key="f.clave" class="fila">
-          <dt class="micro etiqueta">{{ f.etiqueta }}</dt>
-          <dd class="valor" :class="[f.tono, { cifra: f.clave !== 'canal' }]">{{ f.valor }}</dd>
-        </div>
-      </dl>
+      <p class="resumen">Oferta seleccionada para este cliente</p>
     </div>
 
     <p v-if="oferta.franja_sugerida" class="pie">
@@ -162,6 +126,11 @@ const filas = computed(() => {
   gap: var(--gap-lg);
   min-height: 150px;
   padding: 16px;
+}
+
+.resumen {
+  color: var(--tinta-suave);
+  font-size: var(--t-xs);
 }
 
 /* Filas apiladas: cada etiqueta y su valor en una línea, sin truncarse. */
