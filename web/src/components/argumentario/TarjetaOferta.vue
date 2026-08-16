@@ -73,7 +73,7 @@ const esOtroCanal = computed(
 /* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
 .cabecera {
   position: relative;
-  min-height: 88px;
+  min-height: 110px;
   padding: 7px 96px 8px var(--gap-lg);
   background: var(--movistar-noche-fondo);
   color: var(--tinta-inversa);
