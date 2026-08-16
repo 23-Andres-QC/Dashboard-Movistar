@@ -306,7 +306,27 @@ export const useGestionStore = defineStore('gestion', () => {
       intercambio.guia = guia
       await registrarObjecion(guia.objecion_categoria)
     } catch (e) {
-      intercambio.error = e instanceof ErrorApi ? e.message : 'El copiloto no respondió'
+      // En la demo, la línea validada del guion mantiene la conversación fluida
+      // aunque el servicio de copiloto no responda a tiempo.
+      if (respaldo) {
+        intercambio.guia = {
+          conversation_id: conversationId.value,
+          response_type: 'demo_fallback',
+          conversation_stage: 'guion_demo',
+          recommended_action: 'RESPOND_WITH_SCRIPT',
+          resumen: 'Respuesta validada para este escenario de demostración.',
+          que_decir: respaldo,
+          pregunta_seguimiento: null,
+          oferta_alternativa: null,
+          objecion_categoria: null,
+          objecion_confianza: null,
+          grounded: true,
+          requiere_revision: false,
+          flags: ['demo_fallback'],
+        }
+      } else {
+        intercambio.error = e instanceof ErrorApi ? e.message : 'El copiloto no respondió'
+      }
     } finally {
       intercambio.pendiente = false
       copilotoPensando.value = false

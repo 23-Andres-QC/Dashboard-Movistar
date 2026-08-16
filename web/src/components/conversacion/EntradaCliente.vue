@@ -28,7 +28,7 @@ function enviar() {
       "
     />
     <button type="submit" class="micro" :disabled="!habilitada || pensando || !texto.trim()">
-      {{ pensando ? 'Consultando' : 'Consultar' }}
+      {{ pensando ? 'Preparando' : 'Consultar' }}
     </button>
   </form>
 </template>

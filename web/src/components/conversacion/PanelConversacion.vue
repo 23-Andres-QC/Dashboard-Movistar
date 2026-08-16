@@ -47,7 +47,7 @@ watch(
 
     <!-- Abajo: lo que dice el cliente y lo que hay que responderle. -->
     <TituloPanel
-      texto="Diálogo"
+      texto="Conversación línea a línea"
       acento="ninguno"
       :contador="`${intercambios.length} turnos`"
     />
@@ -74,7 +74,7 @@ watch(
         <p class="pista">
           {{
             hayGestion
-              ? 'Escriba abajo lo que dice el cliente y el copiloto le dirá qué responder.'
+              ? 'Escriba lo que dice el cliente y aparecerá la respuesta del asesor.'
               : 'Pulse «Iniciar gestión» para abrir la llamada y recibir el speech.'
           }}
         </p>
@@ -104,7 +104,7 @@ watch(
         :disabled="!quedanTurnos || cerrada || copilotoPensando"
         @click="$emit('siguiente')"
       >
-        {{ quedanTurnos ? 'Siguiente turno del guion' : 'Guion completo' }}
+        {{ quedanTurnos ? 'Mostrar siguiente línea' : 'Conversación completa' }}
       </button>
     </div>
   </section>

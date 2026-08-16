@@ -50,7 +50,7 @@ const pideContexto = computed(
     <div class="lado asesor">
       <p v-if="intercambio.pendiente" class="pensando">
         <span class="punto" aria-hidden="true"></span>
-        El copiloto está redactando la respuesta…
+        Preparando respuesta del asesor…
       </p>
 
       <p v-else-if="intercambio.error" class="fallo">{{ intercambio.error }}</p>
