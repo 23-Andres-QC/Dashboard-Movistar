@@ -44,7 +44,11 @@ const esOtroCanal = computed(
     </header>
 
     <div class="cuerpo">
-      <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="96" />
+      <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="112" />
+      <div class="prob-info">
+        <span class="micro">Probabilidad</span>
+        <strong>de aceptación</strong>
+      </div>
     </div>
 
     <p v-if="oferta.franja_sugerida" class="pie">
@@ -141,8 +145,20 @@ const esOtroCanal = computed(
   display: flex;
   align-items: center;
   gap: var(--gap-lg);
-  min-height: 108px;
+  min-height: 124px;
   padding: 8px 16px;
+}
+
+.prob-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--tinta-media);
+}
+
+.prob-info strong {
+  font-size: var(--t-sm);
+  font-weight: 500;
 }
 
 /* Filas apiladas: cada etiqueta y su valor en una línea, sin truncarse. */
