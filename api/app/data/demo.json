@@ -423,7 +423,7 @@
           "segmento_objetivo": "movil",
           "es_movistar_total": false,
           "precio_mensual": 51,
-          "probabilidad": 66,
+          "probabilidad": 34,
           "margen": 0,
           "confianza": "alta",
           "origen": "historial",
@@ -437,10 +437,10 @@
             "Consumo bajo (4.6 GB): subir de plan tiene poca probabilidad"
           ],
           "prob_por_canal": {
-            "tienda": 58,
-            "call_in": 61,
-            "call_out": 66,
-            "digital": 19
+            "tienda": 27,
+            "call_in": 31,
+            "call_out": 34,
+            "digital": 12
           },
           "canal_sugerido": "call_out",
           "franja_sugerida": "Lun a mié, 10 a. m.–12 p. m.",
@@ -501,7 +501,7 @@
         {
           "cliente": "Llamo porque mi celular ya casi no me dura la batería.",
           "asesor": "La entiendo. Veo que su equipo tiene cuatro años, déjeme revisar qué le corresponde.",
-          "probabilidad": 66,
+          "probabilidad": 34,
           "temperatura": 62,
           "estado": "Receptivo",
           "etiqueta": "Apertura",
@@ -514,7 +514,7 @@
         {
           "cliente": "¿Y eso me va a salir más caro? No tengo para pagar más.",
           "asesor": "Su recibo sube nueve soles, no se duplica. La cuota reemplaza lo que ya paga.",
-          "probabilidad": 54,
+          "probabilidad": 27,
           "temperatura": 40,
           "estado": "Resistente",
           "etiqueta": "Objeción precio",
@@ -529,7 +529,7 @@
         {
           "cliente": "Ah, ¿solo nueve soles? ¿Y qué equipo sería?",
           "asesor": "Le muestro las dos opciones que entran en su descuento por permanencia.",
-          "probabilidad": 79,
+          "probabilidad": 18,
           "temperatura": 76,
           "estado": "Interesada",
           "etiqueta": "Rebate aplicado",
@@ -542,7 +542,7 @@
         {
           "cliente": "Ya, el segundo me gusta. ¿Cómo hacemos?",
           "asesor": "Perfecto, confirmo sus datos y le agendo el recojo en tienda.",
-          "probabilidad": 91,
+          "probabilidad": 12,
           "temperatura": 90,
           "estado": "Cierre",
           "etiqueta": "Señal de cierre",
@@ -555,11 +555,11 @@
         }
       ],
       "desenlace": {
-        "resultado": "vendido",
-        "motivo_real": null,
-        "prob_final": 91,
+        "resultado": "rechazado",
+        "motivo_real": "precio",
+        "prob_final": 12,
         "contactabilidad": "contactado",
-        "es_rebate": true,
+        "es_rebate": false,
         "medio_probatorio": "audio_llamada",
         "calificacion_sugerida": {
           "facilidad_venta": 5,

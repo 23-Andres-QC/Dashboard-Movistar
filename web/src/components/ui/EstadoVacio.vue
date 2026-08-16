@@ -10,7 +10,7 @@ type ClientePrioridad = {
   nombre: string
   tipo: string
   contexto: string
-  probabilidad: number
+  probabilidad: number | null
   resultado: string
 }
 
@@ -30,31 +30,35 @@ const CLIENTES_PRIORIZADOS: ClientePrioridad[] = [
     clienteId: 'CLI-0037710',
     nombre: 'Rosa Quispe Mamani',
     tipo: 'Antiguo',
-    contexto: 'Riesgo de baja · Retención',
-    probabilidad: 66,
-    resultado: 'Venta sugerida',
+    contexto: 'Antiguo · riesgo de baja alto',
+    probabilidad: 34,
+    resultado: 'Baja probabilidad · retención difícil',
   },
   {
     dni: '76340219',
     clienteId: 'CLI-0224187',
     nombre: 'Kevin Huamán Ríos',
     tipo: 'Nuevo',
-    contexto: 'Portabilidad digital · 45 GB + equipo',
-    probabilidad: 48,
-    resultado: 'Venta sugerida',
+    contexto: 'Sin historial · completar perfil',
+    probabilidad: null,
+    resultado: 'Calcular recomendación',
   },
   {
     dni: '70112384',
     clienteId: 'CLI-0219944',
     nombre: 'Andrea Salazar Pinto',
     tipo: 'Nuevo',
-    contexto: 'Precio sensible · poca afinidad',
-    probabilidad: 28,
-    resultado: 'Baja probabilidad · rechazo probable',
+    contexto: 'Sin historial · completar perfil',
+    probabilidad: null,
+    resultado: 'Calcular recomendación',
   },
 ]
 
-const clientes = computed(() => [...CLIENTES_PRIORIZADOS].sort((a, b) => b.probabilidad - a.probabilidad))
+const clientes = computed(() =>
+  [...CLIENTES_PRIORIZADOS].sort(
+    (a, b) => (b.probabilidad ?? -1) - (a.probabilidad ?? -1),
+  ),
+)
 </script>
 
 <template>
@@ -104,9 +108,12 @@ const clientes = computed(() => [...CLIENTES_PRIORIZADOS].sort((a, b) => b.proba
             <span>{{ cliente.contexto }}</span>
             <small>{{ cliente.resultado }}</small>
           </span>
-          <span class="probabilidad">
-            <span class="barra"><span :style="{ width: `${cliente.probabilidad}%` }"></span></span>
-            <strong class="cifra">{{ cliente.probabilidad }}%</strong>
+          <span class="probabilidad" :class="{ 'sin-datos': cliente.probabilidad === null }">
+            <template v-if="cliente.probabilidad !== null">
+              <span class="barra"><span :style="{ width: `${cliente.probabilidad}%` }"></span></span>
+              <strong class="cifra">{{ cliente.probabilidad }}%</strong>
+            </template>
+            <strong v-else>Sin datos</strong>
           </span>
           <span class="abrir" aria-hidden="true">Abrir <span>→</span></span>
         </button>
@@ -275,6 +282,13 @@ small {
   color: var(--verde);
   font-size: var(--t-sm);
   text-align: right;
+}
+
+.probabilidad.sin-datos strong {
+  min-width: 0;
+  color: var(--tinta-suave);
+  font-size: var(--t-xs);
+  font-weight: 500;
 }
 
 .abrir {
