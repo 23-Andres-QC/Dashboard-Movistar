@@ -88,7 +88,6 @@ const filas = computed(() => {
       <span class="franja">{{ oferta.franja_sugerida }}</span>
     </p>
     <div class="acciones-detalle">
-      <button type="button" @click.stop="$emit('detalle')">Ver plan <span aria-hidden="true">↗</span></button>
       <button type="button" @click.stop="$emit('detalle')">Ver contraste <span aria-hidden="true">↗</span></button>
     </div>
   </article>
