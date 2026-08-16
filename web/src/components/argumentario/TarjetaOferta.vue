@@ -155,8 +155,8 @@ const esOtroCanal = computed(
 }
 
 .sello.mejor-opcion {
-  border-color: var(--verde-vivo);
-  background: var(--verde-vivo);
+  border-color: #39d98a;
+  background: #39d98a;
   color: #06381f;
 }
 
