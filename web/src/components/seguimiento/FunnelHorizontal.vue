@@ -65,6 +65,8 @@ const avance = computed(() => {
 
 <style scoped>
 .funnel {
+  width: calc(100% - 28px);
+  margin-inline: auto;
   padding: 8px var(--gap-lg) 7px;
   background: var(--superficie);
   border: 1px solid var(--linea);

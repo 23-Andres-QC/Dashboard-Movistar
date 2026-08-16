@@ -55,7 +55,6 @@ watch(
     <div class="encabezados" aria-hidden="true">
       <span class="micro">El cliente dice</span>
       <span class="micro destacado">Usted debe decir</span>
-      <span class="micro recomendacion">Próximo argumento</span>
     </div>
 
     <div ref="hilo" class="hilo">
@@ -122,7 +121,7 @@ watch(
 
 .encabezados {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid var(--linea);
 }
 
@@ -135,16 +134,8 @@ watch(
   background: var(--superficie-tenue);
 }
 
-.encabezados span:nth-child(2) {
-  border-right: 1px solid var(--linea);
-}
-
 .destacado {
   color: var(--movistar-noche);
-}
-
-.recomendacion {
-  color: var(--movistar-azul-hondo);
 }
 
 .hilo {

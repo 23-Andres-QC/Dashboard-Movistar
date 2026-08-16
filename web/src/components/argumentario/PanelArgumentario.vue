@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import ListaAlternativas from './ListaAlternativas.vue'
 import DetalleOferta from './DetalleOferta.vue'
-import PlanActual from './PlanActual.vue'
 import SelectorCanal from './SelectorCanal.vue'
 import TarjetaOferta from './TarjetaOferta.vue'
+import { computed, ref, watch } from 'vue'
 import type { Canal, Motivo, Recomendacion } from '@/api/tipos'
 
-defineProps<{
+const props = defineProps<{
   oferta: Recomendacion | null
   alternativas: Recomendacion[]
   descartadas: Recomendacion[]
@@ -23,6 +23,18 @@ defineProps<{
   mostrarDetalle: boolean
 }>()
 
+const alternativaActiva = ref<Recomendacion | null>(null)
+const ofertaVista = computed(() => alternativaActiva.value ?? props.oferta!)
+const probabilidadVista = computed(() => {
+  const oferta = ofertaVista.value
+  if (!oferta) return 0
+  return props.canalSeleccionado && oferta.prob_por_canal[props.canalSeleccionado] !== undefined
+    ? oferta.prob_por_canal[props.canalSeleccionado]!
+    : oferta.probabilidad
+})
+
+watch(() => props.oferta?.oferta_id, () => { alternativaActiva.value = null })
+
 defineEmits<{ seleccionarCanal: [canal: Canal]; verDetalle: [] }>()
 </script>
 
@@ -31,31 +43,34 @@ defineEmits<{ seleccionarCanal: [canal: Canal]; verDetalle: [] }>()
        las tarjetas destacan en blanco. Así no quedan parches sueltos. -->
   <aside class="columna" aria-label="Argumentario">
     <template v-if="oferta">
-      <PlanActual :plan="planActual" :facturacion="facturacion" />
+      <SelectorCanal
+        :prob-por-canal="ofertaVista?.prob_por_canal ?? {}"
+        :mejor-canal="ofertaVista?.canal_sugerido ?? null"
+        :seleccionado="canalSeleccionado"
+        :bloqueado="hayGestion"
+        @seleccionar="$emit('seleccionarCanal', $event)"
+      />
+
+      <ListaAlternativas
+        :alternativas="alternativas"
+        :descartadas="descartadas"
+        @seleccionar="alternativaActiva = $event"
+      />
 
       <TarjetaOferta
-        :oferta="oferta"
-        :probabilidad="probabilidad"
+        :oferta="ofertaVista"
+        :probabilidad="probabilidadVista"
         :canal-activo="canalSeleccionado"
         @detalle="$emit('verDetalle')"
       />
 
       <DetalleOferta
         v-if="mostrarDetalle"
-        :oferta="oferta"
+        :oferta="ofertaVista"
         :plan-actual="planActual"
         :facturacion="facturacion"
       />
 
-      <SelectorCanal
-        :prob-por-canal="oferta.prob_por_canal"
-        :mejor-canal="mejorCanal"
-        :seleccionado="canalSeleccionado"
-        :bloqueado="hayGestion"
-        @seleccionar="$emit('seleccionarCanal', $event)"
-      />
-
-      <ListaAlternativas :alternativas="alternativas" :descartadas="descartadas" />
     </template>
 
     <p v-else class="vacio tarjeta-suelta">Calculando recomendaciones…</p>

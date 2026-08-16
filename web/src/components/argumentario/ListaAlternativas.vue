@@ -3,6 +3,7 @@ import TituloPanel from '@/components/ui/TituloPanel.vue'
 import type { Recomendacion } from '@/api/tipos'
 
 defineProps<{ alternativas: Recomendacion[]; descartadas: Recomendacion[] }>()
+defineEmits<{ seleccionar: [oferta: Recomendacion] }>()
 </script>
 
 <template>
@@ -13,14 +14,14 @@ defineProps<{ alternativas: Recomendacion[]; descartadas: Recomendacion[] }>()
       :contador="alternativas.length + descartadas.length"
     />
     <ul>
-      <li v-for="alt in alternativas" :key="alt.oferta" class="fila">
+      <button v-for="alt in alternativas" :key="alt.oferta" class="fila seleccionable" type="button" @click="$emit('seleccionar', alt)">
         <span class="nombre" :title="alt.oferta">{{ alt.oferta }}</span>
         <span class="barra" aria-hidden="true">
           <span class="relleno" :style="{ width: `${alt.probabilidad}%` }"></span>
         </span>
         <span class="cifra pct">{{ alt.probabilidad }}%</span>
         <p v-if="alt.nota" class="nota">{{ alt.nota }}</p>
-      </li>
+      </button>
 
       <!-- Descartadas al final: mostrar por qué el motor NO recomendó algo
            vale tanto como mostrar por qué sí. -->
@@ -49,6 +50,20 @@ defineProps<{ alternativas: Recomendacion[]; descartadas: Recomendacion[] }>()
   padding: 8px var(--gap-lg);
   border-bottom: 1px solid var(--superficie-tenue);
   font-size: var(--t-sm);
+}
+
+.seleccionable {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--superficie-tenue);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.seleccionable:hover {
+  background: var(--info-fondo);
 }
 
 .fila:last-child {

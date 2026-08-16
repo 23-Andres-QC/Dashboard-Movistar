@@ -28,12 +28,6 @@ const queDecir = computed(
   () => props.intercambio.respaldo || props.intercambio.guia?.que_decir || '',
 )
 
-const proximoArgumento = computed(() => {
-  const guia = props.intercambio.guia
-  if (!guia) return props.intercambio.pendiente ? 'Analizando el contexto…' : 'Listo para el siguiente turno.'
-  return guia.pregunta_seguimiento || guia.resumen || 'Confirme la necesidad antes de ofrecer.'
-})
-
 /** El copiloto pide contexto: aún no hay objeción que rebatir. */
 const pideContexto = computed(
   () => props.intercambio.guia?.recommended_action === 'ASK_CLARIFYING_QUESTION',
@@ -80,13 +74,6 @@ const pideContexto = computed(
       </template>
     </div>
 
-    <div class="lado siguiente">
-      <span class="micro etiqueta">Próximo argumento</span>
-      <p class="recomendacion">{{ proximoArgumento }}</p>
-      <span v-if="intercambio.guia?.recommended_action" class="micro accion">
-        {{ intercambio.guia.recommended_action.replaceAll('_', ' ') }}
-      </span>
-    </div>
   </li>
 </template>
 
@@ -106,25 +93,6 @@ const pideContexto = computed(
   background: var(--superficie-tenue);
 }
 
-.siguiente {
-  border-left: 1px solid var(--linea);
-  background: var(--info-fondo);
-}
-
-.recomendacion {
-  color: var(--movistar-noche);
-  font-size: var(--t-sm);
-  line-height: 1.4;
-}
-
-.accion {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 2px 6px;
-  border: 1px solid var(--borde-cielo);
-  border-radius: 3px;
-  color: var(--movistar-azul-hondo);
-}
 
 .etiqueta {
   display: block;
@@ -229,9 +197,6 @@ const pideContexto = computed(
   color: var(--tinta-suave);
 }
 
-.fila:not(.actual) .recomendacion {
-  color: var(--tinta-suave);
-}
 
 .fila:not(.actual) .responder {
   font-size: var(--t-sm);
@@ -256,9 +221,5 @@ const pideContexto = computed(
     border-bottom: 1px solid var(--linea);
   }
 
-  .siguiente {
-    border-left: 0;
-    border-top: 1px solid var(--linea);
-  }
 }
 </style>
