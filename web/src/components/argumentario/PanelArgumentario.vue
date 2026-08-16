@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ListaAlternativas from './ListaAlternativas.vue'
+import DetalleOferta from './DetalleOferta.vue'
 import PlanActual from './PlanActual.vue'
 import SelectorCanal from './SelectorCanal.vue'
 import TarjetaOferta from './TarjetaOferta.vue'
@@ -19,6 +20,7 @@ defineProps<{
   hayGestion: boolean
   /** Hay gestión abierta y viva: lo que se recomienda cambia turno a turno. */
   enCurso: boolean
+  mostrarDetalle: boolean
 }>()
 
 defineEmits<{ seleccionarCanal: [canal: Canal]; verDetalle: [] }>()
@@ -36,6 +38,13 @@ defineEmits<{ seleccionarCanal: [canal: Canal]; verDetalle: [] }>()
         :probabilidad="probabilidad"
         :canal-activo="canalSeleccionado"
         @detalle="$emit('verDetalle')"
+      />
+
+      <DetalleOferta
+        v-if="mostrarDetalle"
+        :oferta="oferta"
+        :plan-actual="planActual"
+        :facturacion="facturacion"
       />
 
       <SelectorCanal

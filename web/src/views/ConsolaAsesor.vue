@@ -151,6 +151,7 @@ watch(dniRuta, (nuevo, anterior) => {
           :facturacion="clienteVista.monto_facturado_prom"
           :hay-gestion="hayGestion"
           :en-curso="hayGestion && !cerrada"
+          :mostrar-detalle="mostrarDetalleOferta"
           @seleccionar-canal="store.seleccionarCanal($event)"
           @ver-detalle="mostrarDetalleOferta = true"
         />
@@ -167,7 +168,6 @@ watch(dniRuta, (nuevo, anterior) => {
             :cerrada="cerrada"
             :hay-gestion="hayGestion"
             :cargando="abriendoGestion"
-            :mostrar-detalle-oferta="mostrarDetalleOferta"
             @iniciar="store.iniciarGestion()"
             @siguiente="store.siguienteTurno()"
             @decir="store.decirCliente($event)"
