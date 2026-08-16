@@ -63,6 +63,7 @@ defineEmits<{ seleccionarCanal: [canal: Canal]; verDetalle: [] }>()
         :oferta="ofertaVista"
         :probabilidad="probabilidadVista"
         :canal-activo="canalSeleccionado"
+        :es-mejor-opcion="!alternativaActiva"
         @detalle="$emit('verDetalle')"
       />
 

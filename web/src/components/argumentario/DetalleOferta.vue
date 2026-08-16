@@ -7,8 +7,8 @@ defineProps<{ oferta: Recomendacion; planActual: string | null; facturacion: num
 <template>
   <section class="detalle tarjeta-suelta" aria-label="Detalle de la oferta">
     <header class="cabecera">
-      <span class="micro">Plan</span>
-      <span class="micro confianza">Sustento</span>
+      <span class="micro">Contraste de oferta</span>
+      <span class="micro confianza">Mejor opción</span>
     </header>
 
     <div class="comparacion">
@@ -51,15 +51,15 @@ defineProps<{ oferta: Recomendacion; planActual: string | null; facturacion: num
   gap: var(--gap);
   padding: 10px var(--gap-lg);
   border-bottom: 1px solid var(--linea);
-  background: var(--superficie-tenue);
+  background: var(--info-fondo);
 }
 .confianza { color: var(--verde); }
 .comparacion { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding: 10px var(--gap-lg) 0; }
 .antes, .ahora { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 8px 9px; border-radius: var(--r-chico); }
 .antes { background: var(--superficie-tenue); color: var(--tinta-media); }
-.ahora { border: 1px solid rgba(29, 107, 69, 0.35); background: var(--good-fondo); color: var(--verde); }
+.ahora { border: 1px solid rgba(193, 132, 15, 0.55); background: var(--ambar-fondo); color: var(--ambar); }
 .antes strong, .ahora strong { overflow: hidden; color: var(--tinta); font-size: var(--t-xs); text-overflow: ellipsis; white-space: nowrap; }
-.ahora strong { color: var(--verde); }
+.ahora strong { color: var(--ambar); }
 .antes span:last-child, .ahora span:last-child { font-size: var(--t-xs); }
 .flecha { color: var(--movistar-azul-hondo); font-size: 20px; font-weight: 700; }
 .metricas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 10px var(--gap-lg); }

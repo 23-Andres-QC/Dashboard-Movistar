@@ -51,23 +51,24 @@ const origen = computed(() => (props.guia ? 'Copiloto' : ''))
 }
 
 .cuerpo {
-  padding: var(--gap) var(--gap-lg) var(--gap);
-  border-left: 3px solid var(--movistar-azul);
-  background: var(--movistar-cielo);
+  padding: 8px var(--gap-lg);
+  border-top: 1px solid var(--linea);
+  border-bottom: 1px solid var(--linea);
+  background: var(--superficie);
 }
 
 .texto {
-  font-size: var(--t-md);
-  line-height: 1.5;
-  color: var(--movistar-noche);
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--tinta);
 }
 
 .pregunta {
-  margin-top: var(--gap-sm);
-  padding-top: var(--gap-sm);
-  border-top: 1px solid var(--borde-cielo);
-  font-size: var(--t-base);
-  line-height: 1.45;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--linea-suave);
+  font-size: var(--t-xs);
+  line-height: 1.35;
   color: var(--tinta-media);
 }
 

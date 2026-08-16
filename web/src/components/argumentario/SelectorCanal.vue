@@ -83,7 +83,7 @@ const caida = computed(() => {
 }
 
 .mejor {
-  color: var(--verde);
+  color: var(--ambar);
   letter-spacing: 0.06em;
 }
 
@@ -121,11 +121,12 @@ const caida = computed(() => {
 
 /* El recomendado se distingue aunque el asesor esté mirando otro. */
 .recomendado {
-  border-color: var(--verde);
+  border-color: var(--ambar);
+  background: var(--ambar-fondo);
 }
 
 .recomendado .prob {
-  color: var(--verde);
+  color: var(--ambar);
 }
 
 .estrella {
@@ -133,13 +134,17 @@ const caida = computed(() => {
   top: 3px;
   right: 4px;
   font-size: 7px;
-  color: var(--verde);
+  color: var(--ambar);
 }
 
 .activo {
   border-width: 2px;
   border-color: var(--movistar-noche);
   background: var(--superficie-tenue);
+}
+
+.activo.recomendado {
+  border-color: var(--ambar);
 }
 
 .activo:not(.recomendado) .prob {

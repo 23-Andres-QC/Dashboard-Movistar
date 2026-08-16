@@ -257,7 +257,7 @@
           "es_movistar_total": false,
           "precio_mensual": 49,
           "gb_incluidos": 25,
-          "probabilidad": 42,
+          "probabilidad": 28,
           "margen": 12,
           "confianza": "baja",
           "origen": "lookalike",
@@ -271,10 +271,10 @@
             "No elegible MT: sin línea móvil ni internet hogar todavía"
           ],
           "prob_por_canal": {
-            "tienda": 31,
-            "call_in": 36,
-            "call_out": 28,
-            "digital": 42
+            "tienda": 20,
+            "call_in": 24,
+            "call_out": 18,
+            "digital": 28
           },
           "canal_sugerido": "digital",
           "franja_sugerida": "Fin de semana, mañana",
@@ -334,7 +334,7 @@
         {
           "cliente": "Vi una promoción y quería preguntar nomás.",
           "asesor": "Con gusto. ¿Actualmente con qué operadora está?",
-          "probabilidad": 42,
+          "probabilidad": 28,
           "temperatura": 50,
           "estado": "Explorando",
           "etiqueta": "Apertura",

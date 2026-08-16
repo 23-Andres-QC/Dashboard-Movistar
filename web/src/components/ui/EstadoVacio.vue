@@ -48,9 +48,9 @@ const CLIENTES_PRIORIZADOS: ClientePrioridad[] = [
     clienteId: 'CLI-0219944',
     nombre: 'Andrea Salazar Pinto',
     tipo: 'Nuevo',
-    contexto: 'Sin historial · Plan de entrada',
-    probabilidad: 42,
-    resultado: 'Requiere contacto',
+    contexto: 'Precio sensible · poca afinidad',
+    probabilidad: 28,
+    resultado: 'Baja probabilidad · rechazo probable',
   },
 ]
 

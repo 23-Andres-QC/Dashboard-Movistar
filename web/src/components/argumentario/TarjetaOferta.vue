@@ -4,12 +4,13 @@ import { computed } from 'vue'
 import AnilloProbabilidad from '@/components/ui/AnilloProbabilidad.vue'
 import type { Canal, Recomendacion } from '@/api/tipos'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   oferta: Recomendacion
   /** Probabilidad del canal que el asesor está mirando. */
   probabilidad: number
   canalActivo: Canal | null
-}>()
+  esMejorOpcion?: boolean
+}>(), { esMejorOpcion: true })
 
 defineEmits<{ detalle: [] }>()
 
@@ -37,6 +38,7 @@ const esOtroCanal = computed(
           Confianza {{ oferta.confianza }}
         </span>
         <span v-if="oferta.es_movistar_total" class="micro sello mt">Movistar Total</span>
+        <span v-if="esMejorOpcion" class="micro sello mejor-opcion">Mejor opción</span>
       </div>
       <button class="contraste" type="button" @click.stop="$emit('detalle')">
         Ver contraste <span aria-hidden="true">↗</span>
@@ -145,6 +147,12 @@ const esOtroCanal = computed(
 .sello.mt {
   border-color: rgba(1, 157, 244, 0.75);
   background: rgba(1, 157, 244, 0.2);
+}
+
+.sello.mejor-opcion {
+  border-color: rgba(244, 183, 53, 0.9);
+  background: rgba(244, 183, 53, 0.2);
+  color: #ffe29a;
 }
 
 /* Filas apiladas: cada etiqueta y su valor en una línea, sin truncarse. */
