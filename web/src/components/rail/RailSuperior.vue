@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import BuscadorDni from './BuscadorDni.vue'
 import Cronometro from './Cronometro.vue'
 import IndicadorVivo from './IndicadorVivo.vue'
 import logoUrl from '@/assets/logo-movistar.png'
 
 const modoOscuro = ref(false)
+const router = useRouter()
+
+function irInicio() {
+  router.push({ name: 'asesor' })
+}
 
 function alternarTema() {
   modoOscuro.value = !modoOscuro.value
@@ -32,12 +38,12 @@ defineEmits<{ buscar: [dni: string] }>()
 
 <template>
   <header class="rail">
-    <div class="marca">
+    <button class="marca marca-boton" type="button" aria-label="Volver a clientes priorizados" @click="irInicio">
       <img :src="logoUrl" alt="Movistar" class="simbolo" />
       <span class="nombre-marca">movistar</span>
       <span class="filete" aria-hidden="true"></span>
       <span class="micro producto">Next Best Offer · Consola del asesor</span>
-    </div>
+    </button>
 
     <BuscadorDni
       :valor-inicial="dniInicial"
@@ -85,6 +91,17 @@ defineEmits<{ buscar: [dni: string] }>()
   align-items: center;
   gap: var(--gap-sm);
   min-width: 0;
+}
+
+.marca-boton {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.marca-boton:hover .nombre-marca {
+  color: var(--movistar-azul);
 }
 
 /* Símbolo oficial; el nombre va como texto, no como imitación del lettering. */
