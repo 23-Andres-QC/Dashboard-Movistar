@@ -22,7 +22,11 @@ const inseguro = computed(() => {
   return g !== null && (!g.grounded || g.requiere_revision)
 })
 
-const queDecir = computed(() => props.intercambio.guia?.que_decir ?? '')
+// El guion demo trae una respuesta validada por escenario; el copiloto puede
+// complementarla, pero no debe reemplazarla por una pregunta genérica.
+const queDecir = computed(
+  () => props.intercambio.respaldo || props.intercambio.guia?.que_decir || '',
+)
 
 const proximoArgumento = computed(() => {
   const guia = props.intercambio.guia
