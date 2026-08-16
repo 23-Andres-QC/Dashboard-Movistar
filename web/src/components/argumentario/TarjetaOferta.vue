@@ -87,7 +87,10 @@ const filas = computed(() => {
       </span>
       <span class="franja">{{ oferta.franja_sugerida }}</span>
     </p>
-    <span class="ver-detalle">Ver detalles del plan <span aria-hidden="true">↗</span></span>
+    <div class="acciones-detalle">
+      <button type="button" @click.stop="$emit('detalle')">Ver plan <span aria-hidden="true">↗</span></button>
+      <button type="button" @click.stop="$emit('detalle')">Ver contraste <span aria-hidden="true">↗</span></button>
+    </div>
   </article>
 </template>
 
@@ -247,13 +250,24 @@ const filas = computed(() => {
   white-space: nowrap;
 }
 
-.ver-detalle {
-  display: block;
+.acciones-detalle {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
   padding: 8px var(--gap-lg);
   border-top: 1px solid var(--linea);
+}
+
+.acciones-detalle button {
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--movistar-azul-hondo);
   font-size: var(--t-xs);
   font-weight: 700;
-  text-align: right;
+}
+
+.acciones-detalle button:hover {
+  text-decoration: underline;
 }
 </style>

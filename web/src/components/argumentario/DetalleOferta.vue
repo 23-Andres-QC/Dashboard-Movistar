@@ -7,19 +7,19 @@ defineProps<{ oferta: Recomendacion; planActual: string | null; facturacion: num
 <template>
   <section class="detalle tarjeta-suelta" aria-label="Detalle de la oferta">
     <header class="cabecera">
-      <span class="micro">Detalle del plan</span>
-      <span class="micro confianza">Datos para sustentar la oferta</span>
+      <span class="micro">Plan</span>
+      <span class="micro confianza">Sustento</span>
     </header>
 
     <div class="comparacion">
       <div class="antes">
-        <span class="micro">Antes · tiene hoy</span>
+        <span class="micro">Antes</span>
         <strong>{{ planActual ?? 'Sin plan registrado' }}</strong>
         <span>{{ facturacion !== null ? `S/ ${facturacion} al mes` : 'Sin factura registrada' }}</span>
       </div>
       <span class="flecha" aria-hidden="true">→</span>
       <div class="ahora">
-        <span class="micro">Ahora · oferta sugerida</span>
+        <span class="micro">Ahora</span>
         <strong>{{ oferta.oferta }}</strong>
         <span>{{ oferta.precio_mensual !== null ? `S/ ${oferta.precio_mensual} al mes` : 'Consultar precio' }}</span>
       </div>
