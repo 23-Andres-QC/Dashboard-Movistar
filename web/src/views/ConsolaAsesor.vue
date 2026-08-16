@@ -153,7 +153,7 @@ watch(dniRuta, (nuevo, anterior) => {
           :en-curso="hayGestion && !cerrada"
           :mostrar-detalle="mostrarDetalleOferta"
           @seleccionar-canal="store.seleccionarCanal($event)"
-          @ver-detalle="mostrarDetalleOferta = true"
+          @ver-detalle="mostrarDetalleOferta = !mostrarDetalleOferta"
         />
 
         <div class="centro panel">
