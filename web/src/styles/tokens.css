@@ -52,10 +52,10 @@
   --fuente-micro: 'Barlow Semi Condensed', 'Telefonica Sans Condensed', 'Arial Narrow', sans-serif;
   --fuente-cifra: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
 
-  --t-micro: 10.5px;
-  --t-xs: 12px;
-  --t-sm: 13px;
-  --t-base: 14.5px;
+  --t-micro: 11px;
+  --t-xs: 13px;
+  --t-sm: 14px;
+  --t-base: 15px;
   --t-md: 16px;
   --t-lg: 21px;
   --t-xl: 30px;
@@ -74,4 +74,26 @@
   --ancho-max: 1740px; /* el contenido no se pega a los bordes */
   --col-izq: 372px; /* sidebar de decisión, con más espacio para el diálogo */
   --rail-alto: 64px;
+}
+
+/* Tema nocturno para jornadas largas del asesor. Se activa desde el rail. */
+:root.dark {
+  --gris-canvas: #081923;
+  --linea: #2a4352;
+  --linea-suave: #1d3543;
+  --superficie: #102b3a;
+  --superficie-tenue: #0d2432;
+  --tinta: #f1f7fa;
+  --tinta-media: #c3d1d8;
+  --tinta-suave: #9eb0ba;
+  --movistar-noche: #061923;
+  --movistar-noche-2: #0a2231;
+  --movistar-cielo: #123b52;
+  --borde-cielo: #28627d;
+  --info-fondo: #123b52;
+  --warn-fondo: #44351e;
+  --risk-fondo: #482421;
+  --good-fondo: #173d31;
+  --sombra-1: 0 1px 3px rgba(0, 0, 0, 0.24);
+  --sombra-2: 0 3px 8px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(0, 0, 0, 0.18);
 }

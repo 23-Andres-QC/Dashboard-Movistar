@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import ListaAlternativas from './ListaAlternativas.vue'
-import ListaAngulos from './ListaAngulos.vue'
-import ListaRebates from './ListaRebates.vue'
 import PlanActual from './PlanActual.vue'
 import SelectorCanal from './SelectorCanal.vue'
 import TarjetaOferta from './TarjetaOferta.vue'
@@ -23,7 +21,7 @@ defineProps<{
   enCurso: boolean
 }>()
 
-defineEmits<{ seleccionarCanal: [canal: Canal] }>()
+defineEmits<{ seleccionarCanal: [canal: Canal]; verDetalle: [] }>()
 </script>
 
 <template>
@@ -37,6 +35,7 @@ defineEmits<{ seleccionarCanal: [canal: Canal] }>()
         :oferta="oferta"
         :probabilidad="probabilidad"
         :canal-activo="canalSeleccionado"
+        @detalle="$emit('verDetalle')"
       />
 
       <SelectorCanal
@@ -48,8 +47,6 @@ defineEmits<{ seleccionarCanal: [canal: Canal] }>()
       />
 
       <ListaAlternativas :alternativas="alternativas" :descartadas="descartadas" />
-      <ListaAngulos :angulos="oferta.angulos" />
-      <ListaRebates :rebates="oferta.rebates" :objecion-activa="objecionActiva" />
     </template>
 
     <p v-else class="vacio tarjeta-suelta">Calculando recomendaciones…</p>

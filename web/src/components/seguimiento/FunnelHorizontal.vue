@@ -65,7 +65,7 @@ const avance = computed(() => {
 
 <style scoped>
 .funnel {
-  padding: 13px var(--gap-lg) 11px;
+  padding: 8px var(--gap-lg) 7px;
   background: var(--superficie);
   border: 1px solid var(--linea);
   border-radius: var(--r);
@@ -81,7 +81,7 @@ ol {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -113,10 +113,10 @@ ol {
 .marca {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   flex: none;
-  margin: 0 6px;
+  margin: 0 5px;
   border: 2px solid var(--linea);
   border-radius: 50%;
   background: var(--superficie);
@@ -140,7 +140,7 @@ ol {
   border-color: var(--movistar-azul);
   background: var(--movistar-cielo);
   color: var(--movistar-azul);
-  box-shadow: 0 0 0 4px var(--movistar-cielo);
+  box-shadow: 0 0 0 3px var(--movistar-cielo);
 }
 
 .nombre {
@@ -171,8 +171,8 @@ ol {
 }
 
 .progreso {
-  height: 4px;
-  margin-top: 11px;
+  height: 3px;
+  margin-top: 7px;
   border-radius: 2px;
   background: var(--linea-suave);
   overflow: hidden;

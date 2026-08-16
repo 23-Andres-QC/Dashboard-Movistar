@@ -19,6 +19,7 @@ const props = defineProps<{
   cerrada: boolean
   hayGestion: boolean
   cargando: boolean
+  mostrarDetalleOferta: boolean
 }>()
 
 defineEmits<{ siguiente: []; iniciar: []; decir: [texto: string] }>()
@@ -41,6 +42,7 @@ watch(
       :guia="speechInicial"
       :oferta="oferta"
       :en-curso="hayGestion && !cerrada"
+      :mostrar-detalle="mostrarDetalleOferta"
     />
 
     <TermometroReceptividad :temperatura="temperatura" :estado="estado" />

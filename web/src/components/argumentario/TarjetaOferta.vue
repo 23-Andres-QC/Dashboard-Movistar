@@ -12,6 +12,8 @@ const props = defineProps<{
   canalActivo: Canal | null
 }>()
 
+defineEmits<{ detalle: [] }>()
+
 const canal = computed(() => (props.canalActivo ? ETIQUETA_CANAL[props.canalActivo] : null))
 
 const esOtroCanal = computed(
@@ -48,7 +50,15 @@ const filas = computed(() => {
 </script>
 
 <template>
-  <article class="tarjeta tarjeta-suelta">
+  <article
+    class="tarjeta tarjeta-suelta"
+    role="button"
+    tabindex="0"
+    aria-label="Ver detalles de la oferta"
+    @click="$emit('detalle')"
+    @keydown.enter="$emit('detalle')"
+    @keydown.space.prevent="$emit('detalle')"
+  >
     <header class="cabecera">
       <span class="micro rango">Oferta recomendada</span>
       <h2 class="nombre">{{ oferta.oferta }}</h2>
@@ -77,6 +87,7 @@ const filas = computed(() => {
       </span>
       <span class="franja">{{ oferta.franja_sugerida }}</span>
     </p>
+    <span class="ver-detalle">Ver detalles del plan <span aria-hidden="true">↗</span></span>
   </article>
 </template>
 
@@ -84,6 +95,15 @@ const filas = computed(() => {
 .tarjeta {
   box-shadow: var(--sombra-2);
   flex: 0 0 auto;
+  cursor: pointer;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.tarjeta:hover,
+.tarjeta:focus-visible {
+  border-color: var(--movistar-azul);
+  box-shadow: var(--sombra-2), 0 0 0 3px var(--movistar-cielo);
+  transform: translateY(-1px);
 }
 
 /* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
@@ -225,5 +245,15 @@ const filas = computed(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ver-detalle {
+  display: block;
+  padding: 8px var(--gap-lg);
+  border-top: 1px solid var(--linea);
+  color: var(--movistar-azul-hondo);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  text-align: right;
 }
 </style>

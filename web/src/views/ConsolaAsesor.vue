@@ -58,10 +58,12 @@ const {
 
 /** Cierre elegido en el panel, pendiente de confirmar en el modal. */
 const cierrePendiente = ref<CierreEnvio | null>(null)
+const mostrarDetalleOferta = ref(false)
 
 const dniRuta = computed(() => (route.params.dni as string | undefined) ?? '')
 
 async function buscar(dni: string) {
+  mostrarDetalleOferta.value = false
   if (dni !== dniRuta.value) await router.push({ name: 'asesor', params: { dni } })
   await store.buscar(dni)
 }
@@ -150,6 +152,7 @@ watch(dniRuta, (nuevo, anterior) => {
           :hay-gestion="hayGestion"
           :en-curso="hayGestion && !cerrada"
           @seleccionar-canal="store.seleccionarCanal($event)"
+          @ver-detalle="mostrarDetalleOferta = true"
         />
 
         <div class="centro panel">
@@ -164,6 +167,7 @@ watch(dniRuta, (nuevo, anterior) => {
             :cerrada="cerrada"
             :hay-gestion="hayGestion"
             :cargando="abriendoGestion"
+            :mostrar-detalle-oferta="mostrarDetalleOferta"
             @iniciar="store.iniciarGestion()"
             @siguiente="store.siguienteTurno()"
             @decir="store.decirCliente($event)"

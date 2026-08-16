@@ -1,8 +1,22 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import BuscadorDni from './BuscadorDni.vue'
 import Cronometro from './Cronometro.vue'
 import IndicadorVivo from './IndicadorVivo.vue'
 import logoUrl from '@/assets/logo-movistar.png'
+
+const modoOscuro = ref(false)
+
+function alternarTema() {
+  modoOscuro.value = !modoOscuro.value
+  document.documentElement.classList.toggle('dark', modoOscuro.value)
+  localStorage.setItem('movistar-tema', modoOscuro.value ? 'dark' : 'light')
+}
+
+onMounted(() => {
+  modoOscuro.value = localStorage.getItem('movistar-tema') === 'dark'
+  document.documentElement.classList.toggle('dark', modoOscuro.value)
+})
 
 defineProps<{
   dniInicial?: string
@@ -40,6 +54,15 @@ defineEmits<{ buscar: [dni: string] }>()
       </div>
       <span class="separador" aria-hidden="true"></span>
       <IndicadorVivo :activo="inicioLlamada !== null && !llamadaCerrada" />
+      <button
+        class="tema"
+        type="button"
+        :aria-label="modoOscuro ? 'Activar modo claro' : 'Activar modo oscuro'"
+        :title="modoOscuro ? 'Modo claro' : 'Modo oscuro'"
+        @click="alternarTema"
+      >
+        <span aria-hidden="true">{{ modoOscuro ? '☀' : '☾' }}</span>
+      </button>
     </div>
   </header>
 </template>
@@ -118,6 +141,21 @@ defineEmits<{ buscar: [dni: string] }>()
 .id {
   font-size: var(--t-micro);
   color: rgba(255, 255, 255, 0.5);
+}
+
+.tema {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 17px;
+  line-height: 1;
+}
+
+.tema:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 @media (max-width: 1180px) {
