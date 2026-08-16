@@ -229,7 +229,7 @@ watch(dniRuta, (nuevo, anterior) => {
 
 .columnas {
   display: grid;
-  grid-template-columns: var(--col-izq) 1fr;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   gap: var(--gap);
   padding: var(--gap);
   flex: 1;

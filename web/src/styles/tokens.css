@@ -72,7 +72,7 @@
 
   /* --- Rejilla ------------------------------------------------------- */
   --ancho-max: 1740px; /* el contenido no se pega a los bordes */
-  --col-izq: 372px; /* sidebar de decisión, con más espacio para el diálogo */
+  --col-izq: 40%; /* proporción visual de referencia: sidebar 40%, chat 60% */
   --rail-alto: 64px;
 }
 
