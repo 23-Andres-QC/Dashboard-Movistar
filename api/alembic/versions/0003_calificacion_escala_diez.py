@@ -1,14 +1,14 @@
 """Amplía facilidad de uso a escala 1–10.
 
 Revision ID: 0003_calificacion_escala_diez
-Revises: 0002_diccionario_datos
+Revises: 0002
 """
 
 from alembic import op
 
 
 revision = "0003_calificacion_escala_diez"
-down_revision = "0002_diccionario_datos"
+down_revision = "0002"
 branch_labels = None
 depends_on = None
 
