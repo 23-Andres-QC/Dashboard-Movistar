@@ -28,9 +28,7 @@ const arcoMargen = computed(() =>
 
 const color = computed(() =>
   props.acento === 'ambar'
-    ? acotado.value >= 75
-      ? 'var(--verde)'
-      : 'var(--ambar)'
+    ? 'var(--ambar)'
     : acotado.value < 50
       ? 'var(--alarma)'
       : acotado.value < 75

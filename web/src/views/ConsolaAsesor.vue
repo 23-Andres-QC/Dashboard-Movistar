@@ -126,14 +126,6 @@ watch(dniRuta, (nuevo, anterior) => {
         <FranjaFicha :cliente="clienteVista" :ultima-captura="ultimaCaptura" />
       </div>
 
-      <div class="marco">
-        <FunnelHorizontal
-          :paso="pasoFunnel"
-          :resultado="cierre?.resultado ?? null"
-          :hora="horaCierre"
-        />
-      </div>
-
       <div v-if="clienteVista.es_nuevo && !perfilNuevoCompleto" class="marco">
         <FormularioClienteNuevo @calcular="store.completarPerfil($event)" />
       </div>
@@ -157,6 +149,12 @@ watch(dniRuta, (nuevo, anterior) => {
         />
 
         <div class="centro panel">
+          <FunnelHorizontal
+            :paso="pasoFunnel"
+            :resultado="cierre?.resultado ?? null"
+            :hora="horaCierre"
+          />
+
           <PanelConversacion
             :oferta="ofertaPrincipal"
             :speech-inicial="speechInicial"
@@ -239,7 +237,7 @@ watch(dniRuta, (nuevo, anterior) => {
 /* La columna central apila copiloto y cierre dentro de un solo panel. */
 .centro {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   min-height: 0;
   overflow: hidden;
   border-radius: 12px;
