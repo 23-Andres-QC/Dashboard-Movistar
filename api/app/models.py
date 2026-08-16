@@ -114,7 +114,7 @@ class Calificacion(Base):
     __tablename__ = "calificaciones"
     __table_args__ = (
         CheckConstraint(
-            "facilidad_venta >= 1 AND facilidad_venta <= 5", name="ck_calificaciones_facilidad"
+            "facilidad_venta >= 1 AND facilidad_venta <= 10", name="ck_calificaciones_facilidad"
         ),
         CheckConstraint(
             "nps_declarado IS NULL OR (nps_declarado >= 0 AND nps_declarado <= 10)",

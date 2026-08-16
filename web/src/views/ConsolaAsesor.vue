@@ -65,7 +65,12 @@ async function buscar(dni: string) {
 }
 
 /** El panel de cierre no escribe todavía: primero se confirma el motivo. */
-function pedirCierre(datos: CierreEnvio) {
+async function pedirCierre(datos: CierreEnvio) {
+  // Sin contacto no hay interacción que evaluar: se registra y termina sin encuesta.
+  if (datos.resultado === 'sin_contacto') {
+    await store.cerrarGestion(datos)
+    return
+  }
   cierrePendiente.value = datos
 }
 

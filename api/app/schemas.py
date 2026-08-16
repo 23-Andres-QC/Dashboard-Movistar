@@ -240,7 +240,7 @@ class GestionOut(BaseModel):
 
 
 class CalificacionCrear(BaseModel):
-    facilidad_venta: int = Field(ge=1, le=5)
+    facilidad_venta: int = Field(ge=1, le=10)
     oferta_fue_pertinente: bool
     nps_declarado: int | None = Field(default=None, ge=0, le=10)
     comentario: str | None = None
