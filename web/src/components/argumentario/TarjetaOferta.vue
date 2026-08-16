@@ -41,15 +41,10 @@ const esOtroCanal = computed(
       <button class="contraste" type="button" @click.stop="$emit('detalle')">
         Ver contraste <span aria-hidden="true">↗</span>
       </button>
-    </header>
-
-    <div class="cuerpo">
-      <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="112" />
-      <div class="prob-info">
-        <span class="micro">Probabilidad</span>
-        <strong>de aceptación</strong>
+      <div class="probabilidad-cabecera">
+        <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="88" />
       </div>
-    </div>
+    </header>
 
     <p v-if="oferta.franja_sugerida" class="pie">
       <span class="micro chip" :class="{ alterno: esOtroCanal }">
@@ -78,9 +73,18 @@ const esOtroCanal = computed(
 /* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
 .cabecera {
   position: relative;
-  padding: 9px var(--gap-lg) 10px;
+  min-height: 108px;
+  padding: 9px 126px 10px var(--gap-lg);
   background: var(--movistar-noche-fondo);
   color: var(--tinta-inversa);
+}
+
+.probabilidad-cabecera {
+  --linea: rgba(255, 255, 255, 0.28);
+  --tinta-suave: rgba(255, 255, 255, 0.72);
+  position: absolute;
+  top: 10px;
+  right: 16px;
 }
 
 .contraste {
@@ -139,26 +143,6 @@ const esOtroCanal = computed(
 .sello.mt {
   border-color: rgba(1, 157, 244, 0.75);
   background: rgba(1, 157, 244, 0.2);
-}
-
-.cuerpo {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-lg);
-  min-height: 124px;
-  padding: 8px 16px;
-}
-
-.prob-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  color: var(--tinta-media);
-}
-
-.prob-info strong {
-  font-size: var(--t-sm);
-  font-weight: 500;
 }
 
 /* Filas apiladas: cada etiqueta y su valor en una línea, sin truncarse. */
