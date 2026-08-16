@@ -65,9 +65,10 @@ const avance = computed(() => {
 
 <style scoped>
 .funnel {
-  width: calc(100% - 28px);
+  width: calc(100% - 48px);
+  max-width: 1700px;
   margin-inline: auto;
-  padding: 8px var(--gap-lg) 7px;
+  padding: 5px 12px 5px;
   background: var(--superficie);
   border: 1px solid var(--linea);
   border-radius: var(--r);
@@ -115,10 +116,10 @@ ol {
 .marca {
   display: grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   flex: none;
-  margin: 0 5px;
+  margin: 0 4px;
   border: 2px solid var(--linea);
   border-radius: 50%;
   background: var(--superficie);
@@ -174,7 +175,7 @@ ol {
 
 .progreso {
   height: 3px;
-  margin-top: 7px;
+  margin-top: 5px;
   border-radius: 2px;
   background: var(--linea-suave);
   overflow: hidden;
