@@ -2,7 +2,13 @@
 import { computed } from 'vue'
 
 const props = withDefaults(
-  defineProps<{ valor: number; margen?: number; tamano?: number; etiqueta?: string }>(),
+  defineProps<{
+    valor: number
+    margen?: number
+    tamano?: number
+    etiqueta?: string
+    acento?: 'auto' | 'ambar'
+  }>(),
   { margen: 0, tamano: 104, etiqueta: '' },
 )
 
@@ -21,7 +27,9 @@ const arcoMargen = computed(() =>
 )
 
 const color = computed(() =>
-  acotado.value >= 75
+  props.acento === 'ambar'
+    ? 'var(--ambar)'
+    : acotado.value >= 75
     ? 'var(--verde)'
     : acotado.value >= 65
       ? 'var(--movistar-azul)'

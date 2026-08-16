@@ -44,7 +44,12 @@ const esOtroCanal = computed(
         Ver contraste <span aria-hidden="true">↗</span>
       </button>
       <div class="probabilidad-cabecera">
-        <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="62" />
+        <AnilloProbabilidad
+          :valor="probabilidad"
+          :margen="oferta.margen"
+          :tamano="62"
+          :acento="esMejorOpcion ? 'ambar' : 'auto'"
+        />
       </div>
     </header>
 
