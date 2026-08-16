@@ -72,7 +72,7 @@
   --gap-xl: 22px;
 
   /* --- Rejilla ------------------------------------------------------- */
-  --ancho-max: 1740px; /* el contenido no se pega a los bordes */
+  --ancho-max: 1920px; /* aprovecha mejor el ancho en monitores grandes */
   --col-izq: 40%; /* proporción visual de referencia: sidebar 40%, chat 60% */
   --rail-alto: 64px;
 }

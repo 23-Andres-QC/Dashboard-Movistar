@@ -42,7 +42,7 @@ const esOtroCanal = computed(
         Ver contraste <span aria-hidden="true">↗</span>
       </button>
       <div class="probabilidad-cabecera">
-        <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="88" />
+        <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="62" />
       </div>
     </header>
 
@@ -73,8 +73,8 @@ const esOtroCanal = computed(
 /* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
 .cabecera {
   position: relative;
-  min-height: 108px;
-  padding: 9px 126px 10px var(--gap-lg);
+  min-height: 88px;
+  padding: 7px 96px 8px var(--gap-lg);
   background: var(--movistar-noche-fondo);
   color: var(--tinta-inversa);
 }
@@ -83,20 +83,22 @@ const esOtroCanal = computed(
   --linea: rgba(255, 255, 255, 0.28);
   --tinta-suave: rgba(255, 255, 255, 0.72);
   position: absolute;
-  top: 10px;
-  right: 16px;
+  top: 7px;
+  right: 18px;
+  pointer-events: none;
 }
 
 .contraste {
   position: absolute;
   right: var(--gap-lg);
-  bottom: 12px;
+  bottom: 9px;
   padding: 0;
   border: 0;
   background: transparent;
   color: rgba(255, 255, 255, 0.88);
   font-size: var(--t-xs);
   font-weight: 700;
+  z-index: 1;
 }
 
 .contraste:hover {
@@ -110,7 +112,7 @@ const esOtroCanal = computed(
 
 .nombre {
   margin-top: 3px;
-  font-size: var(--t-lg);
+  font-size: var(--t-md);
   font-weight: 600;
   line-height: 1.25;
 }
@@ -119,7 +121,7 @@ const esOtroCanal = computed(
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 9px;
+  margin-top: 6px;
 }
 
 /* Chips con tinte, no bloques: el color se insinúa. */
