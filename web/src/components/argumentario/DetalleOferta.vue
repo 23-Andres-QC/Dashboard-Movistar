@@ -7,19 +7,19 @@ defineProps<{ oferta: Recomendacion; planActual: string | null; facturacion: num
 <template>
   <section class="detalle tarjeta-suelta" aria-label="Detalle de la oferta">
     <header class="cabecera">
-      <span class="micro">Contraste de oferta</span>
+      <span class="micro">Plan actual vs oferta</span>
       <span class="micro confianza">Mejor opción</span>
     </header>
 
     <div class="comparacion">
       <div class="antes">
-        <span class="micro">Antes</span>
+        <span class="micro etiqueta">Plan actual</span>
         <strong>{{ planActual ?? 'Sin plan registrado' }}</strong>
         <span>{{ facturacion !== null ? `S/ ${facturacion} al mes` : 'Sin factura registrada' }}</span>
       </div>
       <span class="flecha" aria-hidden="true">→</span>
       <div class="ahora">
-        <span class="micro">Ahora</span>
+        <span class="micro etiqueta">Oferta recomendada</span>
         <strong>{{ oferta.oferta }}</strong>
         <span>{{ oferta.precio_mensual !== null ? `S/ ${oferta.precio_mensual} al mes` : 'Consultar precio' }}</span>
       </div>
@@ -56,8 +56,10 @@ defineProps<{ oferta: Recomendacion; planActual: string | null; facturacion: num
 .confianza { color: var(--verde); }
 .comparacion { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding: 10px var(--gap-lg) 0; }
 .antes, .ahora { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 8px 9px; border-radius: var(--r-chico); }
-.antes { background: #f7fafc; color: #44555f; }
-.ahora { border: 1px solid #0b2739; background: #0b2739; color: #ffffff; }
+.antes { border: 1px solid #dbe3ea; background: #f7fafc; color: #44555f; }
+.ahora { border: 2px solid #0b2739; background: #0b2739; color: #ffffff; box-shadow: inset 0 3px 0 #ffd23f; }
+.antes .etiqueta { color: #5c6b77; }
+.ahora .etiqueta { color: #ffd23f; }
 .antes strong, .ahora strong { overflow: hidden; color: var(--tinta); font-size: var(--t-xs); text-overflow: ellipsis; white-space: nowrap; }
 .antes strong { color: #14232e; }
 .ahora strong { color: #ffffff; }
