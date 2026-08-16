@@ -38,6 +38,9 @@ const esOtroCanal = computed(
         </span>
         <span v-if="oferta.es_movistar_total" class="micro sello mt">Movistar Total</span>
       </div>
+      <button class="contraste" type="button" @click.stop="$emit('detalle')">
+        Ver contraste <span aria-hidden="true">↗</span>
+      </button>
     </header>
 
     <div class="cuerpo">
@@ -50,9 +53,6 @@ const esOtroCanal = computed(
       </span>
       <span class="franja">{{ oferta.franja_sugerida }}</span>
     </p>
-    <div class="acciones-detalle">
-      <button type="button" @click.stop="$emit('detalle')">Ver contraste <span aria-hidden="true">↗</span></button>
-    </div>
   </article>
 </template>
 
@@ -73,9 +73,27 @@ const esOtroCanal = computed(
 
 /* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
 .cabecera {
+  position: relative;
   padding: 9px var(--gap-lg) 10px;
   background: var(--movistar-noche-fondo);
   color: var(--tinta-inversa);
+}
+
+.contraste {
+  position: absolute;
+  right: var(--gap-lg);
+  bottom: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+
+.contraste:hover {
+  color: var(--movistar-azul);
+  text-decoration: underline;
 }
 
 .rango {
@@ -212,24 +230,4 @@ const esOtroCanal = computed(
   white-space: nowrap;
 }
 
-.acciones-detalle {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  padding: 8px var(--gap-lg);
-  border-top: 1px solid var(--linea);
-}
-
-.acciones-detalle button {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--movistar-azul-hondo);
-  font-size: var(--t-xs);
-  font-weight: 700;
-}
-
-.acciones-detalle button:hover {
-  text-decoration: underline;
-}
 </style>
