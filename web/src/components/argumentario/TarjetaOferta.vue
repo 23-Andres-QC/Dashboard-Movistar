@@ -83,6 +83,7 @@ const filas = computed(() => {
 <style scoped>
 .tarjeta {
   box-shadow: var(--sombra-2);
+  flex: 0 0 auto;
 }
 
 /* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
@@ -137,7 +138,8 @@ const filas = computed(() => {
   display: flex;
   align-items: center;
   gap: var(--gap-lg);
-  padding: var(--gap-lg);
+  min-height: 150px;
+  padding: 16px;
 }
 
 /* Filas apiladas: cada etiqueta y su valor en una línea, sin truncarse. */

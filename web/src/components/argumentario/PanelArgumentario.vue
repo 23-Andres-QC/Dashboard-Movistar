@@ -67,6 +67,12 @@ defineEmits<{ seleccionarCanal: [canal: Canal] }>()
   padding-right: 2px;
 }
 
+/* La columna tiene scroll propio: cada tarjeta conserva su contenido completo
+   y nunca se comprime para intentar caber en el alto del panel. */
+.columna > * {
+  flex: 0 0 auto;
+}
+
 .vacio {
   padding: var(--gap-lg);
   font-size: var(--t-sm);
