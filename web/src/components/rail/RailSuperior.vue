@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import BuscadorDni from './BuscadorDni.vue'
 import Cronometro from './Cronometro.vue'
 import IndicadorVivo from './IndicadorVivo.vue'
 import logoUrl from '@/assets/logo-movistar.png'
 
 const modoOscuro = ref(false)
-const router = useRouter()
 
 function irInicio() {
-  router.push({ name: 'inicio' })
+  window.location.assign('/')
 }
 
 function alternarTema() {
