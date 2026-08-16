@@ -41,8 +41,7 @@ const esOtroCanal = computed(
     </header>
 
     <div class="cuerpo">
-      <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="118" />
-      <p class="resumen">Oferta seleccionada para este cliente</p>
+      <AnilloProbabilidad :valor="probabilidad" :margen="oferta.margen" :tamano="96" />
     </div>
 
     <p v-if="oferta.franja_sugerida" class="pie">
@@ -74,7 +73,7 @@ const esOtroCanal = computed(
 
 /* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
 .cabecera {
-  padding: 11px var(--gap-lg) 13px;
+  padding: 9px var(--gap-lg) 10px;
   background: var(--movistar-noche-fondo);
   color: var(--tinta-inversa);
 }
@@ -124,13 +123,8 @@ const esOtroCanal = computed(
   display: flex;
   align-items: center;
   gap: var(--gap-lg);
-  min-height: 150px;
-  padding: 16px;
-}
-
-.resumen {
-  color: var(--tinta-suave);
-  font-size: var(--t-xs);
+  min-height: 108px;
+  padding: 8px 16px;
 }
 
 /* Filas apiladas: cada etiqueta y su valor en una línea, sin truncarse. */
@@ -189,7 +183,7 @@ const esOtroCanal = computed(
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
-  padding: 10px var(--gap-lg);
+  padding: 8px var(--gap-lg);
   border-top: 1px solid var(--linea);
   background: var(--superficie-tenue);
   font-size: var(--t-sm);
