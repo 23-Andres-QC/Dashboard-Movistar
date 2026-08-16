@@ -15,6 +15,7 @@ import type {
   Sugerencia,
   TurnoGuion,
 } from '@/api/tipos'
+import type { PerfilNuevo } from '@/components/ficha/FormularioClienteNuevo.vue'
 
 const MOTIVOS_VALIDOS: Motivo[] = [
   'precio',
@@ -67,7 +68,8 @@ export const useGestionStore = defineStore('gestion', () => {
   const copilotoPensando = ref(false)
 
   /** Datos que el cliente reveló durante la llamada, por campo de ficha. */
-  const datosCapturados = ref<Record<string, number>>({})
+  const datosCapturados = ref<Partial<Cliente>>({})
+  const perfilNuevoCompleto = ref(false)
   const ultimaCaptura = ref<string[]>([])
 
   const cerrada = ref(false)
@@ -146,6 +148,7 @@ export const useGestionStore = defineStore('gestion', () => {
     sugerencias.value = []
     pasoFunnel.value = 0
     datosCapturados.value = {}
+    perfilNuevoCompleto.value = false
     ultimaCaptura.value = []
     cerrada.value = false
     cierre.value = null
@@ -230,6 +233,55 @@ export const useGestionStore = defineStore('gestion', () => {
     } finally {
       abriendoGestion.value = false
     }
+  }
+
+  /** Completa el perfil de un cliente nuevo y recalcula el ranking local de ofertas. */
+  function completarPerfil(perfil: PerfilNuevo) {
+    if (!cliente.value?.es_nuevo) return
+
+    datosCapturados.value = {
+      ...datosCapturados.value,
+      tipo_cliente: perfil.tipo_cliente,
+      consumo_datos_gb_prom: perfil.consumo_datos_gb_prom,
+      consumo_voz_min_prom: perfil.consumo_voz_min_prom,
+      tiene_internet_hogar: perfil.tiene_internet_hogar,
+      tiene_hogar: perfil.necesidad !== 'movil',
+      tiene_movil: true,
+      monto_facturado_prom: perfil.presupuesto,
+      pct_consumo_datos: Math.min(99, Math.round((perfil.consumo_datos_gb_prom / 50) * 100)),
+    }
+
+    const puntuaciones = recomendaciones.value.map((oferta) => {
+      let score = 35
+      if (oferta.tipo_oferta === 'plan_movil') {
+        score += perfil.necesidad !== 'hogar' ? 25 : 0
+        score += perfil.consumo_datos_gb_prom >= 25 ? 15 : perfil.consumo_datos_gb_prom >= 10 ? 8 : 2
+        score += perfil.presupuesto >= (oferta.precio_mensual ?? 0) ? 12 : -8
+      }
+      if (oferta.tipo_oferta === 'plan_hogar') {
+        score += perfil.necesidad !== 'movil' ? 28 : 0
+        score += perfil.presupuesto >= (oferta.precio_mensual ?? 0) ? 12 : -10
+        score += perfil.tiene_internet_hogar ? -8 : 8
+      }
+      if (oferta.tipo_oferta === 'movistar_total') {
+        score += perfil.necesidad === 'ambos' ? 25 : 0
+        score += perfil.tiene_internet_hogar ? 20 : 0
+        score += perfil.presupuesto >= (oferta.precio_mensual ?? 0) ? 12 : -15
+      }
+      const probabilidad = Math.min(92, Math.max(8, score))
+      return {
+        ...oferta,
+        probabilidad,
+        margen: Math.max(4, Math.round(oferta.margen * 0.55)),
+        confianza: 'media' as const,
+        nota: 'Calculado con los datos declarados por el cliente',
+      }
+    })
+
+    recomendaciones.value = puntuaciones.sort((a, b) => b.probabilidad - a.probabilidad)
+    canalSeleccionado.value = recomendaciones.value[0]?.canal_sugerido ?? null
+    perfilNuevoCompleto.value = true
+    aviso.value = `Perfil completo: ${recomendaciones.value[0]?.oferta ?? 'recomendación actualizada'}`
   }
 
   /** Manda al copiloto lo que dijo el cliente y guarda qué responderle. */
@@ -361,6 +413,7 @@ export const useGestionStore = defineStore('gestion', () => {
     sugerencias,
     pasoFunnel,
     datosCapturados,
+    perfilNuevoCompleto,
     ultimaCaptura,
     cerrada,
     cierre,
@@ -393,6 +446,7 @@ export const useGestionStore = defineStore('gestion', () => {
     siguienteTurno,
     cerrarGestion,
     calificar,
+    completarPerfil,
     reiniciar,
     limpiarAviso,
   }

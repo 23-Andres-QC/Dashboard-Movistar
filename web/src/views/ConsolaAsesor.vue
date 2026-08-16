@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
 import FranjaFicha from '@/components/ficha/FranjaFicha.vue'
+import FormularioClienteNuevo from '@/components/ficha/FormularioClienteNuevo.vue'
 import ModalCalificacion from '@/components/calificacion/ModalCalificacion.vue'
 import PanelArgumentario from '@/components/argumentario/PanelArgumentario.vue'
 import PanelConversacion from '@/components/conversacion/PanelConversacion.vue'
@@ -23,6 +24,7 @@ const store = useGestionStore()
 const {
   cliente,
   clienteVista,
+  perfilNuevoCompleto,
   ofertaPrincipal,
   alternativas,
   descartadas,
@@ -130,7 +132,11 @@ watch(dniRuta, (nuevo, anterior) => {
         />
       </div>
 
-      <div class="columnas marco">
+      <div v-if="clienteVista.es_nuevo && !perfilNuevoCompleto" class="marco">
+        <FormularioClienteNuevo @calcular="store.completarPerfil($event)" />
+      </div>
+
+      <div v-else class="columnas marco">
         <PanelArgumentario
           :oferta="ofertaPrincipal"
           :alternativas="alternativas"
