@@ -9,6 +9,7 @@
   --movistar-azul: #019df4; /* azul de interfaz */
   --movistar-azul-hondo: #0277b8; /* texto azul sobre fondo claro (AA) */
   --movistar-noche: #0b2739; /* cabeceras y franjas sobrias */
+  --movistar-noche-fondo: #0b2739;
   --movistar-noche-2: #12374e; /* degradado plano de la cabecera */
   --movistar-cielo: #e8f6fe; /* tinte de lo recomendado */
   --borde-cielo: #bfe3f7;
@@ -83,10 +84,11 @@
   --linea-suave: #1d3543;
   --superficie: #102b3a;
   --superficie-tenue: #0d2432;
-  --tinta: #f1f7fa;
-  --tinta-media: #c3d1d8;
-  --tinta-suave: #9eb0ba;
-  --movistar-noche: #061923;
+  --tinta: #f7fbfd;
+  --tinta-media: #d9e5ea;
+  --tinta-suave: #b4c6cf;
+  --movistar-noche: #e7f4f8;
+  --movistar-noche-fondo: #061923;
   --movistar-noche-2: #0a2231;
   --movistar-cielo: #123b52;
   --borde-cielo: #28627d;

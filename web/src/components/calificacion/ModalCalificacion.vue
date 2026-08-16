@@ -233,8 +233,8 @@ legend {
 }
 
 .primario {
-  border: 1px solid var(--movistar-noche);
-  background: var(--movistar-noche);
+  border: 1px solid var(--movistar-noche-fondo);
+  background: var(--movistar-noche-fondo);
   color: var(--tinta-inversa);
 }
 

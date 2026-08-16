@@ -111,7 +111,7 @@ const filas = computed(() => {
 /* Cabecera sobria en azul noche: da jerarquía sin recurrir al color vivo. */
 .cabecera {
   padding: 11px var(--gap-lg) 13px;
-  background: var(--movistar-noche);
+  background: var(--movistar-noche-fondo);
   color: var(--tinta-inversa);
 }
 

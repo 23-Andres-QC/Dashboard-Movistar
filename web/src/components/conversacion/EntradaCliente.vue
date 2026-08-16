@@ -59,9 +59,9 @@ input:disabled {
 
 button {
   padding: 0 16px;
-  border: 1px solid var(--movistar-noche);
+  border: 1px solid var(--movistar-noche-fondo);
   border-radius: var(--r);
-  background: var(--movistar-noche);
+  background: var(--movistar-noche-fondo);
   color: var(--tinta-inversa);
   white-space: nowrap;
 }

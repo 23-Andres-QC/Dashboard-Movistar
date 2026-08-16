@@ -78,7 +78,7 @@ defineEmits<{ buscar: [dni: string] }>()
   gap: var(--gap-lg);
   height: var(--rail-alto);
   padding: 0 var(--gap-lg);
-  background: linear-gradient(105deg, #082536 0%, var(--movistar-noche) 54%, #0e3348 100%);
+  background: linear-gradient(105deg, #082536 0%, var(--movistar-noche-fondo) 54%, #0e3348 100%);
   color: var(--tinta-inversa);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 2px 10px rgba(11, 39, 57, 0.16);
