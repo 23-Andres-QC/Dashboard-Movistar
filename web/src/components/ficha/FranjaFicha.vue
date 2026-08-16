@@ -136,12 +136,13 @@ const seRealza = (campo: string) => realzados.value.includes(campo)
   display: flex;
   align-items: center;
   gap: var(--gap-xl);
-  padding: 11px var(--gap-lg);
+  padding: 14px var(--gap-lg);
   background: var(--superficie);
   border: 1px solid var(--linea);
   border-radius: var(--r);
   box-shadow: var(--sombra-1);
   overflow-x: auto;
+  box-shadow: var(--sombra-2);
 }
 
 .linea-nombre {
@@ -151,7 +152,7 @@ const seRealza = (campo: string) => realzados.value.includes(campo)
 }
 
 .nombre {
-  font-size: var(--t-lg);
+  font-size: 22px;
   font-weight: 600;
   line-height: 1.15;
   white-space: nowrap;

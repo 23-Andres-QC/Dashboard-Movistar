@@ -193,6 +193,7 @@ watch(dniRuta, (nuevo, anterior) => {
   flex-direction: column;
   height: 100%;
   min-height: 0;
+  background: linear-gradient(180deg, #edf3f7 0%, var(--gris-canvas) 34%, var(--gris-canvas) 100%);
 }
 
 /* El contenido no se pega a los bordes en pantallas anchas. */
@@ -226,6 +227,8 @@ watch(dniRuta, (nuevo, anterior) => {
   grid-template-rows: minmax(0, 1fr) auto;
   min-height: 0;
   overflow: hidden;
+  border-radius: 12px;
+  box-shadow: var(--sombra-2);
 }
 
 @media (max-width: 1180px) {
@@ -244,6 +247,10 @@ watch(dniRuta, (nuevo, anterior) => {
 }
 
 @media (max-width: 768px) {
+  .marco {
+    padding-inline: var(--gap-sm);
+  }
+
   .columnas {
     padding: var(--gap-sm);
     gap: var(--gap-sm);

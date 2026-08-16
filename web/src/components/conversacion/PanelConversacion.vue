@@ -116,6 +116,7 @@ watch(
   grid-template-rows: auto auto auto auto minmax(0, 1fr) auto auto;
   min-height: 0;
   overflow: hidden;
+  background: var(--superficie);
 }
 
 .encabezados {
@@ -176,8 +177,9 @@ watch(
 }
 
 .pie {
-  padding: var(--gap-sm) var(--gap);
+  padding: 10px var(--gap);
   border-top: 1px solid var(--linea);
+  background: var(--superficie-tenue);
 }
 
 .boton {
@@ -192,9 +194,20 @@ watch(
 }
 
 .boton.primario {
-  border-color: var(--movistar-azul);
-  background: var(--movistar-azul);
+  border-color: #008edb;
+  background: linear-gradient(180deg, #08a5ef 0%, #0196df 100%);
   color: var(--tinta-inversa);
+  box-shadow: 0 3px 8px rgba(1, 157, 244, 0.22);
+}
+
+.boton:not(:disabled):hover {
+  border-color: var(--movistar-azul-hondo);
+  background: var(--superficie-tenue);
+}
+
+.boton.primario:not(:disabled):hover {
+  border-color: var(--movistar-azul);
+  background: #008edb;
 }
 
 .boton:disabled {

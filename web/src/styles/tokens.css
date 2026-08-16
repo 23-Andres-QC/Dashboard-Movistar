@@ -14,11 +14,11 @@
   --borde-cielo: #bfe3f7;
 
   /* --- Neutros ------------------------------------------------------- */
-  --gris-canvas: #eef1f5; /* fondo de página */
+  --gris-canvas: #f2f5f7; /* fondo de página */
   --linea: #dbe3ea;
   --linea-suave: #eaeff4;
   --superficie: #ffffff;
-  --superficie-tenue: #f6f9fb;
+  --superficie-tenue: #f7fafc;
 
   /* --- Tinta. Calibrada para AA sobre blanco y sobre tintes ---------- */
   --tinta: #14232e; /* 14.4:1 */
@@ -43,8 +43,8 @@
   --estado-good: var(--verde);
 
   /* --- Sombras neutras: elevación, no brillo de color ---------------- */
-  --sombra-1: 0 1px 2px rgba(11, 39, 57, 0.07);
-  --sombra-2: 0 1px 3px rgba(11, 39, 57, 0.09), 0 6px 16px rgba(11, 39, 57, 0.06);
+  --sombra-1: 0 1px 2px rgba(11, 39, 57, 0.06), 0 3px 10px rgba(11, 39, 57, 0.035);
+  --sombra-2: 0 2px 4px rgba(11, 39, 57, 0.08), 0 10px 24px rgba(11, 39, 57, 0.07);
   --sombra-modal: 0 12px 40px rgba(11, 39, 57, 0.22);
 
   /* --- Tipografía ---------------------------------------------------- */
@@ -62,7 +62,7 @@
   --t-xxl: 40px;
 
   /* --- Ritmo --------------------------------------------------------- */
-  --r: 8px;
+  --r: 10px;
   --r-chico: 5px;
   --gap-xs: 4px;
   --gap-sm: 8px;
@@ -71,7 +71,7 @@
   --gap-xl: 22px;
 
   /* --- Rejilla ------------------------------------------------------- */
-  --ancho-max: 1680px; /* el contenido no se pega a los bordes */
-  --col-izq: 440px; /* la oferta necesita aire para el anillo y las cifras */
-  --rail-alto: 56px;
+  --ancho-max: 1740px; /* el contenido no se pega a los bordes */
+  --col-izq: 372px; /* sidebar de decisión, con más espacio para el diálogo */
+  --rail-alto: 64px;
 }
